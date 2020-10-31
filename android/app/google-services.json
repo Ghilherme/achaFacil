@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "679377935750",
+    "firebase_url": "https://listaunica-db39d.firebaseio.com",
+    "project_id": "listaunica-db39d",
+    "storage_bucket": "listaunica-db39d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:679377935750:android:962da63db3d0a679ba6007",
+        "android_client_info": {
+          "package_name": "com.example.listaUnica"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "679377935750-dnqo7lgp19apavmrpkci0hg6sabcs15t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCesPqYIGO91KgN52qF7aGD5hsmXz5UUVY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "679377935750-dnqo7lgp19apavmrpkci0hg6sabcs15t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

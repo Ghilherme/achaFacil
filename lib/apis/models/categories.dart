@@ -40,4 +40,10 @@ List<Categories> categories = [
       icons: Icon(Icons.build_circle),
       serviceType:
           services.where((x) => x.categorieName == 'Instalação').toList()),
+  Categories(
+      categorieName: 'Serviços de Emergência',
+      subtitleCategorieName: 'Atendimento 24hrs',
+      icons: Icon(Icons.add_alert),
+      serviceType:
+          services.where((x) => x.categorieName == 'Instalação').toList()),
 ];
