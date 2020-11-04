@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-import '../body_service_type.dart';
+import '../screens_lists/body_service_list.dart';
 
 class BodyCategorieList extends StatelessWidget {
   @override

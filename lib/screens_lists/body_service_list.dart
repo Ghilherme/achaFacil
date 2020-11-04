@@ -1,16 +1,21 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:listaUnica/screens_lists/body_contact_list.dart';
 
-class BodyContactList extends StatelessWidget {
-  BodyContactList({Key key, @required this.title}) : super(key: key);
+class BodyServiceList extends StatelessWidget {
+  BodyServiceList({Key key, @required this.title}) : super(key: key);
   final String title;
 
   @override
   Widget build(BuildContext context) {
-    //Pega a tabela contatos somente dos prestadores cadastrados com x categoria
+    //Pega a tabela categorias somente da categoria selecionada
     Query query = FirebaseFirestore.instance
-        .collection('contatos')
-        .where('servicos', arrayContains: title);
+        .collection('prestadores')
+        .where(
+          'titulo_categoria',
+          isEqualTo: title,
+        )
+        .orderBy('nome');
 
     return Scaffold(
         appBar: AppBar(
@@ -52,21 +57,13 @@ class BodyContactList extends StatelessWidget {
       BuildContext context, DocumentSnapshot snapshot, int indice, int size) {
     return Column(children: <Widget>[
       ListTile(
-          trailing: Icon(Icons.warning),
-          subtitle: Text('Avaliação: 5'),
           title: Text(
             snapshot.data()['nome'],
           ),
           onTap: () {
-            showDialog(
-                context: context,
-                builder: (_) => new AlertDialog(
-                    title: Text('Contato'),
-                    content: Row(
-                      children: [
-                        Icon(Icons.phonelink_ring),
-                        Text(snapshot.data()['telefone1']),
-                      ],
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => BodyContactList(
+                      title: snapshot.data()['nome'],
                     )));
           }),
       indice + 1 == size ? Container() : Divider()

@@ -1,24 +1,22 @@
-import 'package:listaUnica/apis/models/service_type.dart';
+import 'package:flutter/material.dart';
 
 class Contacts {
-  final String name, number;
-  final List<ServiceType> serviceType;
-
-  // ignore: sort_constructors_first
-  Contacts({this.name, this.number, this.serviceType});
+  const Contacts(
+      {@required this.address,
+      @required this.email,
+      @required this.telNumbers,
+      @required this.description,
+      @required this.name,
+      @required this.serviceType});
+  final String name, email, description;
+  final Map<String, String> telNumbers;
+  final List<String> serviceType;
+  final Address address;
 }
 
-List<Contacts> contacts = [
-  Contacts(
-      name: 'José Monteiro',
-      number: '11959369148',
-      serviceType: services.where((x) => x.id == 1).toList()),
-  Contacts(
-      name: 'Josias Neves',
-      number: '11989139148',
-      serviceType: services.where((x) => x.id == 1).toList()),
-  Contacts(
-      name: 'José João Candido',
-      number: '11912354543',
-      serviceType: services.where((x) => x.id == 3).toList()),
-];
+class Address {
+  final String strAvnName, number, state, neighborhood, city, uf, cep, country;
+
+  Address(this.strAvnName, this.number, this.state, this.neighborhood,
+      this.city, this.uf, this.cep, this.country);
+}
