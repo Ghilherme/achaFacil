@@ -4,6 +4,7 @@ import '../constants.dart';
 import 'title_address_name.dart';
 import 'backdrop_rating.dart';
 import 'genres.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class BodyContactDetails extends StatelessWidget {
   BodyContactDetails({Key key, @required this.contact}) : super(key: key);
@@ -15,12 +16,20 @@ class BodyContactDetails extends StatelessWidget {
       body: Body(contact: contact),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          // Add your onPressed code here!
+          launchZap(contact['telefone1']);
         },
         label: Text('Zap'),
         icon: Icon(Icons.call),
       ),
     );
+  }
+
+  void launchZap(urlString) async {
+    var whatsappUrl = "whatsapp://send?phone=$urlString";
+    await canLaunch(whatsappUrl)
+        ? launch(whatsappUrl)
+        : print(
+            "open whatsapp app link or do a snackbar with notification that there is no whatsapp installed");
   }
 }
 
