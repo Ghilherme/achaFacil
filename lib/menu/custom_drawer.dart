@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:listaUnica/screens_create/login/login.dart';
 
 class CustomDrawer extends StatelessWidget {
   @override
@@ -28,6 +29,15 @@ class CustomDrawer extends StatelessWidget {
           subtitle: Text('Meus contatos preferidos'),
           onTap: () {
             print('tapeou ordens');
+          },
+        ),
+        ListTile(
+          leading: Icon(Icons.save),
+          title: Text('Cadastrar'),
+          subtitle: Text('Prestadores'),
+          onTap: () {
+            Navigator.of(context)
+                .push(MaterialPageRoute(builder: (context) => Login()));
           },
         ),
         ListTile(

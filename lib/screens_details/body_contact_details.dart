@@ -47,7 +47,6 @@ class Body extends StatelessWidget {
         children: <Widget>[
           BackdropAndRating(
             size: size,
-            movie: 'movie',
             image: contact['imagem'],
           ),
           SizedBox(height: kDefaultPadding / 2),
@@ -71,7 +70,7 @@ class Body extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
             child: Text(
-              contact['descricao'],
+              contact['descricao'] == null ? '' : contact['descricao'],
               style: TextStyle(
                 color: kTextLightColor,
               ),

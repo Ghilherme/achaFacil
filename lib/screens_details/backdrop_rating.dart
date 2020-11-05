@@ -7,12 +7,11 @@ class BackdropAndRating extends StatelessWidget {
   const BackdropAndRating({
     Key key,
     @required this.size,
-    @required this.movie,
     @required this.image,
   }) : super(key: key);
 
   final Size size;
-  final String movie, image;
+  final String image;
 
   @override
   Widget build(BuildContext context) {
