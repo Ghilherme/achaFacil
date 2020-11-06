@@ -56,11 +56,18 @@ class _LoginFormState extends State<LoginForm> {
         SizedBox(
           height: 40,
         ),
-        ElevatedButton(
-          child: Text('Login'),
-          onPressed: () {
-            _validateLogin(_formKey, login, pass, context);
-          },
+        SizedBox(
+          width: 200,
+          height: 50,
+          child: ElevatedButton(
+            child: Text(
+              'Login',
+              style: TextStyle(fontSize: 20),
+            ),
+            onPressed: () {
+              _validateLogin(_formKey, login, pass, context);
+            },
+          ),
         ),
       ]),
     );

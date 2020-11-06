@@ -1,8 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:listaUnica/apis/models/contacts.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 
 class CreateContact extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,17 +28,24 @@ class CreateContactBody extends StatefulWidget {
 
 class _CreateContactBodyState extends State<CreateContactBody> {
   String dropdownValue = 'São Paulo';
-  final _form = GlobalKey<FormFieldState>();
+  final _form = GlobalKey<FormState>();
+  Contacts contactModel = new Contacts(
+      address: new Address('', '', '', '', '', '', '', '', ''),
+      email: null,
+      telNumbers: null,
+      description: null,
+      name: null,
+      serviceType: new List<dynamic>());
 
-  static List<String> prestadors = [
-    'Marceneiros',
-    'Eletricistas',
-    'Encanadores'
-  ];
-  final _items = prestadors
-      .map((prestador) => MultiSelectItem<String>(prestador, prestador))
-      .toList();
-  List<String> _selectedAnimals = [];
+  CollectionReference contactDB =
+      FirebaseFirestore.instance.collection('contatos');
+
+  initState() {
+    super.initState();
+    getProviders();
+  }
+
+  List<MultiSelectItem> _items;
 
   @override
   Widget build(BuildContext context) {
@@ -49,6 +57,9 @@ class _CreateContactBodyState extends State<CreateContactBody> {
             ListTile(
               leading: Icon(Icons.person),
               title: TextFormField(
+                onChanged: (value) {
+                  contactModel.name = value;
+                },
                 decoration: InputDecoration(
                   hintText: "Nome",
                 ),
@@ -59,6 +70,9 @@ class _CreateContactBodyState extends State<CreateContactBody> {
             ListTile(
               leading: Icon(Icons.mail),
               title: new TextFormField(
+                onChanged: (value) {
+                  contactModel.email = value;
+                },
                 keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
                   hintText: "Email",
@@ -68,6 +82,9 @@ class _CreateContactBodyState extends State<CreateContactBody> {
             ListTile(
               leading: Icon(Icons.description),
               title: new TextFormField(
+                onChanged: (value) {
+                  contactModel.description = value;
+                },
                 maxLines: 3,
                 decoration: new InputDecoration(
                   hintText: "Descrição",
@@ -81,14 +98,17 @@ class _CreateContactBodyState extends State<CreateContactBody> {
                   title: Text('Prestadores'),
                   buttonText: Text('Prestadores',
                       style: TextStyle(fontSize: 16, color: Colors.grey)),
-                  onConfirm: (results) => _selectedAnimals = results,
-                  validator: (values) {
-                    if (values == null || values.isEmpty) return "Obrigatório";
-                  }),
+                  onConfirm: (results) => contactModel.serviceType = results,
+                  validator: (value) => value == null || value.isEmpty
+                      ? 'Campo obrigatório'
+                      : null),
             ),
             ListTile(
               leading: Icon(Icons.web),
               title: new TextFormField(
+                onChanged: (value) {
+                  contactModel.site = value;
+                },
                 keyboardType: TextInputType.phone,
                 decoration: InputDecoration(
                   hintText: "Site",
@@ -98,6 +118,9 @@ class _CreateContactBodyState extends State<CreateContactBody> {
             ListTile(
               leading: Icon(Icons.phone),
               title: TextFormField(
+                onChanged: (value) {
+                  contactModel.telNumbers = {'whatsapp': value};
+                },
                 keyboardType: TextInputType.phone,
                 decoration: InputDecoration(
                   hintText: "Telefone",
@@ -115,6 +138,9 @@ class _CreateContactBodyState extends State<CreateContactBody> {
             ListTile(
               leading: Icon(Icons.person),
               title: TextFormField(
+                onChanged: (value) {
+                  contactModel.address.strAvnName = value;
+                },
                 decoration: InputDecoration(
                   hintText: "Rua/Avenida",
                 ),
@@ -123,6 +149,9 @@ class _CreateContactBodyState extends State<CreateContactBody> {
             ListTile(
               leading: Icon(Icons.person),
               title: TextFormField(
+                onChanged: (value) {
+                  contactModel.address.compliment = value;
+                },
                 decoration: InputDecoration(
                   hintText: "Complemento",
                 ),
@@ -131,6 +160,9 @@ class _CreateContactBodyState extends State<CreateContactBody> {
             ListTile(
               leading: Icon(Icons.person),
               title: TextFormField(
+                onChanged: (value) {
+                  contactModel.address.number = value;
+                },
                 decoration: InputDecoration(
                   hintText: "Número",
                 ),
@@ -139,6 +171,9 @@ class _CreateContactBodyState extends State<CreateContactBody> {
             ListTile(
               leading: Icon(Icons.person),
               title: TextFormField(
+                onChanged: (value) {
+                  contactModel.address.neighborhood = value;
+                },
                 decoration: InputDecoration(
                   hintText: "Bairro",
                 ),
@@ -149,6 +184,9 @@ class _CreateContactBodyState extends State<CreateContactBody> {
             ListTile(
               leading: Icon(Icons.person),
               title: TextFormField(
+                onChanged: (value) {
+                  contactModel.address.city = value;
+                },
                 decoration: InputDecoration(
                   hintText: "Cidade",
                 ),
@@ -166,6 +204,7 @@ class _CreateContactBodyState extends State<CreateContactBody> {
                 iconSize: 24,
                 elevation: 16,
                 onChanged: (String newValue) {
+                  contactModel.address.uf = newValue;
                   setState(() {
                     dropdownValue = newValue;
                   });
@@ -184,14 +223,64 @@ class _CreateContactBodyState extends State<CreateContactBody> {
               ),
             ),
             Container(height: 30),
-            ElevatedButton(
-              child: Text('Cadastrar'),
-              onPressed: () {},
+            SizedBox(
+              width: 200,
+              child: ElevatedButton(
+                child: Text('Cadastrar'),
+                onPressed: () {
+                  if (_form.currentState.validate()) print('ok');
+
+                  contactModel.serviceType.forEach((element) {
+                    print(element);
+                  });
+                  print(contactModel.name);
+
+                  contactDB
+                      .add({
+                        'nome': contactModel.name,
+                        'email': contactModel.email,
+                        'descricao': contactModel.description,
+                        'servicos': contactModel.serviceType,
+                        'site': contactModel.site,
+                        'telefone1': contactModel.telNumbers,
+                        'endereco': {
+                          'endereco': contactModel.address.strAvnName,
+                          'complemento': contactModel.address.compliment,
+                          'numero': contactModel.address.number,
+                          'bairro': contactModel.address.neighborhood,
+                          'cidade': contactModel.address.city,
+                          'UF': contactModel.address.uf,
+                        },
+                      })
+                      .then((value) => print("User Added"))
+                      .catchError(
+                          (error) => print("Failed to add user: $error"));
+                },
+              ),
             ),
             Container(height: 30),
           ],
         ),
       ),
     );
+  }
+
+  Future<void> getProviders() async {
+    //Pega a tabela categorias somente da categoria selecionada
+    List<String> testes = new List<String>();
+    await FirebaseFirestore.instance
+        .collection('prestadores')
+        .orderBy('nome')
+        .get()
+        .then((value) {
+      value.docs.forEach((element) {
+        return testes.add(element.data()['nome']);
+      });
+    });
+    setState(() {
+      _items = testes
+          .map((prestador) => MultiSelectItem<String>(prestador, prestador))
+          .toList();
+    });
   }
 }
