@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:listaUnica/screens_create/login/reset_password.dart';
+import 'package:listaUnica/login/reset_password.dart';
 import 'login_form.dart';
 
 class Login extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return Scaffold(

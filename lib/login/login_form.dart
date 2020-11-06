@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:listaUnica/screens_create/create_contact.dart';
 
-import '../../constants.dart';
-import '../create_contact.dart';
+import '../constants.dart';
 
 class LoginForm extends StatefulWidget {
   @override
@@ -69,7 +69,7 @@ class _LoginFormState extends State<LoginForm> {
   void _validateLogin(GlobalKey<FormState> _formKey, String login, String pass,
       BuildContext context) {
     if (_formKey.currentState.validate()) {
-      if (login == 'guilherme' && pass == '123') {
+      if (login == 'admin' && pass == '123') {
         Navigator.push(
           context,
           MaterialPageRoute(
