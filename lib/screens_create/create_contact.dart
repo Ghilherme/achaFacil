@@ -37,9 +37,6 @@ class _CreateContactBodyState extends State<CreateContactBody> {
       name: null,
       serviceType: new List<dynamic>());
 
-  CollectionReference contactDB =
-      FirebaseFirestore.instance.collection('contatos');
-
   initState() {
     super.initState();
     getProviders();
@@ -228,33 +225,30 @@ class _CreateContactBodyState extends State<CreateContactBody> {
               child: ElevatedButton(
                 child: Text('Cadastrar'),
                 onPressed: () {
-                  if (_form.currentState.validate()) print('ok');
-
-                  contactModel.serviceType.forEach((element) {
-                    print(element);
-                  });
-                  print(contactModel.name);
-
-                  contactDB
-                      .add({
-                        'nome': contactModel.name,
-                        'email': contactModel.email,
-                        'descricao': contactModel.description,
-                        'servicos': contactModel.serviceType,
-                        'site': contactModel.site,
-                        'telefone1': contactModel.telNumbers,
-                        'endereco': {
-                          'endereco': contactModel.address.strAvnName,
-                          'complemento': contactModel.address.compliment,
-                          'numero': contactModel.address.number,
-                          'bairro': contactModel.address.neighborhood,
-                          'cidade': contactModel.address.city,
-                          'UF': contactModel.address.uf,
-                        },
-                      })
-                      .then((value) => print("User Added"))
-                      .catchError(
-                          (error) => print("Failed to add user: $error"));
+                  if (_form.currentState.validate()) {
+                    CollectionReference contactDB =
+                        FirebaseFirestore.instance.collection('contatos');
+                    contactDB
+                        .add({
+                          'nome': contactModel.name,
+                          'email': contactModel.email,
+                          'descricao': contactModel.description,
+                          'servicos': contactModel.serviceType,
+                          'site': contactModel.site,
+                          'telefone1': contactModel.telNumbers,
+                          'endereco': {
+                            'endereco': contactModel.address.strAvnName,
+                            'complemento': contactModel.address.compliment,
+                            'numero': contactModel.address.number,
+                            'bairro': contactModel.address.neighborhood,
+                            'cidade': contactModel.address.city,
+                            'UF': contactModel.address.uf,
+                          },
+                        })
+                        .then((value) => print("User Added"))
+                        .catchError(
+                            (error) => print("Failed to add user: $error"));
+                  }
                 },
               ),
             ),
