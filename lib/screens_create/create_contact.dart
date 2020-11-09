@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:listaUnica/apis/models/contacts.dart';
+import 'package:listaUnica/apis/models/states.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 
 class CreateContact extends StatelessWidget {
@@ -27,7 +28,7 @@ class CreateContactBody extends StatefulWidget {
 }
 
 class _CreateContactBodyState extends State<CreateContactBody> {
-  String dropdownValue = 'São Paulo';
+  States dropdownValue = states[24]; //SAO PAULO
   final _form = GlobalKey<FormState>();
   Contacts contactModel = new Contacts(
       address: new Address('', '', '', '', '', '', '', '', ''),
@@ -193,28 +194,24 @@ class _CreateContactBodyState extends State<CreateContactBody> {
             ),
             ListTile(
               leading: Icon(Icons.person),
-              title: DropdownButton<String>(
+              title: DropdownButton<States>(
                 isExpanded: true,
                 hint: Text('Estado'),
                 value: dropdownValue,
                 icon: Icon(Icons.arrow_downward),
                 iconSize: 24,
                 elevation: 16,
-                onChanged: (String newValue) {
-                  contactModel.address.uf = newValue;
+                onChanged: (States newValue) {
+                  contactModel.address.uf = newValue.uf;
+                  contactModel.address.state = newValue.state;
                   setState(() {
                     dropdownValue = newValue;
                   });
                 },
-                items: <String>[
-                  'São Paulo',
-                  'Rio de Janeiro',
-                  'Santa Catarina',
-                  'Minas Gerais'
-                ].map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
+                items: states.map<DropdownMenuItem<States>>((States value) {
+                  return DropdownMenuItem<States>(
                     value: value,
-                    child: Text(value),
+                    child: Text(value.state),
                   );
                 }).toList(),
               ),
@@ -224,32 +221,7 @@ class _CreateContactBodyState extends State<CreateContactBody> {
               width: 200,
               child: ElevatedButton(
                 child: Text('Cadastrar'),
-                onPressed: () {
-                  if (_form.currentState.validate()) {
-                    CollectionReference contactDB =
-                        FirebaseFirestore.instance.collection('contatos');
-                    contactDB
-                        .add({
-                          'nome': contactModel.name,
-                          'email': contactModel.email,
-                          'descricao': contactModel.description,
-                          'servicos': contactModel.serviceType,
-                          'site': contactModel.site,
-                          'telefone1': contactModel.telNumbers,
-                          'endereco': {
-                            'endereco': contactModel.address.strAvnName,
-                            'complemento': contactModel.address.compliment,
-                            'numero': contactModel.address.number,
-                            'bairro': contactModel.address.neighborhood,
-                            'cidade': contactModel.address.city,
-                            'UF': contactModel.address.uf,
-                          },
-                        })
-                        .then((value) => print("User Added"))
-                        .catchError(
-                            (error) => print("Failed to add user: $error"));
-                  }
-                },
+                onPressed: addContact,
               ),
             ),
             Container(height: 30),
@@ -257,6 +229,64 @@ class _CreateContactBodyState extends State<CreateContactBody> {
         ),
       ),
     );
+  }
+
+  void addContact() {
+    if (_form.currentState.validate()) {
+      CollectionReference contactDB =
+          FirebaseFirestore.instance.collection('contatos');
+      contactDB
+          .add({
+            'nome': contactModel.name,
+            'email': contactModel.email,
+            'descricao': contactModel.description,
+            'servicos': contactModel.serviceType,
+            'site': contactModel.site,
+            'telefone1': contactModel.telNumbers,
+            'endereco': {
+              'endereco': contactModel.address.strAvnName,
+              'complemento': contactModel.address.compliment,
+              'numero': contactModel.address.number,
+              'bairro': contactModel.address.neighborhood,
+              'cidade': contactModel.address.city,
+              'estado': contactModel.address.state,
+              'UF': contactModel.address.uf,
+            },
+          })
+          .then((value) => showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: Text('Contato adicionado com sucesso.'),
+                    actions: <Widget>[
+                      TextButton(
+                        child: Text('Ok'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  );
+                },
+              ))
+          .catchError((error) => showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: Text('Falha ao adicionar usuário.'),
+                    content: Text('Erro: ' + error),
+                    actions: <Widget>[
+                      TextButton(
+                        child: Text('Ok'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  );
+                },
+              ));
+    }
   }
 
   Future<void> getProviders() async {
