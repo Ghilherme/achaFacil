@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:listaUnica/home/home_screen.dart';
 import 'package:listaUnica/login/reset_password.dart';
 import 'login_form.dart';
 
@@ -12,7 +13,11 @@ class Login extends StatelessWidget {
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
-              Navigator.of(context).pop();
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => HomeScreen(),
+                  ));
             },
           )),
       body: LoginBody(),

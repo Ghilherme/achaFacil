@@ -5,6 +5,9 @@ import 'package:listaUnica/apis/models/states.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 
 class CreateContact extends StatelessWidget {
+  final Contacts contact;
+
+  const CreateContact({Key key, this.contact}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,33 +20,40 @@ class CreateContact extends StatelessWidget {
               Navigator.of(context).pop();
             },
           )),
-      body: CreateContactBody(),
+      body: CreateContactBody(contact),
     );
   }
 }
 
 class CreateContactBody extends StatefulWidget {
+  CreateContactBody(this.contact);
+  final Contacts contact;
+
   @override
-  _CreateContactBodyState createState() => _CreateContactBodyState();
+  _CreateContactBodyState createState() =>
+      _CreateContactBodyState(this.contact);
 }
 
 class _CreateContactBodyState extends State<CreateContactBody> {
-  States dropdownValue = states[24]; //SAO PAULO
+  _CreateContactBodyState(this.contact);
+  final Contacts contact;
+  States _dropdownValue = states[24]; //SAO PAULO
   final _form = GlobalKey<FormState>();
-  Contacts contactModel = new Contacts(
-      address: new Address('', '', '', '', '', '', '', '', ''),
-      email: null,
-      telNumbers: null,
-      description: null,
-      name: null,
-      serviceType: new List<dynamic>());
+  Contacts _contactModel;
 
   initState() {
     super.initState();
     getProviders();
+
+    _contactModel = Contacts.fromContact(contact);
+    if (_contactModel.address.state.isNotEmpty) {
+      _dropdownValue = states
+          .where((element) => element.state == _contactModel.address.state)
+          .first;
+    }
   }
 
-  List<MultiSelectItem> _items;
+  List<MultiSelectItem> _items = List<MultiSelectItem>();
 
   @override
   Widget build(BuildContext context) {
@@ -55,8 +65,9 @@ class _CreateContactBodyState extends State<CreateContactBody> {
             ListTile(
               leading: Icon(Icons.person),
               title: TextFormField(
+                initialValue: _contactModel.name,
                 onChanged: (value) {
-                  contactModel.name = value;
+                  _contactModel.name = value;
                 },
                 decoration: InputDecoration(
                   hintText: "Nome",
@@ -68,8 +79,9 @@ class _CreateContactBodyState extends State<CreateContactBody> {
             ListTile(
               leading: Icon(Icons.mail),
               title: new TextFormField(
+                initialValue: _contactModel.email,
                 onChanged: (value) {
-                  contactModel.email = value;
+                  _contactModel.email = value;
                 },
                 keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
@@ -80,8 +92,9 @@ class _CreateContactBodyState extends State<CreateContactBody> {
             ListTile(
               leading: Icon(Icons.description),
               title: new TextFormField(
+                initialValue: _contactModel.description,
                 onChanged: (value) {
-                  contactModel.description = value;
+                  _contactModel.description = value;
                 },
                 maxLines: 3,
                 decoration: new InputDecoration(
@@ -92,11 +105,12 @@ class _CreateContactBodyState extends State<CreateContactBody> {
             ListTile(
               leading: Icon(Icons.list),
               title: MultiSelectDialogField(
+                  initialValue: _contactModel.serviceType,
                   items: _items,
                   title: Text('Prestadores'),
                   buttonText: Text('Prestadores',
                       style: TextStyle(fontSize: 16, color: Colors.grey)),
-                  onConfirm: (results) => contactModel.serviceType = results,
+                  onConfirm: (results) => _contactModel.serviceType = results,
                   validator: (value) => value == null || value.isEmpty
                       ? 'Campo obrigatório'
                       : null),
@@ -104,8 +118,9 @@ class _CreateContactBodyState extends State<CreateContactBody> {
             ListTile(
               leading: Icon(Icons.web),
               title: new TextFormField(
+                initialValue: _contactModel.site,
                 onChanged: (value) {
-                  contactModel.site = value;
+                  _contactModel.site = value;
                 },
                 keyboardType: TextInputType.phone,
                 decoration: InputDecoration(
@@ -116,8 +131,9 @@ class _CreateContactBodyState extends State<CreateContactBody> {
             ListTile(
               leading: Icon(Icons.phone),
               title: TextFormField(
+                initialValue: _contactModel.telNumbers['whatsapp'],
                 onChanged: (value) {
-                  contactModel.telNumbers = {'whatsapp': value};
+                  _contactModel.telNumbers = {'whatsapp': value};
                 },
                 keyboardType: TextInputType.phone,
                 decoration: InputDecoration(
@@ -136,8 +152,9 @@ class _CreateContactBodyState extends State<CreateContactBody> {
             ListTile(
               leading: Icon(Icons.person),
               title: TextFormField(
+                initialValue: _contactModel.address.strAvnName,
                 onChanged: (value) {
-                  contactModel.address.strAvnName = value;
+                  _contactModel.address.strAvnName = value;
                 },
                 decoration: InputDecoration(
                   hintText: "Rua/Avenida",
@@ -147,8 +164,9 @@ class _CreateContactBodyState extends State<CreateContactBody> {
             ListTile(
               leading: Icon(Icons.person),
               title: TextFormField(
+                initialValue: _contactModel.address.compliment,
                 onChanged: (value) {
-                  contactModel.address.compliment = value;
+                  _contactModel.address.compliment = value;
                 },
                 decoration: InputDecoration(
                   hintText: "Complemento",
@@ -158,8 +176,9 @@ class _CreateContactBodyState extends State<CreateContactBody> {
             ListTile(
               leading: Icon(Icons.person),
               title: TextFormField(
+                initialValue: _contactModel.address.number,
                 onChanged: (value) {
-                  contactModel.address.number = value;
+                  _contactModel.address.number = value;
                 },
                 decoration: InputDecoration(
                   hintText: "Número",
@@ -169,8 +188,9 @@ class _CreateContactBodyState extends State<CreateContactBody> {
             ListTile(
               leading: Icon(Icons.person),
               title: TextFormField(
+                initialValue: _contactModel.address.neighborhood,
                 onChanged: (value) {
-                  contactModel.address.neighborhood = value;
+                  _contactModel.address.neighborhood = value;
                 },
                 decoration: InputDecoration(
                   hintText: "Bairro",
@@ -182,8 +202,9 @@ class _CreateContactBodyState extends State<CreateContactBody> {
             ListTile(
               leading: Icon(Icons.person),
               title: TextFormField(
+                initialValue: _contactModel.address.city,
                 onChanged: (value) {
-                  contactModel.address.city = value;
+                  _contactModel.address.city = value;
                 },
                 decoration: InputDecoration(
                   hintText: "Cidade",
@@ -197,15 +218,15 @@ class _CreateContactBodyState extends State<CreateContactBody> {
               title: DropdownButton<States>(
                 isExpanded: true,
                 hint: Text('Estado'),
-                value: dropdownValue,
+                value: _dropdownValue,
                 icon: Icon(Icons.arrow_downward),
                 iconSize: 24,
                 elevation: 16,
                 onChanged: (States newValue) {
-                  contactModel.address.uf = newValue.uf;
-                  contactModel.address.state = newValue.state;
+                  _contactModel.address.uf = newValue.uf;
+                  _contactModel.address.state = newValue.state;
                   setState(() {
-                    dropdownValue = newValue;
+                    _dropdownValue = newValue;
                   });
                 },
                 items: states.map<DropdownMenuItem<States>>((States value) {
@@ -237,20 +258,20 @@ class _CreateContactBodyState extends State<CreateContactBody> {
           FirebaseFirestore.instance.collection('contatos');
       contactDB
           .add({
-            'nome': contactModel.name,
-            'email': contactModel.email,
-            'descricao': contactModel.description,
-            'servicos': contactModel.serviceType,
-            'site': contactModel.site,
-            'telefone1': contactModel.telNumbers,
+            'nome': _contactModel.name,
+            'email': _contactModel.email,
+            'descricao': _contactModel.description,
+            'servicos': _contactModel.serviceType,
+            'site': _contactModel.site,
+            'telefone1': _contactModel.telNumbers,
             'endereco': {
-              'endereco': contactModel.address.strAvnName,
-              'complemento': contactModel.address.compliment,
-              'numero': contactModel.address.number,
-              'bairro': contactModel.address.neighborhood,
-              'cidade': contactModel.address.city,
-              'estado': contactModel.address.state,
-              'UF': contactModel.address.uf,
+              'endereco': _contactModel.address.strAvnName,
+              'complemento': _contactModel.address.compliment,
+              'numero': _contactModel.address.number,
+              'bairro': _contactModel.address.neighborhood,
+              'cidade': _contactModel.address.city,
+              'estado': _contactModel.address.state,
+              'UF': _contactModel.address.uf,
             },
           })
           .then((value) => showDialog(

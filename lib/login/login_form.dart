@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:listaUnica/screens_create/create_contact.dart';
+import 'package:listaUnica/screens_create/body_admin.dart';
 
 import '../constants.dart';
 
@@ -77,10 +77,10 @@ class _LoginFormState extends State<LoginForm> {
       BuildContext context) {
     if (_formKey.currentState.validate()) {
       if (login == 'admin' && pass == '123') {
-        Navigator.push(
+        Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => CreateContact(),
+            builder: (context) => BodyAdmin(),
           ),
         );
       } else {
