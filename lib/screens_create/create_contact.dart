@@ -4,6 +4,8 @@ import 'package:listaUnica/apis/models/contacts.dart';
 import 'package:listaUnica/apis/models/states.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 
+import '../constants.dart';
+
 class CreateContact extends StatelessWidget {
   final Contacts contact;
 
@@ -37,7 +39,8 @@ class CreateContactBody extends StatefulWidget {
 class _CreateContactBodyState extends State<CreateContactBody> {
   _CreateContactBodyState(this.contact);
   final Contacts contact;
-  States _dropdownValue = states[24]; //SAO PAULO
+  States _dropdownValue = statesList[24]; //SAO PAULO
+
   final _form = GlobalKey<FormState>();
   Contacts _contactModel;
 
@@ -47,7 +50,7 @@ class _CreateContactBodyState extends State<CreateContactBody> {
 
     _contactModel = Contacts.fromContact(contact);
     if (_contactModel.address.state.isNotEmpty) {
-      _dropdownValue = states
+      _dropdownValue = statesList
           .where((element) => element.state == _contactModel.address.state)
           .first;
     }
@@ -229,7 +232,7 @@ class _CreateContactBodyState extends State<CreateContactBody> {
                     _dropdownValue = newValue;
                   });
                 },
-                items: states.map<DropdownMenuItem<States>>((States value) {
+                items: statesList.map<DropdownMenuItem<States>>((States value) {
                   return DropdownMenuItem<States>(
                     value: value,
                     child: Text(value.state),

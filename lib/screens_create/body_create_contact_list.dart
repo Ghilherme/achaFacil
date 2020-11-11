@@ -99,7 +99,38 @@ class BodyCreateContactList extends StatelessWidget {
               IconButton(
                 icon: Icon(Icons.delete),
                 color: Colors.red,
-                onPressed: () {},
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                            title: Text('Deseja excluir o contato?'),
+                            content: Text('Nome: ' +
+                                snapshot.data()['nome'] +
+                                '\nCidade: ' +
+                                snapshot.data()['endereco']['cidade'] +
+                                '\nEstado: ' +
+                                snapshot.data()['endereco']['UF']),
+                            actions: <Widget>[
+                              TextButton(
+                                child: Text('Ok'),
+                                onPressed: () {
+                                  FirebaseFirestore.instance
+                                      .collection('contatos')
+                                      .doc(snapshot.id)
+                                      .delete();
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                              TextButton(
+                                child: Text('Cancelar'),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            ]);
+                      });
+                },
               ),
             ],
           ),
