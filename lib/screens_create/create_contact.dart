@@ -254,10 +254,11 @@ class _CreateContactBodyState extends State<CreateContactBody> {
 
   void addContact() {
     if (_form.currentState.validate()) {
-      CollectionReference contactDB =
-          FirebaseFirestore.instance.collection('contatos');
+      DocumentReference contactDB = FirebaseFirestore.instance
+          .collection('contatos')
+          .doc(_contactModel.id);
       contactDB
-          .add({
+          .set({
             'nome': _contactModel.name,
             'email': _contactModel.email,
             'descricao': _contactModel.description,
@@ -278,7 +279,9 @@ class _CreateContactBodyState extends State<CreateContactBody> {
                 context: context,
                 builder: (context) {
                   return AlertDialog(
-                    title: Text('Contato adicionado com sucesso.'),
+                    title: _contactModel.id == null
+                        ? Text('Contato adicionado com sucesso.')
+                        : Text('Contato atualizado com sucesso.'),
                     actions: <Widget>[
                       TextButton(
                         child: Text('Ok'),
@@ -294,7 +297,9 @@ class _CreateContactBodyState extends State<CreateContactBody> {
                 context: context,
                 builder: (context) {
                   return AlertDialog(
-                    title: Text('Falha ao adicionar usuário.'),
+                    title: _contactModel.id == null
+                        ? Text('Falha ao adicionar o contato.')
+                        : Text('Falha ao atualizar o contato.'),
                     content: Text('Erro: ' + error),
                     actions: <Widget>[
                       TextButton(

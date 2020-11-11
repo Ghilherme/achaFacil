@@ -12,7 +12,7 @@ List<States> states = [
   States(state: 'Amapá', uf: 'AP'),
   States(state: 'Amazonas', uf: 'AM'),
   States(state: 'Bahia', uf: 'BA'),
-  States(state: 'Ceara', uf: 'CE'),
+  States(state: 'Ceará', uf: 'CE'),
   States(state: 'Distrito Federal', uf: 'DF'),
   States(state: 'Espírito Santo', uf: 'ES'),
   States(state: 'Goiás', uf: 'GO'),

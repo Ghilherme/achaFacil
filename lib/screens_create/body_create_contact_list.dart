@@ -12,6 +12,17 @@ class BodyCreateContactList extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
             title: Text('Lista de contatos'),
+            actions: <Widget>[
+              IconButton(
+                  icon: const Icon(Icons.add),
+                  tooltip: 'Show Snackbar',
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => CreateContact(
+                              contact: Contacts.empty(),
+                            )));
+                  })
+            ],
             elevation: 0,
             leading: IconButton(
               icon: Icon(Icons.arrow_back),
@@ -19,15 +30,6 @@ class BodyCreateContactList extends StatelessWidget {
                 Navigator.of(context).pop();
               },
             )),
-        floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.add),
-          onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => CreateContact(
-                      contact: Contacts.empty(),
-                    )));
-          },
-        ),
         body: StreamBuilder(
           stream: query.snapshots(),
           builder: (context, stream) {
@@ -47,14 +49,14 @@ class BodyCreateContactList extends StatelessWidget {
                 padding: EdgeInsets.only(top: 10.0, bottom: 10, left: 10),
                 itemCount: querySnapshot.size,
                 itemBuilder: (context, i) {
-                  return _buildRow(context, querySnapshot.docs[i].data(), i,
-                      querySnapshot.size);
+                  return _buildRow(
+                      context, querySnapshot.docs[i], i, querySnapshot.size);
                 });
           },
         ));
   }
 
-  Widget _buildRow(BuildContext context, Map<String, dynamic> snapshot,
+  Widget _buildRow(BuildContext context, QueryDocumentSnapshot snapshot,
       int indice, int size) {
     return Column(children: <Widget>[
       ListTile(
@@ -69,24 +71,29 @@ class BodyCreateContactList extends StatelessWidget {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => CreateContact(
                           contact: Contacts(
-                              name: snapshot['nome'],
-                              description: snapshot['descricao'],
-                              email: snapshot['email'],
+                              id: snapshot.id,
+                              name: snapshot.data()['nome'],
+                              description: snapshot.data()['descricao'],
+                              email: snapshot.data()['email'],
+                              site: snapshot.data()['site'],
                               telNumbers: {
-                                'whatsapp': snapshot['telefone1']['whatsapp']
+                                'whatsapp': snapshot.data()['telefone1']
+                                    ['whatsapp']
                               },
-                              serviceType: snapshot['servicos'],
+                              serviceType: snapshot.data()['servicos'],
                               address: Address(
-                                  strAvnName: snapshot['endereco']['endereco'],
-                                  cep: snapshot['endereco']['cep'],
-                                  city: snapshot['endereco']['cidade'],
-                                  compliment: snapshot['endereco']
+                                  strAvnName: snapshot.data()['endereco']
+                                      ['endereco'],
+                                  cep: snapshot.data()['endereco']['cep'],
+                                  city: snapshot.data()['endereco']['cidade'],
+                                  compliment: snapshot.data()['endereco']
                                       ['complemento'],
-                                  country: snapshot['endereco']['pais'],
-                                  neighborhood: snapshot['endereco']['bairro'],
-                                  number: snapshot['endereco']['numero'],
-                                  state: snapshot['endereco']['estado'],
-                                  uf: snapshot['endereco']['UF'])))));
+                                  country: snapshot.data()['endereco']['pais'],
+                                  neighborhood: snapshot.data()['endereco']
+                                      ['bairro'],
+                                  number: snapshot.data()['endereco']['numero'],
+                                  state: snapshot.data()['endereco']['estado'],
+                                  uf: snapshot.data()['endereco']['UF'])))));
                 },
               ),
               IconButton(
@@ -98,13 +105,13 @@ class BodyCreateContactList extends StatelessWidget {
           ),
         ),
         title: Text(
-          snapshot['nome'],
+          snapshot.data()['nome'],
         ),
-        subtitle: snapshot['endereco']['UF'] == null
+        subtitle: snapshot.data()['endereco']['UF'] == null
             ? Text('')
-            : Text(snapshot['endereco']['cidade'] +
+            : Text(snapshot.data()['endereco']['cidade'] +
                 ' ' +
-                snapshot['endereco']['UF']),
+                snapshot.data()['endereco']['UF']),
       ),
       indice + 1 == size ? Container() : Divider()
     ]);

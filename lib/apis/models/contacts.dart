@@ -7,13 +7,16 @@ class Contacts {
       @required this.telNumbers,
       @required this.description,
       @required this.name,
-      @required this.serviceType});
-  String name, email, description, site;
+      @required this.serviceType,
+      @required this.site,
+      this.id});
+  String id, name, email, description, site;
   Map<String, String> telNumbers;
   List<dynamic> serviceType;
   Address address;
 
   Contacts.fromContact(Contacts contact) {
+    this.id = contact.id;
     this.description = contact.description;
     this.email = contact.email;
     this.name = contact.name;
