@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:listaUnica/menu/custom_drawer_admin.dart';
-import 'package:listaUnica/screens_create/body_create_contact_list.dart';
-import 'package:listaUnica/screens_create/create_contact.dart';
+import 'package:listaUnica/screens_admin/contacts/body_contact_list_admin.dart';
+import 'package:listaUnica/screens_admin/service_types/body_service_list_admin.dart';
 
-class BodyAdmin extends StatelessWidget {
+class BodyAdminArea extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,10 +27,6 @@ class Entities extends StatelessWidget {
       crossAxisCount: 2,
       children: <Widget>[
         InkWell(
-          onTap: () {
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => BodyCreateContactList()));
-          },
           child: Container(
             decoration: BoxDecoration(
                 image: DecorationImage(
@@ -49,24 +45,34 @@ class Entities extends StatelessWidget {
               ),
             )),
           ),
+          onTap: () {
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => BodyContactListAdmin()));
+          },
         ),
-        Container(
-          decoration: BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage("assets/images/providers.jpg"),
-                  fit: BoxFit.cover,
-                  colorFilter: ColorFilter.mode(
-                      Colors.black.withOpacity(0.6), BlendMode.darken))),
-          padding: const EdgeInsets.all(8),
-          child: Center(
-              child: Text(
-            "Prestadores",
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-              fontSize: 25,
-            ),
-          )),
+        InkWell(
+          child: Container(
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage("assets/images/providers.jpg"),
+                    fit: BoxFit.cover,
+                    colorFilter: ColorFilter.mode(
+                        Colors.black.withOpacity(0.6), BlendMode.darken))),
+            padding: const EdgeInsets.all(8),
+            child: Center(
+                child: Text(
+              "Prestadores",
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 25,
+              ),
+            )),
+          ),
+          onTap: () {
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => BodyServiceListAdmin()));
+          },
         ),
         Container(
           decoration: BoxDecoration(

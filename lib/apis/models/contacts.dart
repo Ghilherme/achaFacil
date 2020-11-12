@@ -1,21 +1,22 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class Contacts {
-  Contacts(
-      {@required this.address,
+class ContactsModel {
+  ContactsModel(
+      {@required this.name,
       @required this.email,
-      @required this.telNumbers,
       @required this.description,
-      @required this.name,
       @required this.serviceType,
       @required this.site,
+      @required this.telNumbers,
+      @required this.address,
       this.id});
   String id, name, email, description, site;
   Map<String, String> telNumbers;
   List<dynamic> serviceType;
   Address address;
 
-  Contacts.fromContact(Contacts contact) {
+  ContactsModel.fromContact(ContactsModel contact) {
     this.id = contact.id;
     this.description = contact.description;
     this.email = contact.email;
@@ -25,8 +26,27 @@ class Contacts {
     this.telNumbers = contact.telNumbers;
     this.address = contact.address;
   }
+  ContactsModel.fromFirestore(QueryDocumentSnapshot snapshot) {
+    this.id = snapshot.id;
+    this.name = snapshot.data()['nome'];
+    this.email = snapshot.data()['email'];
+    this.description = snapshot.data()['descricao'];
+    this.serviceType = snapshot.data()['servicos'];
+    this.site = snapshot.data()['site'];
+    this.telNumbers = {'whatsapp': snapshot.data()['telefone1']['whatsapp']};
+    this.address = Address(
+        strAvnName: snapshot.data()['endereco']['endereco'],
+        cep: snapshot.data()['endereco']['cep'],
+        city: snapshot.data()['endereco']['cidade'],
+        compliment: snapshot.data()['endereco']['complemento'],
+        country: snapshot.data()['endereco']['pais'],
+        neighborhood: snapshot.data()['endereco']['bairro'],
+        number: snapshot.data()['endereco']['numero'],
+        state: snapshot.data()['endereco']['estado'],
+        uf: snapshot.data()['endereco']['UF']);
+  }
 
-  Contacts.empty() {
+  ContactsModel.empty() {
     this.description = '';
     this.email = '';
     this.name = '';

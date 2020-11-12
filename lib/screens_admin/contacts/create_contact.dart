@@ -4,10 +4,10 @@ import 'package:listaUnica/apis/models/contacts.dart';
 import 'package:listaUnica/apis/models/states.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 
-import '../constants.dart';
+import '../../constants.dart';
 
 class CreateContact extends StatelessWidget {
-  final Contacts contact;
+  final ContactsModel contact;
 
   const CreateContact({Key key, this.contact}) : super(key: key);
   @override
@@ -29,7 +29,7 @@ class CreateContact extends StatelessWidget {
 
 class CreateContactBody extends StatefulWidget {
   CreateContactBody(this.contact);
-  final Contacts contact;
+  final ContactsModel contact;
 
   @override
   _CreateContactBodyState createState() =>
@@ -38,21 +38,23 @@ class CreateContactBody extends StatefulWidget {
 
 class _CreateContactBodyState extends State<CreateContactBody> {
   _CreateContactBodyState(this.contact);
-  final Contacts contact;
+  final ContactsModel contact;
   States _dropdownValue = statesList[24]; //SAO PAULO
 
   final _form = GlobalKey<FormState>();
-  Contacts _contactModel;
+  ContactsModel _contactModel;
 
   initState() {
     super.initState();
-    getProviders();
+    getServiceTypes();
 
-    _contactModel = Contacts.fromContact(contact);
+    _contactModel = ContactsModel.fromContact(contact);
     if (_contactModel.address.state.isNotEmpty) {
       _dropdownValue = statesList
           .where((element) => element.state == _contactModel.address.state)
           .first;
+      _contactModel.address.uf = _dropdownValue.uf;
+      _contactModel.address.state = _dropdownValue.state;
     }
   }
 
@@ -318,20 +320,20 @@ class _CreateContactBodyState extends State<CreateContactBody> {
     }
   }
 
-  Future<void> getProviders() async {
+  Future<void> getServiceTypes() async {
     //Pega a tabela categorias somente da categoria selecionada
-    List<String> testes = new List<String>();
+    List<String> prestadores = new List<String>();
     await FirebaseFirestore.instance
         .collection('prestadores')
         .orderBy('nome')
         .get()
         .then((value) {
       value.docs.forEach((element) {
-        return testes.add(element.data()['nome']);
+        return prestadores.add(element.data()['nome']);
       });
     });
     setState(() {
-      _items = testes
+      _items = prestadores
           .map((prestador) => MultiSelectItem<String>(prestador, prestador))
           .toList();
     });

@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:listaUnica/screens_create/body_admin.dart';
+import 'package:listaUnica/screens_admin/body_admin_area.dart';
 
 import '../constants.dart';
 
@@ -80,7 +80,7 @@ class _LoginFormState extends State<LoginForm> {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => BodyAdmin(),
+            builder: (context) => BodyAdminArea(),
           ),
         );
       } else {

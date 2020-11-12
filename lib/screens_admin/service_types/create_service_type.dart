@@ -1,0 +1,186 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'package:listaUnica/apis/models/service_types.dart';
+
+class CreateServiceType extends StatelessWidget {
+  final ServiceTypesModel serviceTypes;
+
+  const CreateServiceType({Key key, this.serviceTypes}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+          title: Text('Criar Prestadores'),
+          elevation: 0,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          )),
+      body: CreateServiceTypesBody(serviceTypes),
+    );
+  }
+}
+
+class CreateServiceTypesBody extends StatefulWidget {
+  CreateServiceTypesBody(this.serviceTypes);
+  final ServiceTypesModel serviceTypes;
+
+  @override
+  _CreateServiceTypesBodyState createState() =>
+      _CreateServiceTypesBodyState(this.serviceTypes);
+}
+
+class _CreateServiceTypesBodyState extends State<CreateServiceTypesBody> {
+  _CreateServiceTypesBodyState(this.serviceTypes);
+  final ServiceTypesModel serviceTypes;
+
+  final _form = GlobalKey<FormState>();
+
+  ServiceTypesModel _serviceModel;
+
+  var setDefaultCategory = true;
+  var category;
+  initState() {
+    super.initState();
+    _serviceModel = ServiceTypesModel.fromServiceType(serviceTypes);
+
+    if (_serviceModel.categoryTitle.isNotEmpty) {
+      category = _serviceModel.categoryTitle;
+      setDefaultCategory = false;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Form(
+        key: _form,
+        child: Column(
+          children: [
+            ListTile(
+              leading: Icon(Icons.person),
+              title: TextFormField(
+                initialValue: _serviceModel.name,
+                onChanged: (value) {
+                  _serviceModel.name = value;
+                },
+                decoration: InputDecoration(
+                  hintText: "Nome",
+                ),
+                validator: (value) =>
+                    value.isEmpty ? 'Campo obrigatório' : null,
+              ),
+            ),
+            ListTile(
+                leading: Icon(Icons.person),
+                title: StreamBuilder<QuerySnapshot>(
+                    stream: FirebaseFirestore.instance
+                        .collection('categorias')
+                        .orderBy('titulo')
+                        .snapshots(),
+                    builder: (context, snapshot) {
+                      //Trata Load
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(child: CircularProgressIndicator());
+                      }
+
+                      //Trata Erro
+                      if (snapshot.hasError) {
+                        return Center(child: Text(snapshot.error.toString()));
+                      }
+                      if (setDefaultCategory) {
+                        category = snapshot.data.docs[0].get('titulo');
+                        _serviceModel.categoryTitle = category;
+                      }
+
+                      return DropdownButton(
+                        isExpanded: true,
+                        hint: Text('Categoria'),
+                        value: category,
+                        icon: Icon(Icons.arrow_downward),
+                        iconSize: 24,
+                        elevation: 16,
+                        onChanged: (newValue) {
+                          setState(() {
+                            _serviceModel.categoryTitle = newValue;
+                            category = newValue;
+                            setDefaultCategory = false;
+                          });
+                        },
+                        items: snapshot.data.docs.map((value) {
+                          return DropdownMenuItem(
+                            value: value.get('titulo'),
+                            child: Text('${value.get('titulo')}'),
+                          );
+                        }).toList(),
+                      );
+                    })),
+            Container(height: 30),
+            SizedBox(
+              width: 200,
+              child: ElevatedButton(
+                child: Text('Cadastrar'),
+                onPressed: addServiceType,
+              ),
+            ),
+            Container(height: 30),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void addServiceType() {
+    if (_form.currentState.validate()) {
+      DocumentReference contactDB = FirebaseFirestore.instance
+          .collection('prestadores')
+          .doc(_serviceModel.id);
+      contactDB
+          .set(
+            {
+              'nome': _serviceModel.name,
+              'titulo_categoria': _serviceModel.categoryTitle,
+            },
+          )
+          .then((value) => showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: _serviceModel.id == null
+                        ? Text('Serviço adicionado com sucesso.')
+                        : Text('Serviço atualizado com sucesso.'),
+                    actions: <Widget>[
+                      TextButton(
+                        child: Text('Ok'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  );
+                },
+              ))
+          .catchError((error) => showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: _serviceModel.id == null
+                        ? Text('Falha ao adicionar o serviço.')
+                        : Text('Falha ao atualizar o serviço.'),
+                    content: Text('Erro: ' + error),
+                    actions: <Widget>[
+                      TextButton(
+                        child: Text('Ok'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  );
+                },
+              ));
+    }
+  }
+}
