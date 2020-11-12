@@ -3,15 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:listaUnica/screens_details/body_contact_details.dart';
 
 class BodyContactList extends StatelessWidget {
-  BodyContactList({Key key, @required this.title}) : super(key: key);
+  BodyContactList({Key key, @required this.title, this.serviceType})
+      : super(key: key);
   final String title;
+  final DocumentReference serviceType;
 
   @override
   Widget build(BuildContext context) {
     //Pega a tabela contatos somente dos prestadores cadastrados com x categoria
     Query query = FirebaseFirestore.instance
         .collection('contatos')
-        .where('servicos', arrayContains: title);
+        .where('servicos1', arrayContains: serviceType);
 
     return Scaffold(
         appBar: AppBar(
@@ -68,23 +70,4 @@ class BodyContactList extends StatelessWidget {
       indice + 1 == size ? Container() : Divider()
     ]);
   }
-
-/*   _buildContactsModel(QuerySnapshot querySnapshot) {
-    List<Contacts> contatos = new List<Contacts>();
-
-    querySnapshot.docs.forEach((doc) {
-      contatos.add(new Contacts(
-          address: new Address('strAvnName', 'number', 'state', 'neighborhood',
-              'city', 'uf', 'cep', 'country'),
-          email: doc['email'],
-          telNumbers: doc.get('telefone1').map((e) {
-            new Map<String, String>().addAll(e);
-          }),
-          description: doc.get('descricao'),
-          name: doc.get('nome'),
-          serviceType: new List<String>()));
-    });
-    return contatos;
-  } */
 }
-//new Address('strAvnName', 'number', 'state', 'neighborhood','city', 'uf', 'cep', 'country')

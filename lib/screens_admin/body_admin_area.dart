@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:listaUnica/menu/custom_drawer_admin.dart';
+import 'package:listaUnica/screens_admin/categories/body_categories_list_admin.dart';
 import 'package:listaUnica/screens_admin/contacts/body_contact_list_admin.dart';
 import 'package:listaUnica/screens_admin/service_types/body_service_list_admin.dart';
 
@@ -74,23 +75,29 @@ class Entities extends StatelessWidget {
                 builder: (context) => BodyServiceListAdmin()));
           },
         ),
-        Container(
-          decoration: BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage("assets/images/categories.jpg"),
-                  fit: BoxFit.cover,
-                  colorFilter: ColorFilter.mode(
-                      Colors.black.withOpacity(0.6), BlendMode.darken))),
-          padding: const EdgeInsets.all(8),
-          child: Center(
-              child: Text(
-            "Categorias",
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-              fontSize: 25,
-            ),
-          )),
+        InkWell(
+          child: Container(
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage("assets/images/categories.jpg"),
+                    fit: BoxFit.cover,
+                    colorFilter: ColorFilter.mode(
+                        Colors.black.withOpacity(0.6), BlendMode.darken))),
+            padding: const EdgeInsets.all(8),
+            child: Center(
+                child: Text(
+              "Categorias",
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 25,
+              ),
+            )),
+          ),
+          onTap: () {
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => BodyCategoriesListAdmin()));
+          },
         ),
       ],
     );

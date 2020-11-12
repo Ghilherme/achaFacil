@@ -19,7 +19,7 @@ class HomeScreen extends StatelessWidget {
         appBar: AppBar(
           title: Text('Lista Única!'),
         ),
-        body: BodyCategorieList(),
+        body: BodyCategoriesList(),
       ),
     );
   }

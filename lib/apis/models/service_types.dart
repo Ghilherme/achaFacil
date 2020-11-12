@@ -5,16 +5,19 @@ class ServiceTypesModel {
   ServiceTypesModel(
       {@required this.name, @required this.categoryTitle, this.id});
   String id, name, categoryTitle;
+  DocumentReference category;
 
   ServiceTypesModel.fromServiceType(ServiceTypesModel serviceType) {
     this.id = serviceType.id;
     this.name = serviceType.name;
     this.categoryTitle = serviceType.categoryTitle;
+    this.category = serviceType.category;
   }
   ServiceTypesModel.fromFirestore(QueryDocumentSnapshot snapshot) {
     this.id = snapshot.id;
     this.name = snapshot.data()['nome'];
     this.categoryTitle = snapshot.data()['titulo_categoria'];
+    this.category = snapshot.reference;
   }
 
   ServiceTypesModel.empty() {

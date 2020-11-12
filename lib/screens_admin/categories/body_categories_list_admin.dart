@@ -1,25 +1,26 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:listaUnica/apis/models/contacts.dart';
+import 'package:listaUnica/apis/models/categories.dart';
 import 'package:listaUnica/components/confirmation_dialog.dart';
 import 'package:listaUnica/components/list_tile_admin.dart';
-import 'create_contact.dart';
+import 'package:listaUnica/screens_admin/categories/create_categories.dart';
 
-class BodyContactListAdmin extends StatelessWidget {
+class BodyCategoriesListAdmin extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    Query query = FirebaseFirestore.instance.collection('contatos');
+    Query query =
+        FirebaseFirestore.instance.collection('categorias').orderBy('titulo');
 
     return Scaffold(
         appBar: AppBar(
-            title: Text('Lista de Contatos'),
+            title: Text('Lista de Categorias'),
             actions: <Widget>[
               IconButton(
                   icon: const Icon(Icons.add),
                   onPressed: () {
                     Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => CreateContact(
-                              contact: ContactsModel.empty(),
+                        builder: (context) => CreateCategories(
+                              categories: CategoriesModel.empty(),
                             )));
                   })
             ],
@@ -58,30 +59,28 @@ class BodyContactListAdmin extends StatelessWidget {
 
   Widget _buildRow(BuildContext context, QueryDocumentSnapshot snapshot,
       int indice, int size) {
-    ContactsModel contact = ContactsModel.fromFirestore(snapshot);
+    CategoriesModel categories = CategoriesModel.fromFirestore(snapshot);
     return Column(children: <Widget>[
       ListTileAdmin(
         confirmationDialog: ConfirmationDialog(
-          content: 'Nome: ' +
-              contact.name +
-              '\nCidade: ' +
-              contact.address.city +
-              '\nEstado: ' +
-              contact.address.uf,
+          content: 'Título: ' +
+              categories.title +
+              '\nSubtítulo: ' +
+              categories.subtitle,
           okFunction: () {
             FirebaseFirestore.instance
-                .collection('contatos')
-                .doc(contact.id)
+                .collection('categorias')
+                .doc(categories.id)
                 .delete();
             Navigator.of(context).pop();
           },
-          title: 'Deseja excluir o contato?',
+          title: 'Deseja excluir a categoria?',
         ),
-        title: contact.name,
-        subtitle: contact.address.city + ' ' + contact.address.uf,
+        title: categories.title,
+        subtitle: categories.subtitle,
         editFunction: () {
           Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => CreateContact(contact: contact)));
+              builder: (context) => CreateCategories(categories: categories)));
         },
       ),
       indice + 1 == size ? Container() : Divider()

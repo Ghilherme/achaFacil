@@ -90,6 +90,7 @@ class _CreateServiceTypesBodyState extends State<CreateServiceTypesBody> {
                       if (snapshot.hasError) {
                         return Center(child: Text(snapshot.error.toString()));
                       }
+
                       if (setDefaultCategory) {
                         category = snapshot.data.docs[0].get('titulo');
                         _serviceModel.categoryTitle = category;
@@ -105,6 +106,12 @@ class _CreateServiceTypesBodyState extends State<CreateServiceTypesBody> {
                         onChanged: (newValue) {
                           setState(() {
                             _serviceModel.categoryTitle = newValue;
+                            _serviceModel.category = snapshot.data.docs
+                                .where((element) {
+                                  return element.get('titulo') == newValue;
+                                })
+                                .first
+                                .reference;
                             category = newValue;
                             setDefaultCategory = false;
                           });
@@ -121,7 +128,7 @@ class _CreateServiceTypesBodyState extends State<CreateServiceTypesBody> {
             SizedBox(
               width: 200,
               child: ElevatedButton(
-                child: Text('Cadastrar'),
+                child: Text('Salvar'),
                 onPressed: addServiceType,
               ),
             ),
@@ -142,6 +149,7 @@ class _CreateServiceTypesBodyState extends State<CreateServiceTypesBody> {
             {
               'nome': _serviceModel.name,
               'titulo_categoria': _serviceModel.categoryTitle,
+              'categoria': _serviceModel.category,
             },
           )
           .then((value) => showDialog(

@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:listaUnica/screens_lists/body_contact_list.dart';
 
 class BodyServiceList extends StatelessWidget {
-  BodyServiceList({Key key, @required this.title}) : super(key: key);
+  BodyServiceList({Key key, @required this.category, this.title})
+      : super(key: key);
+  final DocumentReference category;
   final String title;
 
   @override
@@ -12,8 +14,8 @@ class BodyServiceList extends StatelessWidget {
     Query query = FirebaseFirestore.instance
         .collection('prestadores')
         .where(
-          'titulo_categoria',
-          isEqualTo: title,
+          'categoria',
+          isEqualTo: category,
         )
         .orderBy('nome');
 
@@ -64,6 +66,7 @@ class BodyServiceList extends StatelessWidget {
             Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => BodyContactList(
                       title: snapshot.data()['nome'],
+                      serviceType: snapshot.reference,
                     )));
           }),
       indice + 1 == size ? Container() : Divider()

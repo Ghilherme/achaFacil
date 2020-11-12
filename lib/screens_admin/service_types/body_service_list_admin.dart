@@ -13,7 +13,7 @@ class BodyServiceListAdmin extends StatelessWidget {
 
     return Scaffold(
         appBar: AppBar(
-            title: Text('Lista de Serviços'),
+            title: Text('Lista de Prestadores'),
             actions: <Widget>[
               IconButton(
                   icon: const Icon(Icons.add),
@@ -60,6 +60,7 @@ class BodyServiceListAdmin extends StatelessWidget {
   Widget _buildRow(BuildContext context, QueryDocumentSnapshot snapshot,
       int indice, int size) {
     ServiceTypesModel serviceType = ServiceTypesModel.fromFirestore(snapshot);
+
     return Column(children: <Widget>[
       ListTileAdmin(
         confirmationDialog: ConfirmationDialog(

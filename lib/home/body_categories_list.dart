@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../screens_lists/body_service_list.dart';
 
-class BodyCategorieList extends StatelessWidget {
+class BodyCategoriesList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //Pega a tabela categorias
@@ -42,11 +42,17 @@ class BodyCategorieList extends StatelessWidget {
             snapshot.data()['titulo'],
           ),
           subtitle: Text(snapshot.data()['subtitulo']),
-          leading: Icon(IconData(int.parse(snapshot.data()['icone']),
-              fontFamily: 'MaterialIcons')),
+          leading:
+              snapshot.data()['icone'] == null || snapshot.data()['icone'] == ''
+                  ? Icon(Icons.home_repair_service)
+                  : Icon(IconData(
+                      int.parse(snapshot.data()['icone']),
+                      fontFamily: 'MaterialIcons',
+                    )),
           onTap: () {
             Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => BodyServiceList(
+                      category: snapshot.reference,
                       title: snapshot.data()['titulo'],
                     )));
           }),

@@ -246,7 +246,7 @@ class _CreateContactBodyState extends State<CreateContactBody> {
             SizedBox(
               width: 200,
               child: ElevatedButton(
-                child: Text('Cadastrar'),
+                child: Text('Salvar'),
                 onPressed: addContact,
               ),
             ),
