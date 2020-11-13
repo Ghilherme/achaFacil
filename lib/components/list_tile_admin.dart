@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:listaUnica/components/confirmation_dialog.dart';
+import 'package:AchaFacil/components/confirmation_dialog.dart';
 
 class ListTileAdmin extends StatelessWidget {
   final ConfirmationDialog confirmationDialog;

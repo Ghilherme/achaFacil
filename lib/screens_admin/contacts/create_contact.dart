@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:listaUnica/apis/models/contacts.dart';
-import 'package:listaUnica/apis/models/states.dart';
+import 'package:AchaFacil/apis/models/contacts.dart';
+import 'package:AchaFacil/apis/models/states.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 
 import '../../constants.dart';

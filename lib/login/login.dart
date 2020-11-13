@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:listaUnica/home/home_screen.dart';
-import 'package:listaUnica/login/reset_password.dart';
+import 'package:AchaFacil/home/home_screen.dart';
+import 'package:AchaFacil/login/reset_password.dart';
 import 'login_form.dart';
 
 class Login extends StatelessWidget {

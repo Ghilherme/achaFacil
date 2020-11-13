@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:listaUnica/login/login.dart';
+import 'package:AchaFacil/login/login.dart';
 
 class CustomDrawer extends StatelessWidget {
   @override
@@ -8,15 +8,11 @@ class CustomDrawer extends StatelessWidget {
         child: Column(
       children: [
         UserAccountsDrawerHeader(
-            currentAccountPicture: Center(
-              child: ClipOval(
-                child: Image.asset('assets/images/profile.jpg'),
-              ),
-            ),
-            accountName: Text('Guilherme Oliveira'),
-            accountEmail: Text('g.p.oliveira@hotmail.com')),
+            accountName: Text('Acha Fácil'),
+            accountEmail: Text('admin@achafacil.com')),
         ListTile(
           leading: Icon(Icons.home),
+          enabled: false,
           title: Text('Perfil'),
           subtitle: Text('Meu perfil'),
           onTap: () {
@@ -26,6 +22,7 @@ class CustomDrawer extends StatelessWidget {
         ListTile(
           leading: Icon(Icons.favorite),
           title: Text('Favoritos'),
+          enabled: false,
           subtitle: Text('Meus contatos preferidos'),
           onTap: () {
             print('tapeou ordens');
@@ -38,14 +35,6 @@ class CustomDrawer extends StatelessWidget {
           onTap: () {
             Navigator.of(context)
                 .push(MaterialPageRoute(builder: (context) => Login()));
-          },
-        ),
-        ListTile(
-          leading: Icon(Icons.exit_to_app),
-          title: Text('Sair'),
-          subtitle: Text('Logout'),
-          onTap: () {
-            print('tapeou Logout');
           },
         ),
       ],

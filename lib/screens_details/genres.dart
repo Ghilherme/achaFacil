@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:listaUnica/constants.dart';
+import 'package:AchaFacil/constants.dart';
 
 class ServiceTypes extends StatelessWidget {
   const ServiceTypes({

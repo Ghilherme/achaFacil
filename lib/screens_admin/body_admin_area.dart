@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:listaUnica/menu/custom_drawer_admin.dart';
-import 'package:listaUnica/screens_admin/categories/body_categories_list_admin.dart';
-import 'package:listaUnica/screens_admin/contacts/body_contact_list_admin.dart';
-import 'package:listaUnica/screens_admin/service_types/body_service_list_admin.dart';
+import 'package:AchaFacil/menu/custom_drawer_admin.dart';
+import 'package:AchaFacil/screens_admin/categories/body_categories_list_admin.dart';
+import 'package:AchaFacil/screens_admin/contacts/body_contact_list_admin.dart';
+import 'package:AchaFacil/screens_admin/service_types/body_service_list_admin.dart';
 
 class BodyAdminArea extends StatelessWidget {
   @override

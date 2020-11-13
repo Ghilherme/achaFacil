@@ -1,4 +1,4 @@
-package com.example.listaUnica
+package com.listaunica.AchaFacil
 
 import io.flutter.embedding.android.FlutterActivity
 

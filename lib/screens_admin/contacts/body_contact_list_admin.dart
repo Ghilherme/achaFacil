@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:listaUnica/apis/models/contacts.dart';
-import 'package:listaUnica/components/confirmation_dialog.dart';
-import 'package:listaUnica/components/list_tile_admin.dart';
+import 'package:AchaFacil/apis/models/contacts.dart';
+import 'package:AchaFacil/components/confirmation_dialog.dart';
+import 'package:AchaFacil/components/list_tile_admin.dart';
 import 'create_contact.dart';
 
 class BodyContactListAdmin extends StatelessWidget {

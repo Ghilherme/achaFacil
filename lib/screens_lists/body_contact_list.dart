@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:listaUnica/screens_details/body_contact_details.dart';
+import 'package:AchaFacil/screens_details/body_contact_details.dart';
 
 class BodyContactList extends StatelessWidget {
   BodyContactList({Key key, @required this.title, this.serviceType})

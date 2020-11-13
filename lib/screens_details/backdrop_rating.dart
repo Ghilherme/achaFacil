@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-import 'package:listaUnica/constants.dart';
+import 'package:AchaFacil/constants.dart';
 
 class BackdropAndRating extends StatelessWidget {
   const BackdropAndRating({
@@ -70,7 +70,7 @@ class BackdropAndRating extends StatelessWidget {
                             style: TextStyle(color: Colors.black),
                             children: [
                               TextSpan(
-                                text: '4.5/',
+                                text: '5/',
                                 style: TextStyle(
                                     fontSize: 16, fontWeight: FontWeight.w600),
                               ),

@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:listaUnica/screens_admin/body_admin_area.dart';
+import 'package:AchaFacil/screens_admin/body_admin_area.dart';
 
 import '../constants.dart';
 

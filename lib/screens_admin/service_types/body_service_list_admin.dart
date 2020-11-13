@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:listaUnica/apis/models/service_types.dart';
-import 'package:listaUnica/components/confirmation_dialog.dart';
-import 'package:listaUnica/components/list_tile_admin.dart';
-import 'package:listaUnica/screens_admin/service_types/create_service_type.dart';
+import 'package:AchaFacil/apis/models/service_types.dart';
+import 'package:AchaFacil/components/confirmation_dialog.dart';
+import 'package:AchaFacil/components/list_tile_admin.dart';
+import 'package:AchaFacil/screens_admin/service_types/create_service_type.dart';
 
 class BodyServiceListAdmin extends StatelessWidget {
   @override

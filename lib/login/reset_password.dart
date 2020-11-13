@@ -1,22 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:listaUnica/constants.dart';
+import 'package:AchaFacil/constants.dart';
 
 class ResetPasswordPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        automaticallyImplyLeading: true,
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
-          color: Colors.black38,
           onPressed: () => Navigator.pop(context, false),
         ),
       ),
       body: Container(
         padding: EdgeInsets.only(top: 60, left: 40, right: 40),
-        color: Colors.white,
         child: ListView(
           children: <Widget>[
             Column(
@@ -26,8 +22,8 @@ class ResetPasswordPage extends StatelessWidget {
                   child: Column(
                     children: <Widget>[
                       SizedBox(
-                        width: 200,
-                        height: 200,
+                        width: 150,
+                        height: 150,
                         child: Image.asset("assets/images/reset_password.png"),
                       ),
                       SizedBox(
@@ -70,36 +66,15 @@ class ResetPasswordPage extends StatelessWidget {
                       SizedBox(
                         height: 20,
                       ),
-                      Container(
-                        height: 60,
-                        alignment: Alignment.centerLeft,
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                            stops: [0.3, 1],
-                            colors: [
-                              Color(0xFFF58524),
-                              Color(0XFFF92B7F),
-                            ],
+                      SizedBox(
+                        width: 200,
+                        height: 50,
+                        child: ElevatedButton(
+                          child: Text(
+                            'Recuperar',
+                            style: TextStyle(fontSize: 20),
                           ),
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(5),
-                          ),
-                        ),
-                        child: SizedBox.expand(
-                          child: FlatButton(
-                            child: Text(
-                              "Enviar",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                                fontSize: 20,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                            onPressed: () {},
-                          ),
+                          onPressed: () {},
                         ),
                       ),
                       SizedBox(

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:listaUnica/login/login.dart';
+import 'package:AchaFacil/login/login.dart';
 
 class CustomDrawerAdmin extends StatelessWidget {
   @override
@@ -8,21 +8,8 @@ class CustomDrawerAdmin extends StatelessWidget {
         child: Column(
       children: [
         UserAccountsDrawerHeader(
-            currentAccountPicture: Center(
-              child: ClipOval(
-                child: Image.asset('assets/images/profile.jpg'),
-              ),
-            ),
-            accountName: Text('Guilherme Oliveira'),
-            accountEmail: Text('g.p.oliveira@hotmail.com')),
-        ListTile(
-          leading: Icon(Icons.home),
-          title: Text('Perfil'),
-          subtitle: Text('Meu perfil'),
-          onTap: () {
-            print('tapeou perfil');
-          },
-        ),
+            accountName: Text('Acha Fácil!'),
+            accountEmail: Text('admin@achafacil.com')),
         ListTile(
           leading: Icon(Icons.exit_to_app),
           title: Text('Sair'),

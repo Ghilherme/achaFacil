@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:listaUnica/apis/models/categories.dart';
-import 'package:listaUnica/components/confirmation_dialog.dart';
-import 'package:listaUnica/components/list_tile_admin.dart';
-import 'package:listaUnica/screens_admin/categories/create_categories.dart';
+import 'package:AchaFacil/apis/models/categories.dart';
+import 'package:AchaFacil/components/confirmation_dialog.dart';
+import 'package:AchaFacil/components/list_tile_admin.dart';
+import 'package:AchaFacil/screens_admin/categories/create_categories.dart';
 
 class BodyCategoriesListAdmin extends StatelessWidget {
   @override
