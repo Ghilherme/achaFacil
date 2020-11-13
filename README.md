@@ -2,6 +2,8 @@
 
 Uma nova forma de achar contatos para serviços da sua casa!
 
+uma nova startup nasce.
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
