@@ -9,7 +9,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Lista Única!',
+      title: 'Acha Fácil!',
       theme: ThemeData(
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
@@ -17,7 +17,7 @@ class HomeScreen extends StatelessWidget {
       home: Scaffold(
         drawer: CustomDrawer(),
         appBar: AppBar(
-          title: Text('Lista Única!'),
+          title: Text('Acha Fácil!'),
         ),
         body: BodyCategoriesList(),
       ),

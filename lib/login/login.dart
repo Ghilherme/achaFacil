@@ -8,7 +8,7 @@ class Login extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Text('Lista Unica!'),
+          title: Text('Acha Fácil!'),
           elevation: 0,
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
