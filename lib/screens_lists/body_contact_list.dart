@@ -13,7 +13,7 @@ class BodyContactList extends StatelessWidget {
     //Pega a tabela contatos somente dos prestadores cadastrados com x categoria
     Query query = FirebaseFirestore.instance
         .collection('contatos')
-        .where('servicos1', arrayContains: serviceType);
+        .where('servicos', arrayContains: title);
 
     return Scaffold(
         appBar: AppBar(

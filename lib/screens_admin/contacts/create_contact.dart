@@ -53,9 +53,9 @@ class _CreateContactBodyState extends State<CreateContactBody> {
       _dropdownValue = statesList
           .where((element) => element.state == _contactModel.address.state)
           .first;
-      _contactModel.address.uf = _dropdownValue.uf;
-      _contactModel.address.state = _dropdownValue.state;
     }
+    _contactModel.address.uf = _dropdownValue.uf;
+    _contactModel.address.state = _dropdownValue.state;
   }
 
   List<MultiSelectItem> _items = List<MultiSelectItem>();
@@ -74,6 +74,7 @@ class _CreateContactBodyState extends State<CreateContactBody> {
                 onChanged: (value) {
                   _contactModel.name = value;
                 },
+                keyboardType: TextInputType.name,
                 decoration: InputDecoration(
                   hintText: "Nome",
                 ),
@@ -127,7 +128,7 @@ class _CreateContactBodyState extends State<CreateContactBody> {
                 onChanged: (value) {
                   _contactModel.site = value;
                 },
-                keyboardType: TextInputType.phone,
+                keyboardType: TextInputType.url,
                 decoration: InputDecoration(
                   hintText: "Site",
                 ),
@@ -161,6 +162,7 @@ class _CreateContactBodyState extends State<CreateContactBody> {
                 onChanged: (value) {
                   _contactModel.address.strAvnName = value;
                 },
+                keyboardType: TextInputType.streetAddress,
                 decoration: InputDecoration(
                   hintText: "Rua/Avenida",
                 ),
@@ -211,6 +213,7 @@ class _CreateContactBodyState extends State<CreateContactBody> {
                 onChanged: (value) {
                   _contactModel.address.city = value;
                 },
+                keyboardType: TextInputType.streetAddress,
                 decoration: InputDecoration(
                   hintText: "Cidade",
                 ),
