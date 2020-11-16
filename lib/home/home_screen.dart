@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../constants.dart';
 import 'body_categories_list.dart';
 import '../menu/custom_drawer.dart';
 
@@ -9,7 +10,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Acha Fácil!',
+      title: mainTitleApp,
       theme: ThemeData(
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
@@ -17,7 +18,7 @@ class HomeScreen extends StatelessWidget {
       home: Scaffold(
         drawer: CustomDrawer(),
         appBar: AppBar(
-          title: Text('Acha Fácil!'),
+          title: Text(mainTitleApp),
         ),
         body: BodyCategoriesList(),
       ),

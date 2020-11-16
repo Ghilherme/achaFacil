@@ -68,8 +68,31 @@ android {
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig signingConfigs.release
         }
+
+        debug {
+            signingConfig signingConfigs.debug            
+            debuggable true
+        }
+    }
+
+    //DEV: flutter run --flavor dev
+    //PROD: flutter run --flavor prod
+    
+    flavorDimensions "app"
+
+    productFlavors {
+        prod {
+            dimension "app"
+            resValue "string", "app_name", "Acha Fácil"
+        }
+        dev {
+            dimension "app"
+            resValue "string", "app_name", "Acha Fácil Dev"
+            applicationIdSuffix ".dev"
+        }
     }
 }
+
 
 flutter {
     source '../..'
