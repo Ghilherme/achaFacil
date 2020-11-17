@@ -43,6 +43,7 @@ class _CreateContactBodyState extends State<CreateContactBody> {
 
   final _form = GlobalKey<FormState>();
   ContactsModel _contactModel;
+  bool _progressBarActive = false;
 
   initState() {
     super.initState();
@@ -248,9 +249,14 @@ class _CreateContactBodyState extends State<CreateContactBody> {
             Container(height: 30),
             SizedBox(
               width: 200,
+              height: 60,
               child: ElevatedButton(
-                child: Text('Salvar'),
-                onPressed: addContact,
+                child: _progressBarActive == true
+                    ? const CircularProgressIndicator(
+                        backgroundColor: Colors.white,
+                      )
+                    : Text('Salvar'),
+                onPressed: saveContact,
               ),
             ),
             Container(height: 30),
@@ -260,11 +266,15 @@ class _CreateContactBodyState extends State<CreateContactBody> {
     );
   }
 
-  void addContact() {
+  void saveContact() {
     if (_form.currentState.validate()) {
+      setState(() {
+        _progressBarActive = true;
+      });
       DocumentReference contactDB = FirebaseFirestore.instance
           .collection('contatos')
           .doc(_contactModel.id);
+
       contactDB
           .set({
             'nome': _contactModel.name,
@@ -301,6 +311,9 @@ class _CreateContactBodyState extends State<CreateContactBody> {
                   );
                 },
               ))
+          .then((value) => setState(() {
+                _progressBarActive = false;
+              }))
           .catchError((error) => showDialog(
                 context: context,
                 builder: (context) {
@@ -319,7 +332,10 @@ class _CreateContactBodyState extends State<CreateContactBody> {
                     ],
                   );
                 },
-              ));
+              ))
+          .then((value) => setState(() {
+                _progressBarActive = false;
+              }));
     }
   }
 
