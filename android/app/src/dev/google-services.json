@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "357003202382",
+    "firebase_url": "https://achafacil-dev.firebaseio.com",
+    "project_id": "achafacil-dev",
+    "storage_bucket": "achafacil-dev.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:357003202382:android:fee6ecd26da236907a581f",
+        "android_client_info": {
+          "package_name": "com.listaunica.AchaFacil.dev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "357003202382-00rt2880bjgncv1goblohrms8sb7qn75.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD1vtoB1leyFt6I8HI1P8TqpwZW0LisdTQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "357003202382-00rt2880bjgncv1goblohrms8sb7qn75.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

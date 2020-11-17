@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:AchaFacil/home/home_screen.dart';
 import 'package:AchaFacil/login/reset_password.dart';
+import '../constants.dart';
 import 'login_form.dart';
 
 class Login extends StatelessWidget {
@@ -8,7 +9,7 @@ class Login extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Text('Acha Fácil!'),
+          title: Text(mainTitleApp),
           elevation: 0,
           leading: IconButton(
             icon: Icon(Icons.arrow_back),

@@ -7,8 +7,9 @@ const kTextLightColor = Color(0xFFACACAC);
 
 const kDefaultPaddin = 20.0;
 
+const String mainTitleApp = 'Acha Fácil!';
+
 // Colos that use in our app
-const kSecondaryColor = Color(0xFFFE6D8E);
 const kFillStarColor = Color(0xFFFCC419);
 
 const kDefaultPadding = 20.0;

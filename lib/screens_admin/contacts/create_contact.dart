@@ -43,6 +43,7 @@ class _CreateContactBodyState extends State<CreateContactBody> {
 
   final _form = GlobalKey<FormState>();
   ContactsModel _contactModel;
+  bool _progressBarActive = false;
 
   initState() {
     super.initState();
@@ -53,9 +54,9 @@ class _CreateContactBodyState extends State<CreateContactBody> {
       _dropdownValue = statesList
           .where((element) => element.state == _contactModel.address.state)
           .first;
-      _contactModel.address.uf = _dropdownValue.uf;
-      _contactModel.address.state = _dropdownValue.state;
     }
+    _contactModel.address.uf = _dropdownValue.uf;
+    _contactModel.address.state = _dropdownValue.state;
   }
 
   List<MultiSelectItem> _items = List<MultiSelectItem>();
@@ -74,6 +75,7 @@ class _CreateContactBodyState extends State<CreateContactBody> {
                 onChanged: (value) {
                   _contactModel.name = value;
                 },
+                keyboardType: TextInputType.name,
                 decoration: InputDecoration(
                   hintText: "Nome",
                 ),
@@ -127,7 +129,7 @@ class _CreateContactBodyState extends State<CreateContactBody> {
                 onChanged: (value) {
                   _contactModel.site = value;
                 },
-                keyboardType: TextInputType.phone,
+                keyboardType: TextInputType.url,
                 decoration: InputDecoration(
                   hintText: "Site",
                 ),
@@ -161,6 +163,7 @@ class _CreateContactBodyState extends State<CreateContactBody> {
                 onChanged: (value) {
                   _contactModel.address.strAvnName = value;
                 },
+                keyboardType: TextInputType.streetAddress,
                 decoration: InputDecoration(
                   hintText: "Rua/Avenida",
                 ),
@@ -211,6 +214,7 @@ class _CreateContactBodyState extends State<CreateContactBody> {
                 onChanged: (value) {
                   _contactModel.address.city = value;
                 },
+                keyboardType: TextInputType.streetAddress,
                 decoration: InputDecoration(
                   hintText: "Cidade",
                 ),
@@ -245,9 +249,14 @@ class _CreateContactBodyState extends State<CreateContactBody> {
             Container(height: 30),
             SizedBox(
               width: 200,
+              height: 60,
               child: ElevatedButton(
-                child: Text('Salvar'),
-                onPressed: addContact,
+                child: _progressBarActive == true
+                    ? const CircularProgressIndicator(
+                        backgroundColor: Colors.white,
+                      )
+                    : Text('Salvar'),
+                onPressed: saveContact,
               ),
             ),
             Container(height: 30),
@@ -257,11 +266,15 @@ class _CreateContactBodyState extends State<CreateContactBody> {
     );
   }
 
-  void addContact() {
+  void saveContact() {
     if (_form.currentState.validate()) {
+      setState(() {
+        _progressBarActive = true;
+      });
       DocumentReference contactDB = FirebaseFirestore.instance
           .collection('contatos')
           .doc(_contactModel.id);
+
       contactDB
           .set({
             'nome': _contactModel.name,
@@ -298,6 +311,9 @@ class _CreateContactBodyState extends State<CreateContactBody> {
                   );
                 },
               ))
+          .then((value) => setState(() {
+                _progressBarActive = false;
+              }))
           .catchError((error) => showDialog(
                 context: context,
                 builder: (context) {
@@ -316,7 +332,10 @@ class _CreateContactBodyState extends State<CreateContactBody> {
                     ],
                   );
                 },
-              ));
+              ))
+          .then((value) => setState(() {
+                _progressBarActive = false;
+              }));
     }
   }
 
