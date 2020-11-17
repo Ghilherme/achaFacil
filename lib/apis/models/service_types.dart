@@ -17,7 +17,7 @@ class ServiceTypesModel {
     this.id = snapshot.id;
     this.name = snapshot.data()['nome'];
     this.categoryTitle = snapshot.data()['titulo_categoria'];
-    this.category = snapshot.reference;
+    this.category = snapshot.data()['categoria'];
   }
 
   ServiceTypesModel.empty() {

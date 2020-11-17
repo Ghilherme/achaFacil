@@ -35,8 +35,8 @@ class CustomDrawer extends StatelessWidget {
           title: Text('Cadastrar'),
           subtitle: Text('Prestadores'),
           onTap: () {
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) => Login()));
+            Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (context) => Login()));
           },
         ),
       ],
