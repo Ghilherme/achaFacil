@@ -284,30 +284,31 @@ class _CreateContactBodyState extends State<CreateContactBody> {
     setState(() {
       _fileUpload = file;
     });
-    uploadFile(_fileUpload);
   }
 
-  Future<void> uploadFile(String filePath) async {
+  Future<String> uploadFile(String id) async {
     File file = File(_fileUpload);
-    FirebaseStorage storage = FirebaseStorage.instance;
 
-    await FirebaseStorage.instance
-        .ref('uploads/file-to-upload.png')
-        .putFile(file);
-    String variavel = await FirebaseStorage.instance
-        .ref('uploads/file-to-upload.png')
+    await FirebaseStorage.instance.ref('uploads/$id.png').putFile(file);
+    return await FirebaseStorage.instance
+        .ref('uploads/$id.png')
         .getDownloadURL();
-    print(variavel);
   }
 
-  void saveContact() {
+  void saveContact() async {
     if (_form.currentState.validate()) {
       setState(() {
         _progressBarActive = true;
       });
+
+      //referencia o doc e se tiver ID atualiza, se nao cria um ID novo
       DocumentReference contactDB = FirebaseFirestore.instance
           .collection('contatos')
           .doc(_contactModel.id);
+
+      //Se houve alteração na imagem, faz um novo upload
+      if (_fileUpload.isNotEmpty)
+        _contactModel.image = await uploadFile(contactDB.id);
 
       contactDB
           .set({
@@ -317,6 +318,7 @@ class _CreateContactBodyState extends State<CreateContactBody> {
             'servicos': _contactModel.serviceType,
             'site': _contactModel.site,
             'telefone1': _contactModel.telNumbers,
+            'imagem': _contactModel.image,
             'endereco': {
               'endereco': _contactModel.address.strAvnName,
               'complemento': _contactModel.address.compliment,

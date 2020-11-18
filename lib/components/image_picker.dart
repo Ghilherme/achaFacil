@@ -67,7 +67,19 @@ class _ImagePickerSourceState extends State<ImagePickerSource> {
     }
     if (_imageFile != null) {
       if (kIsWeb) {
-        return Image.network(_imageFile.path);
+        return Image.network(_imageFile.path, loadingBuilder:
+            (BuildContext context, Widget child,
+                ImageChunkEvent loadingProgress) {
+          if (loadingProgress == null) return child;
+          return Center(
+            child: CircularProgressIndicator(
+              value: loadingProgress.expectedTotalBytes != null
+                  ? loadingProgress.cumulativeBytesLoaded /
+                      loadingProgress.expectedTotalBytes
+                  : null,
+            ),
+          );
+        });
       } else {
         return Semantics(
             child: Image.file(File(_imageFile.path)),
