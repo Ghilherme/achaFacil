@@ -1,4 +1,8 @@
+import 'dart:io';
+
+import 'package:AchaFacil/components/image_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:AchaFacil/apis/models/contacts.dart';
 import 'package:AchaFacil/apis/models/states.dart';
@@ -44,6 +48,7 @@ class _CreateContactBodyState extends State<CreateContactBody> {
   final _form = GlobalKey<FormState>();
   ContactsModel _contactModel;
   bool _progressBarActive = false;
+  String _fileUpload = '';
 
   initState() {
     super.initState();
@@ -246,6 +251,15 @@ class _CreateContactBodyState extends State<CreateContactBody> {
                 }).toList(),
               ),
             ),
+            Divider(),
+            Text(
+              'Fotos',
+              style: TextStyle(fontWeight: FontWeight.w300, fontSize: 25),
+              textAlign: TextAlign.right,
+            ),
+            ListTile(
+                title: ImagePickerSource(
+                    image: _contactModel.image, callback: callback)),
             Container(height: 30),
             SizedBox(
               width: 200,
@@ -264,6 +278,26 @@ class _CreateContactBodyState extends State<CreateContactBody> {
         ),
       ),
     );
+  }
+
+  callback(file) {
+    setState(() {
+      _fileUpload = file;
+    });
+    uploadFile(_fileUpload);
+  }
+
+  Future<void> uploadFile(String filePath) async {
+    File file = File(_fileUpload);
+    FirebaseStorage storage = FirebaseStorage.instance;
+
+    await FirebaseStorage.instance
+        .ref('uploads/file-to-upload.png')
+        .putFile(file);
+    String variavel = await FirebaseStorage.instance
+        .ref('uploads/file-to-upload.png')
+        .getDownloadURL();
+    print(variavel);
   }
 
   void saveContact() {
