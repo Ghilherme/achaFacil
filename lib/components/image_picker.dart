@@ -142,18 +142,16 @@ class _ImagePickerSourceState extends State<ImagePickerSource> {
 
   void _onImageButtonPressed(ImageSource source, {BuildContext context}) async {
     try {
-      final pickedFile = await _picker.getImage(
-        source: source,
-      );
+      final pickedFile =
+          await _picker.getImage(source: source, imageQuality: 50);
       setState(() {
         _imageFile = pickedFile;
       });
+      if (pickedFile != null) widget.callback(_imageFile.path);
     } catch (e) {
       setState(() {
         _pickImageError = e;
       });
-    } finally {
-      widget.callback(_imageFile.path);
     }
   }
 }

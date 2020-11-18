@@ -70,12 +70,13 @@ class BodyContactListAdmin extends StatelessWidget {
               '\nEstado: ' +
               contact.address.uf,
           okFunction: () {
-            FirebaseStorage.instance.refFromURL(contact.image).delete();
+            if (contact.image != null)
+              FirebaseStorage.instance.refFromURL(contact.image).delete();
+
             FirebaseFirestore.instance
                 .collection('contatos')
                 .doc(contact.id)
                 .delete();
-            Navigator.of(context).pop();
           },
           title: 'Deseja excluir o contato?',
         ),

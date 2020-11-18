@@ -289,9 +289,11 @@ class _CreateContactBodyState extends State<CreateContactBody> {
   Future<String> uploadFile(String id) async {
     File file = File(_fileUpload);
 
-    await FirebaseStorage.instance.ref('uploads/$id.png').putFile(file);
+    await FirebaseStorage.instance
+        .ref('uploads/' + id + '/' + id + '_background.png')
+        .putFile(file);
     return await FirebaseStorage.instance
-        .ref('uploads/$id.png')
+        .ref('uploads/' + id + '/' + id + '_background.png')
         .getDownloadURL();
   }
 
@@ -349,6 +351,7 @@ class _CreateContactBodyState extends State<CreateContactBody> {
               ))
           .then((value) => setState(() {
                 _progressBarActive = false;
+                _contactModel.id = contactDB.id;
               }))
           .catchError((error) => showDialog(
                 context: context,
