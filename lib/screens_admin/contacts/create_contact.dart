@@ -1,4 +1,8 @@
+import 'dart:io';
+
+import 'package:AchaFacil/components/image_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:AchaFacil/apis/models/contacts.dart';
 import 'package:AchaFacil/apis/models/states.dart';
@@ -44,6 +48,7 @@ class _CreateContactBodyState extends State<CreateContactBody> {
   final _form = GlobalKey<FormState>();
   ContactsModel _contactModel;
   bool _progressBarActive = false;
+  String _fileUpload = '';
 
   initState() {
     super.initState();
@@ -246,6 +251,15 @@ class _CreateContactBodyState extends State<CreateContactBody> {
                 }).toList(),
               ),
             ),
+            Divider(),
+            Text(
+              'Fotos',
+              style: TextStyle(fontWeight: FontWeight.w300, fontSize: 25),
+              textAlign: TextAlign.right,
+            ),
+            ListTile(
+                title: ImagePickerSource(
+                    image: _contactModel.image, callback: callback)),
             Container(height: 30),
             SizedBox(
               width: 200,
@@ -266,14 +280,37 @@ class _CreateContactBodyState extends State<CreateContactBody> {
     );
   }
 
-  void saveContact() {
+  callback(file) {
+    setState(() {
+      _fileUpload = file;
+    });
+  }
+
+  Future<String> uploadFile(String id) async {
+    File file = File(_fileUpload);
+
+    await FirebaseStorage.instance
+        .ref('uploads/' + id + '/' + id + '_background.png')
+        .putFile(file);
+    return await FirebaseStorage.instance
+        .ref('uploads/' + id + '/' + id + '_background.png')
+        .getDownloadURL();
+  }
+
+  void saveContact() async {
     if (_form.currentState.validate()) {
       setState(() {
         _progressBarActive = true;
       });
+
+      //referencia o doc e se tiver ID atualiza, se nao cria um ID novo
       DocumentReference contactDB = FirebaseFirestore.instance
           .collection('contatos')
           .doc(_contactModel.id);
+
+      //Se houve alteração na imagem, faz um novo upload
+      if (_fileUpload.isNotEmpty)
+        _contactModel.image = await uploadFile(contactDB.id);
 
       contactDB
           .set({
@@ -283,6 +320,7 @@ class _CreateContactBodyState extends State<CreateContactBody> {
             'servicos': _contactModel.serviceType,
             'site': _contactModel.site,
             'telefone1': _contactModel.telNumbers,
+            'imagem': _contactModel.image,
             'endereco': {
               'endereco': _contactModel.address.strAvnName,
               'complemento': _contactModel.address.compliment,
@@ -313,6 +351,7 @@ class _CreateContactBodyState extends State<CreateContactBody> {
               ))
           .then((value) => setState(() {
                 _progressBarActive = false;
+                _contactModel.id = contactDB.id;
               }))
           .catchError((error) => showDialog(
                 context: context,

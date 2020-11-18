@@ -3,7 +3,7 @@ import 'package:flutter_svg/svg.dart';
 
 import 'package:AchaFacil/constants.dart';
 
-class BackdropAndRating extends StatelessWidget {
+class BackdropAndRating extends StatefulWidget {
   const BackdropAndRating({
     Key key,
     @required this.size,
@@ -14,22 +14,27 @@ class BackdropAndRating extends StatelessWidget {
   final String image;
 
   @override
+  _BackdropAndRatingState createState() => _BackdropAndRatingState();
+}
+
+class _BackdropAndRatingState extends State<BackdropAndRating> {
+  @override
   Widget build(BuildContext context) {
     return Container(
       // 40% of our total height
-      height: size.height * 0.4,
+      height: widget.size.height * 0.4,
       child: Stack(
         children: <Widget>[
           Container(
-            height: size.height * 0.4 - 50,
+            height: widget.size.height * 0.4 - 50,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.only(bottomLeft: Radius.circular(50)),
               image: DecorationImage(
                   fit: BoxFit.cover,
                   //image: AssetImage('assets/images/profile.jpg'),
-                  image: image == null
+                  image: widget.image == null
                       ? AssetImage('assets/images/in_construction.jpg')
-                      : Image.network(image).image),
+                      : Image.network(widget.image).image),
             ),
           ),
           // Rating Box
@@ -38,7 +43,7 @@ class BackdropAndRating extends StatelessWidget {
             right: 0,
             child: Container(
               // it will cover 90% of our total width
-              width: size.width * 0.9,
+              width: widget.size.width * 0.9,
               height: 100,
               decoration: BoxDecoration(
                 color: Colors.white,

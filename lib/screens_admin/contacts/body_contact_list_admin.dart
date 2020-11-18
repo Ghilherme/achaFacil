@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:AchaFacil/apis/models/contacts.dart';
 import 'package:AchaFacil/components/confirmation_dialog.dart';
@@ -69,11 +70,13 @@ class BodyContactListAdmin extends StatelessWidget {
               '\nEstado: ' +
               contact.address.uf,
           okFunction: () {
+            if (contact.image != null)
+              FirebaseStorage.instance.refFromURL(contact.image).delete();
+
             FirebaseFirestore.instance
                 .collection('contatos')
                 .doc(contact.id)
                 .delete();
-            Navigator.of(context).pop();
           },
           title: 'Deseja excluir o contato?',
         ),
