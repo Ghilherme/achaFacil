@@ -1,3 +1,4 @@
+import 'package:AchaFacil/apis/models/contacts.dart';
 import 'package:flutter/material.dart';
 
 import '../constants.dart';
@@ -8,15 +9,15 @@ import 'package:url_launcher/url_launcher.dart';
 
 class BodyContactDetails extends StatelessWidget {
   BodyContactDetails({Key key, @required this.contact}) : super(key: key);
-  final Map<String, dynamic> contact;
+  final ContactsModel contact;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Body(contact: contact),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          launchZap(contact['telefone1']);
+        onPressed: () async {
+          launchZap(contact.telNumbers['whatsapp']);
         },
         label: Text('Zap'),
         icon: Icon(Icons.call),
@@ -24,17 +25,14 @@ class BodyContactDetails extends StatelessWidget {
     );
   }
 
-  void launchZap(urlString) async {
-    var whatsappUrl = "whatsapp://send?phone=$urlString";
-    await canLaunch(whatsappUrl)
-        ? launch(whatsappUrl)
-        : print(
-            "open whatsapp app link or do a snackbar with notification that there is no whatsapp installed");
+  Future<bool> launchZap(numberPhone) async {
+    var whatsappUrl = "whatsapp://send?phone=$numberPhone";
+    return await canLaunch(whatsappUrl) ? launch(whatsappUrl) : false;
   }
 }
 
 class Body extends StatelessWidget {
-  final Map<String, dynamic> contact;
+  final ContactsModel contact;
 
   const Body({Key key, this.contact}) : super(key: key);
   @override
@@ -47,16 +45,16 @@ class Body extends StatelessWidget {
         children: <Widget>[
           BackdropAndRating(
             size: size,
-            image: contact['imagem'],
+            image: contact.image,
           ),
           SizedBox(height: kDefaultPadding / 2),
           TitleAdressName(
-            name: contact['nome'],
-            city: contact['endereco']['cidade'],
-            neighbourhood: contact['endereco']['bairro'],
-            uf: contact['endereco']['UF'],
+            name: contact.name,
+            city: contact.address.city,
+            neighbourhood: contact.address.neighborhood,
+            uf: contact.address.uf,
           ),
-          ServiceTypes(servicos: contact['servicos']),
+          ServiceTypes(servicos: contact.serviceType),
           Padding(
             padding: EdgeInsets.symmetric(
               vertical: kDefaultPadding / 2,
@@ -70,7 +68,7 @@ class Body extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
             child: Text(
-              contact['descricao'] == null ? '' : contact['descricao'],
+              contact.description,
               style: TextStyle(
                 color: kTextLightColor,
               ),

@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ImagePickerSource extends StatefulWidget {
-  const ImagePickerSource({Key key, this.image, this.callback})
+  const ImagePickerSource(
+      {Key key, this.image, this.callback, this.isAvatar = false})
       : super(key: key);
   final String image;
+  final bool isAvatar;
 
   final Function(String) callback;
 
@@ -38,7 +40,7 @@ class _ImagePickerSourceState extends State<ImagePickerSource> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             IconButton(
-              icon: Icon(Icons.photo_camera, size: 40, color: Colors.blue),
+              icon: Icon(Icons.photo_camera, size: 35, color: Colors.blue),
               onPressed: () {
                 showModal(context);
               },
@@ -47,7 +49,7 @@ class _ImagePickerSourceState extends State<ImagePickerSource> {
             _imageFile == null
                 ? Container()
                 : IconButton(
-                    icon: Icon(Icons.cancel, size: 40),
+                    icon: Icon(Icons.cancel, size: 35),
                     onPressed: () {
                       setState(() {
                         _imageFile = null;
@@ -67,22 +69,20 @@ class _ImagePickerSourceState extends State<ImagePickerSource> {
     }
     if (_imageFile != null) {
       if (kIsWeb) {
-        return Image.network(_imageFile.path, loadingBuilder:
-            (BuildContext context, Widget child,
-                ImageChunkEvent loadingProgress) {
-          if (loadingProgress == null) return child;
-          return Center(
-            child: CircularProgressIndicator(
-              value: loadingProgress.expectedTotalBytes != null
-                  ? loadingProgress.cumulativeBytesLoaded /
-                      loadingProgress.expectedTotalBytes
-                  : null,
-            ),
-          );
-        });
+        return widget.isAvatar
+            ? CircleAvatar(
+                radius: 50,
+                backgroundImage: loadImage().image,
+              )
+            : loadImage();
       } else {
         return Semantics(
-            child: Image.file(File(_imageFile.path)),
+            child: widget.isAvatar
+                ? CircleAvatar(
+                    radius: 50,
+                    backgroundImage: Image.file(File(_imageFile.path)).image,
+                  )
+                : Image.file(File(_imageFile.path)),
             label: 'image_picker_example_picked_image');
       }
     } else if (_pickImageError != null) {
@@ -93,6 +93,21 @@ class _ImagePickerSourceState extends State<ImagePickerSource> {
     } else {
       return Container();
     }
+  }
+
+  Image loadImage() {
+    return Image.network(_imageFile.path, loadingBuilder:
+        (BuildContext context, Widget child, ImageChunkEvent loadingProgress) {
+      if (loadingProgress == null) return child;
+      return Center(
+        child: CircularProgressIndicator(
+          value: loadingProgress.expectedTotalBytes != null
+              ? loadingProgress.cumulativeBytesLoaded /
+                  loadingProgress.expectedTotalBytes
+              : null,
+        ),
+      );
+    });
   }
 
   Text _getRetrieveErrorWidget() {
@@ -143,7 +158,7 @@ class _ImagePickerSourceState extends State<ImagePickerSource> {
   void _onImageButtonPressed(ImageSource source, {BuildContext context}) async {
     try {
       final pickedFile =
-          await _picker.getImage(source: source, imageQuality: 50);
+          await _picker.getImage(source: source, imageQuality: 45);
       setState(() {
         _imageFile = pickedFile;
       });

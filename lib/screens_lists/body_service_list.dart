@@ -1,3 +1,4 @@
+import 'package:AchaFacil/apis/models/service_types.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:AchaFacil/screens_lists/body_contact_list.dart';
@@ -57,16 +58,15 @@ class BodyServiceList extends StatelessWidget {
 
   Widget _buildRow(
       BuildContext context, DocumentSnapshot snapshot, int indice, int size) {
+    ServiceTypesModel services = ServiceTypesModel.fromFirestore(snapshot);
     return Column(children: <Widget>[
       ListTile(
-          title: Text(
-            snapshot.data()['nome'],
-          ),
+          title: Text(services.name),
           onTap: () {
             Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => BodyContactList(
-                      title: snapshot.data()['nome'],
-                      serviceType: snapshot.reference,
+                      title: services.name,
+                      serviceType: services.category,
                     )));
           }),
       indice + 1 == size ? Container() : Divider()

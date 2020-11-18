@@ -1,3 +1,4 @@
+import 'package:AchaFacil/apis/models/contacts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:AchaFacil/screens_details/body_contact_details.dart';
@@ -44,27 +45,31 @@ class BodyContactList extends StatelessWidget {
                 padding: EdgeInsets.all(10.0),
                 itemCount: querySnapshot.size,
                 itemBuilder: (context, i) {
-                  return _buildRow(context, querySnapshot.docs[i].data(), i,
-                      querySnapshot.size);
+                  return _buildRow(
+                      context, querySnapshot.docs[i], i, querySnapshot.size);
                 });
           },
         ));
   }
 
-  Widget _buildRow(BuildContext context, Map<String, dynamic> snapshot,
+  Widget _buildRow(BuildContext context, QueryDocumentSnapshot snapshot,
       int indice, int size) {
+    ContactsModel contact = ContactsModel.fromFirestore(snapshot);
     return Column(children: <Widget>[
       ListTile(
-          trailing: Icon(Icons.warning),
-          leading: Icon(Icons.warning),
+          leading: CircleAvatar(
+              radius: 25,
+              backgroundImage: contact.imageAvatar == ''
+                  ? AssetImage('assets/images/contacts.jpeg')
+                  : Image.network(contact.imageAvatar).image),
           subtitle: Text('Avaliação: 5'),
           title: Text(
-            snapshot['nome'],
+            contact.name,
           ),
           onTap: () {
             Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => BodyContactDetails(
-                      contact: snapshot,
+                      contact: contact,
                     )));
           }),
       indice + 1 == size ? Container() : Divider()

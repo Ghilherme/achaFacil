@@ -48,7 +48,8 @@ class _CreateContactBodyState extends State<CreateContactBody> {
   final _form = GlobalKey<FormState>();
   ContactsModel _contactModel;
   bool _progressBarActive = false;
-  String _fileUpload = '';
+  String _fileImageUpload = '';
+  String _fileAvatarUpload = '';
 
   initState() {
     super.initState();
@@ -73,6 +74,14 @@ class _CreateContactBodyState extends State<CreateContactBody> {
         key: _form,
         child: Column(
           children: [
+            Container(height: 30),
+            Center(
+              child: ImagePickerSource(
+                image: _contactModel.imageAvatar,
+                callback: callbackAvatar,
+                isAvatar: true,
+              ),
+            ),
             ListTile(
               leading: Icon(Icons.person),
               title: TextFormField(
@@ -259,7 +268,7 @@ class _CreateContactBodyState extends State<CreateContactBody> {
             ),
             ListTile(
                 title: ImagePickerSource(
-                    image: _contactModel.image, callback: callback)),
+                    image: _contactModel.image, callback: callbackImage)),
             Container(height: 30),
             SizedBox(
               width: 200,
@@ -280,21 +289,23 @@ class _CreateContactBodyState extends State<CreateContactBody> {
     );
   }
 
-  callback(file) {
+  callbackImage(file) {
     setState(() {
-      _fileUpload = file;
+      _fileImageUpload = file;
     });
   }
 
-  Future<String> uploadFile(String id) async {
-    File file = File(_fileUpload);
+  callbackAvatar(file) {
+    setState(() {
+      _fileAvatarUpload = file;
+    });
+  }
 
-    await FirebaseStorage.instance
-        .ref('uploads/' + id + '/' + id + '_background.png')
-        .putFile(file);
-    return await FirebaseStorage.instance
-        .ref('uploads/' + id + '/' + id + '_background.png')
-        .getDownloadURL();
+  Future<String> uploadFileImage(String refPath, String filePath) async {
+    File file = File(filePath);
+
+    await FirebaseStorage.instance.ref(refPath).putFile(file);
+    return await FirebaseStorage.instance.ref(refPath).getDownloadURL();
   }
 
   void saveContact() async {
@@ -309,8 +320,23 @@ class _CreateContactBodyState extends State<CreateContactBody> {
           .doc(_contactModel.id);
 
       //Se houve alteração na imagem, faz um novo upload
-      if (_fileUpload.isNotEmpty)
-        _contactModel.image = await uploadFile(contactDB.id);
+      if (_fileImageUpload.isNotEmpty)
+        _contactModel.image = await uploadFileImage(
+            'uploads/' +
+                _contactModel.id +
+                '/' +
+                _contactModel.id +
+                '_background.png',
+            _fileImageUpload);
+
+      if (_fileAvatarUpload.isNotEmpty)
+        _contactModel.imageAvatar = await uploadFileImage(
+            'uploads/' +
+                _contactModel.id +
+                '/' +
+                _contactModel.id +
+                '_avatar.png',
+            _fileAvatarUpload);
 
       contactDB
           .set({
@@ -321,6 +347,7 @@ class _CreateContactBodyState extends State<CreateContactBody> {
             'site': _contactModel.site,
             'telefone1': _contactModel.telNumbers,
             'imagem': _contactModel.image,
+            'avatar': _contactModel.imageAvatar,
             'endereco': {
               'endereco': _contactModel.address.strAvnName,
               'complemento': _contactModel.address.compliment,

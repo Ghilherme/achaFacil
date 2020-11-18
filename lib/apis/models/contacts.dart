@@ -11,8 +11,9 @@ class ContactsModel {
       @required this.telNumbers,
       @required this.address,
       this.image,
+      this.imageAvatar,
       this.id});
-  String id, name, email, description, site, image;
+  String id, name, email, description, site, image, imageAvatar;
   Map<String, String> telNumbers;
   List<dynamic> serviceType;
   Address address;
@@ -27,6 +28,7 @@ class ContactsModel {
     this.telNumbers = contact.telNumbers;
     this.address = contact.address;
     this.image = contact.image;
+    this.imageAvatar = contact.imageAvatar;
   }
   ContactsModel.fromFirestore(QueryDocumentSnapshot snapshot) {
     this.id = snapshot.id;
@@ -36,6 +38,7 @@ class ContactsModel {
     this.serviceType = snapshot.data()['servicos'];
     this.site = snapshot.data()['site'];
     this.image = snapshot.data()['imagem'];
+    this.imageAvatar = snapshot.data()['avatar'];
     this.telNumbers = {'whatsapp': snapshot.data()['telefone1']['whatsapp']};
     this.address = Address(
         strAvnName: snapshot.data()['endereco']['endereco'],
@@ -56,6 +59,7 @@ class ContactsModel {
     this.serviceType = List<dynamic>();
     this.site = '';
     this.image = '';
+    this.imageAvatar = '';
     this.telNumbers = Map<String, String>();
     this.address = Address.empty();
   }
