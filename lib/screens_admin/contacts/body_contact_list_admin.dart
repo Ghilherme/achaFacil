@@ -73,6 +73,9 @@ class BodyContactListAdmin extends StatelessWidget {
             if (contact.image != null)
               FirebaseStorage.instance.refFromURL(contact.image).delete();
 
+            if (contact.imageAvatar != null)
+              FirebaseStorage.instance.refFromURL(contact.imageAvatar).delete();
+
             FirebaseFirestore.instance
                 .collection('contatos')
                 .doc(contact.id)

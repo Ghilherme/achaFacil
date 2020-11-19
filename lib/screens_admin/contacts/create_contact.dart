@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:AchaFacil/components/image_picker.dart';
+import 'package:AchaFacil/components/timetable_admin.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -48,7 +49,8 @@ class _CreateContactBodyState extends State<CreateContactBody> {
   final _form = GlobalKey<FormState>();
   ContactsModel _contactModel;
   bool _progressBarActive = false;
-  String _fileUpload = '';
+  String _fileImageUpload = '';
+  String _fileAvatarUpload = '';
 
   initState() {
     super.initState();
@@ -73,6 +75,15 @@ class _CreateContactBodyState extends State<CreateContactBody> {
         key: _form,
         child: Column(
           children: [
+            Container(height: 30),
+            Center(
+              child: ImagePickerSource(
+                image: _contactModel.imageAvatar,
+                callback: callbackAvatar,
+                isAvatar: true,
+                imageQuality: 35,
+              ),
+            ),
             ListTile(
               leading: Icon(Icons.person),
               title: TextFormField(
@@ -105,6 +116,7 @@ class _CreateContactBodyState extends State<CreateContactBody> {
               leading: Icon(Icons.description),
               title: new TextFormField(
                 initialValue: _contactModel.description,
+                keyboardType: TextInputType.multiline,
                 onChanged: (value) {
                   _contactModel.description = value;
                 },
@@ -154,6 +166,16 @@ class _CreateContactBodyState extends State<CreateContactBody> {
                 validator: (value) =>
                     value.isEmpty ? 'Campo obrigatório' : null,
               ),
+            ),
+            Divider(),
+            Text(
+              'Horários',
+              style: TextStyle(fontWeight: FontWeight.w300, fontSize: 25),
+              textAlign: TextAlign.right,
+            ),
+            TimeTableAdmin(
+              timeTable: _contactModel.timeTable,
+              callback: callbackTimeTable,
             ),
             Divider(),
             Text(
@@ -259,7 +281,10 @@ class _CreateContactBodyState extends State<CreateContactBody> {
             ),
             ListTile(
                 title: ImagePickerSource(
-                    image: _contactModel.image, callback: callback)),
+              image: _contactModel.image,
+              callback: callbackImage,
+              imageQuality: 40,
+            )),
             Container(height: 30),
             SizedBox(
               width: 200,
@@ -280,21 +305,29 @@ class _CreateContactBodyState extends State<CreateContactBody> {
     );
   }
 
-  callback(file) {
+  callbackImage(file) {
     setState(() {
-      _fileUpload = file;
+      _fileImageUpload = file;
     });
   }
 
-  Future<String> uploadFile(String id) async {
-    File file = File(_fileUpload);
+  callbackAvatar(file) {
+    setState(() {
+      _fileAvatarUpload = file;
+    });
+  }
 
-    await FirebaseStorage.instance
-        .ref('uploads/' + id + '/' + id + '_background.png')
-        .putFile(file);
-    return await FirebaseStorage.instance
-        .ref('uploads/' + id + '/' + id + '_background.png')
-        .getDownloadURL();
+  callbackTimeTable(timeTable) {
+    setState(() {
+      _contactModel.timeTable = timeTable;
+    });
+  }
+
+  Future<String> uploadFileImage(String refPath, String filePath) async {
+    File file = File(filePath);
+
+    await FirebaseStorage.instance.ref(refPath).putFile(file);
+    return await FirebaseStorage.instance.ref(refPath).getDownloadURL();
   }
 
   void saveContact() async {
@@ -309,8 +342,23 @@ class _CreateContactBodyState extends State<CreateContactBody> {
           .doc(_contactModel.id);
 
       //Se houve alteração na imagem, faz um novo upload
-      if (_fileUpload.isNotEmpty)
-        _contactModel.image = await uploadFile(contactDB.id);
+      if (_fileImageUpload.isNotEmpty)
+        _contactModel.image = await uploadFileImage(
+            'uploads/' +
+                _contactModel.id +
+                '/' +
+                _contactModel.id +
+                '_background.png',
+            _fileImageUpload);
+
+      if (_fileAvatarUpload.isNotEmpty)
+        _contactModel.imageAvatar = await uploadFileImage(
+            'uploads/' +
+                _contactModel.id +
+                '/' +
+                _contactModel.id +
+                '_avatar.png',
+            _fileAvatarUpload);
 
       contactDB
           .set({
@@ -321,6 +369,8 @@ class _CreateContactBodyState extends State<CreateContactBody> {
             'site': _contactModel.site,
             'telefone1': _contactModel.telNumbers,
             'imagem': _contactModel.image,
+            'avatar': _contactModel.imageAvatar,
+            'horarios': _contactModel.timeTable,
             'endereco': {
               'endereco': _contactModel.address.strAvnName,
               'complemento': _contactModel.address.compliment,

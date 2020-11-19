@@ -31,8 +31,7 @@ class _BackdropAndRatingState extends State<BackdropAndRating> {
               borderRadius: BorderRadius.only(bottomLeft: Radius.circular(50)),
               image: DecorationImage(
                   fit: BoxFit.cover,
-                  //image: AssetImage('assets/images/profile.jpg'),
-                  image: widget.image == null
+                  image: widget.image == null || widget.image.isEmpty
                       ? AssetImage('assets/images/in_construction.jpg')
                       : Image.network(widget.image).image),
             ),
