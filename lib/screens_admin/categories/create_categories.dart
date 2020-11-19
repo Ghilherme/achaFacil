@@ -38,6 +38,7 @@ class _CreateCategoriesBodyState extends State<CreateCategoriesBody> {
 
   final _form = GlobalKey<FormState>();
   CategoriesModel _categoriesModel;
+  bool _progressBarActive = false;
 
   initState() {
     super.initState();
@@ -93,10 +94,14 @@ class _CreateCategoriesBodyState extends State<CreateCategoriesBody> {
             Container(height: 30),
             SizedBox(
               width: 200,
+              height: 60,
               child: ElevatedButton(
-                child: Text('Salvar'),
-                onPressed: saveCategories,
-              ),
+                  child: _progressBarActive == true
+                      ? const CircularProgressIndicator(
+                          backgroundColor: Colors.white,
+                        )
+                      : Text('Salvar'),
+                  onPressed: saveCategories),
             ),
             Container(height: 30),
           ],
@@ -105,17 +110,36 @@ class _CreateCategoriesBodyState extends State<CreateCategoriesBody> {
     );
   }
 
-  void saveCategories() {
+  void saveCategories() async {
     if (_form.currentState.validate()) {
+      setState(() {
+        _progressBarActive = true;
+      });
+      //referencia documento que está sendo atualizado / se não existir cria um novo
       DocumentReference contactDB = FirebaseFirestore.instance
           .collection('categorias')
           .doc(_categoriesModel.id);
 
-      contactDB
-          .set({
-            'titulo': _categoriesModel.title,
-            'subtitulo': _categoriesModel.subtitle,
-            'icone': _categoriesModel.icons,
+      FirebaseFirestore.instance
+          .runTransaction((transaction) async {
+            //Referencia coleção
+            QuerySnapshot prestadores = await FirebaseFirestore.instance
+                .collection('prestadores')
+                .where('titulo_categoria', isEqualTo: categories.title)
+                .get();
+
+            //atualiza todo prestador
+            prestadores.docs.forEach((prestador) {
+              transaction.update(prestador.reference,
+                  {'titulo_categoria': _categoriesModel.title});
+            });
+
+            //atualiza categoria
+            transaction.set(contactDB, {
+              'titulo': _categoriesModel.title,
+              'subtitulo': _categoriesModel.subtitle,
+              'icone': _categoriesModel.icons,
+            });
           })
           .then((value) => showDialog(
                 context: context,
@@ -135,6 +159,9 @@ class _CreateCategoriesBodyState extends State<CreateCategoriesBody> {
                   );
                 },
               ))
+          .then((value) => setState(() {
+                _progressBarActive = false;
+              }))
           .catchError((error) => showDialog(
                 context: context,
                 builder: (context) {
@@ -153,7 +180,10 @@ class _CreateCategoriesBodyState extends State<CreateCategoriesBody> {
                     ],
                   );
                 },
-              ));
+              ))
+          .then((value) => setState(() {
+                _progressBarActive = false;
+              }));
     }
   }
 }

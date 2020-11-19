@@ -1,6 +1,8 @@
 # achaFacil
 
-A new Flutter project.
+Uma nova forma de achar contatos para serviços da sua casa!
+
+uma nova startup nasce.
 
 ## Getting Started
 

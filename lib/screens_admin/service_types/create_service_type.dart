@@ -39,6 +39,7 @@ class _CreateServiceTypesBodyState extends State<CreateServiceTypesBody> {
   final _form = GlobalKey<FormState>();
 
   ServiceTypesModel _serviceModel;
+  bool _progressBarActive = false;
 
   var setDefaultCategory = true;
   var category;
@@ -127,8 +128,13 @@ class _CreateServiceTypesBodyState extends State<CreateServiceTypesBody> {
             Container(height: 30),
             SizedBox(
               width: 200,
+              height: 60,
               child: ElevatedButton(
-                child: Text('Salvar'),
+                child: _progressBarActive == true
+                    ? const CircularProgressIndicator(
+                        backgroundColor: Colors.white,
+                      )
+                    : Text('Salvar'),
                 onPressed: addServiceType,
               ),
             ),
@@ -139,19 +145,41 @@ class _CreateServiceTypesBodyState extends State<CreateServiceTypesBody> {
     );
   }
 
-  void addServiceType() {
+  void addServiceType() async {
     if (_form.currentState.validate()) {
+      setState(() {
+        _progressBarActive = true;
+      });
+      //referencia documento que está sendo atualizado / se não existir cria um novo
       DocumentReference contactDB = FirebaseFirestore.instance
           .collection('prestadores')
           .doc(_serviceModel.id);
-      contactDB
-          .set(
-            {
+
+      FirebaseFirestore.instance
+          .runTransaction((transaction) async {
+            //Referencia coleção
+            QuerySnapshot contatos = await FirebaseFirestore.instance
+                .collection('contatos')
+                .where('servicos', arrayContains: serviceTypes.name)
+                .get();
+
+            //atualiza todo contato
+            contatos.docs.forEach((contato) {
+              transaction.update(contato.reference, {
+                'servicos': FieldValue.arrayRemove([serviceTypes.name])
+              });
+              transaction.update(contato.reference, {
+                'servicos': FieldValue.arrayUnion([_serviceModel.name])
+              });
+            });
+
+            //atualiza prestadores
+            transaction.set(contactDB, {
               'nome': _serviceModel.name,
               'titulo_categoria': _serviceModel.categoryTitle,
               'categoria': _serviceModel.category,
-            },
-          )
+            });
+          })
           .then((value) => showDialog(
                 context: context,
                 builder: (context) {
@@ -170,6 +198,9 @@ class _CreateServiceTypesBodyState extends State<CreateServiceTypesBody> {
                   );
                 },
               ))
+          .then((value) => setState(() {
+                _progressBarActive = false;
+              }))
           .catchError((error) => showDialog(
                 context: context,
                 builder: (context) {
@@ -188,7 +219,10 @@ class _CreateServiceTypesBodyState extends State<CreateServiceTypesBody> {
                     ],
                   );
                 },
-              ));
+              ))
+          .then((value) => setState(() {
+                _progressBarActive = false;
+              }));
     }
   }
 }
