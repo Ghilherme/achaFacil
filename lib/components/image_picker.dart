@@ -4,10 +4,15 @@ import 'package:image_picker/image_picker.dart';
 
 class ImagePickerSource extends StatefulWidget {
   const ImagePickerSource(
-      {Key key, this.image, this.callback, this.isAvatar = false})
+      {Key key,
+      this.image,
+      this.callback,
+      this.isAvatar = false,
+      this.imageQuality})
       : super(key: key);
   final String image;
   final bool isAvatar;
+  final int imageQuality;
 
   final Function(String) callback;
 
@@ -157,8 +162,8 @@ class _ImagePickerSourceState extends State<ImagePickerSource> {
 
   void _onImageButtonPressed(ImageSource source, {BuildContext context}) async {
     try {
-      final pickedFile =
-          await _picker.getImage(source: source, imageQuality: 45);
+      final pickedFile = await _picker.getImage(
+          source: source, imageQuality: widget.imageQuality);
       setState(() {
         _imageFile = pickedFile;
       });

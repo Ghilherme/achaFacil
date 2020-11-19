@@ -59,9 +59,10 @@ class BodyContactList extends StatelessWidget {
       ListTile(
           leading: CircleAvatar(
               radius: 25,
-              backgroundImage: contact.imageAvatar == ''
-                  ? AssetImage('assets/images/contacts.jpeg')
-                  : Image.network(contact.imageAvatar).image),
+              backgroundImage:
+                  contact.imageAvatar == '' || contact.imageAvatar == null
+                      ? AssetImage('assets/images/contacts.jpeg')
+                      : Image.network(contact.imageAvatar).image),
           subtitle: Text('Avaliação: 5'),
           title: Text(
             contact.name,

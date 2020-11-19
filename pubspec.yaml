@@ -32,6 +32,7 @@ dependencies:
   flutter_launcher_icons: "^0.8.0"
   flutter_native_splash: ^0.1.9
   image_picker: ^0.6.7+14
+  expandable: ^4.1.4
 
 
 

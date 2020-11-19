@@ -1,3 +1,4 @@
+import 'package:AchaFacil/apis/models/weekdays.dart';
 import 'package:flutter/material.dart';
 
 import 'apis/models/states.dart';
@@ -48,4 +49,14 @@ List<States> statesList = [
   States(state: 'São Paulo', uf: 'SP'),
   States(state: 'Sergipe', uf: 'SE'),
   States(state: 'Tocantins', uf: 'TO'),
+];
+
+List<WeekDays> weekDays = [
+  WeekDays(dayName: 'Segunda-feira', dayNumber: 1),
+  WeekDays(dayName: 'Terça-feira', dayNumber: 2),
+  WeekDays(dayName: 'Quarta-feira', dayNumber: 3),
+  WeekDays(dayName: 'Quinta-feira', dayNumber: 4),
+  WeekDays(dayName: 'Sexta-feira', dayNumber: 5),
+  WeekDays(dayName: 'Sábado', dayNumber: 6),
+  WeekDays(dayName: 'Domingo', dayNumber: 7),
 ];

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:AchaFacil/components/image_picker.dart';
+import 'package:AchaFacil/components/timetable_admin.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -80,6 +81,7 @@ class _CreateContactBodyState extends State<CreateContactBody> {
                 image: _contactModel.imageAvatar,
                 callback: callbackAvatar,
                 isAvatar: true,
+                imageQuality: 35,
               ),
             ),
             ListTile(
@@ -114,6 +116,7 @@ class _CreateContactBodyState extends State<CreateContactBody> {
               leading: Icon(Icons.description),
               title: new TextFormField(
                 initialValue: _contactModel.description,
+                keyboardType: TextInputType.multiline,
                 onChanged: (value) {
                   _contactModel.description = value;
                 },
@@ -163,6 +166,16 @@ class _CreateContactBodyState extends State<CreateContactBody> {
                 validator: (value) =>
                     value.isEmpty ? 'Campo obrigatório' : null,
               ),
+            ),
+            Divider(),
+            Text(
+              'Horários',
+              style: TextStyle(fontWeight: FontWeight.w300, fontSize: 25),
+              textAlign: TextAlign.right,
+            ),
+            TimeTableAdmin(
+              timeTable: _contactModel.timeTable,
+              callback: callbackTimeTable,
             ),
             Divider(),
             Text(
@@ -268,7 +281,10 @@ class _CreateContactBodyState extends State<CreateContactBody> {
             ),
             ListTile(
                 title: ImagePickerSource(
-                    image: _contactModel.image, callback: callbackImage)),
+              image: _contactModel.image,
+              callback: callbackImage,
+              imageQuality: 40,
+            )),
             Container(height: 30),
             SizedBox(
               width: 200,
@@ -298,6 +314,12 @@ class _CreateContactBodyState extends State<CreateContactBody> {
   callbackAvatar(file) {
     setState(() {
       _fileAvatarUpload = file;
+    });
+  }
+
+  callbackTimeTable(timeTable) {
+    setState(() {
+      _contactModel.timeTable = timeTable;
     });
   }
 
@@ -348,6 +370,7 @@ class _CreateContactBodyState extends State<CreateContactBody> {
             'telefone1': _contactModel.telNumbers,
             'imagem': _contactModel.image,
             'avatar': _contactModel.imageAvatar,
+            'horarios': _contactModel.timeTable,
             'endereco': {
               'endereco': _contactModel.address.strAvnName,
               'complemento': _contactModel.address.compliment,
