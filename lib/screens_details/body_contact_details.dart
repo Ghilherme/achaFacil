@@ -1,4 +1,5 @@
 import 'package:AchaFacil/apis/models/contacts.dart';
+import 'package:AchaFacil/components/card_icon.dart';
 import 'package:AchaFacil/components/expandable_widget.dart';
 import 'package:flutter/material.dart';
 import '../constants.dart';
@@ -87,6 +88,19 @@ class _BodyState extends State<Body> {
                 ),
               ),
             ),
+            Padding(
+                padding: const EdgeInsets.only(top: 10.0, left: 10, right: 10),
+                child: CardIcon(
+                    icon: Icons.room,
+                    title: widget.contact.address.strAvnName +
+                        ', ' +
+                        widget.contact.address.number +
+                        ' ' +
+                        widget.contact.address.compliment)),
+            Padding(
+                padding: const EdgeInsets.only(top: 10.0, left: 10, right: 10),
+                child:
+                    CardIcon(icon: Icons.email, title: widget.contact.email)),
             TimeTable(timeTable: widget.contact.timeTable),
           ],
         ),
