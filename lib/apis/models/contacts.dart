@@ -9,6 +9,7 @@ class ContactsModel {
       @required this.serviceType,
       @required this.site,
       @required this.telNumbers,
+      @required this.scheduleType,
       @required this.address,
       this.image,
       this.imageAvatar,
@@ -16,7 +17,7 @@ class ContactsModel {
       this.id});
   String id, name, email, description, site, image, imageAvatar;
   Map<String, dynamic> telNumbers, timeTable;
-  List<dynamic> serviceType;
+  List<dynamic> serviceType, scheduleType;
   Address address;
 
   ContactsModel.fromContact(ContactsModel contact) {
@@ -27,6 +28,7 @@ class ContactsModel {
     this.serviceType = contact.serviceType;
     this.site = contact.site;
     this.telNumbers = contact.telNumbers;
+    this.scheduleType = contact.scheduleType;
     this.timeTable = contact.timeTable;
     this.address = contact.address;
     this.image = contact.image;
@@ -43,6 +45,7 @@ class ContactsModel {
     this.imageAvatar = snapshot.data()['avatar'];
     this.telNumbers = Map<String, dynamic>.from(snapshot.data()['telefone1']);
     this.timeTable = Map<String, dynamic>.from(snapshot.data()['horarios']);
+    this.scheduleType = snapshot.data()['funcionamento'];
     this.address = Address(
         strAvnName: snapshot.data()['endereco']['endereco'],
         cep: snapshot.data()['endereco']['cep'],
@@ -65,6 +68,7 @@ class ContactsModel {
     this.imageAvatar = '';
     this.telNumbers = Map<String, dynamic>();
     this.timeTable = Map<String, dynamic>();
+    this.scheduleType = [''];
     this.address = Address.empty();
   }
 }

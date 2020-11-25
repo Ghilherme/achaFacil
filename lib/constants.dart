@@ -60,3 +60,9 @@ List<WeekDays> weekDays = [
   WeekDays(dayName: 'Sábado', dayNumber: 6),
   WeekDays(dayName: 'Domingo', dayNumber: 7),
 ];
+
+const List<String> schedule = const [
+  'Atende Emergências',
+  'Comercial',
+  'Com Agendamento'
+];

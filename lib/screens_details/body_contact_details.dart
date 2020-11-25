@@ -59,7 +59,10 @@ class _BodyState extends State<Body> {
           children: <Widget>[
             BackdropAndRating(
               size: size,
-              image: widget.contact.image,
+              imageBanner: widget.contact.image,
+              imageAvatar: widget.contact.imageAvatar,
+              scheduleType: widget
+                  .contact.scheduleType[0], // only one scheduleType for now..
             ),
             SizedBox(height: kDefaultPadding / 2),
             TitleAdressName(
@@ -83,24 +86,35 @@ class _BodyState extends State<Body> {
               padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
               child: Text(
                 widget.contact.description,
-                style: TextStyle(
-                  color: kTextLightColor,
-                ),
+                style: TextStyle(color: kTextLightColor),
               ),
             ),
-            Padding(
-                padding: const EdgeInsets.only(top: 10.0, left: 10, right: 10),
-                child: CardIcon(
-                    icon: Icons.room,
-                    title: widget.contact.address.strAvnName +
-                        ', ' +
-                        widget.contact.address.number +
-                        ' ' +
-                        widget.contact.address.compliment)),
-            Padding(
-                padding: const EdgeInsets.only(top: 10.0, left: 10, right: 10),
-                child:
-                    CardIcon(icon: Icons.email, title: widget.contact.email)),
+            widget.contact.address.strAvnName.isEmpty
+                ? Container()
+                : Padding(
+                    padding:
+                        const EdgeInsets.only(top: 10.0, left: 10, right: 10),
+                    child: CardIcon(
+                        icon: Icons.room,
+                        title: widget.contact.address.strAvnName +
+                            ', ' +
+                            widget.contact.address.number +
+                            ' ' +
+                            widget.contact.address.compliment)),
+            widget.contact.site.isEmpty
+                ? Container()
+                : Padding(
+                    padding:
+                        const EdgeInsets.only(top: 10.0, left: 10, right: 10),
+                    child: CardIcon(
+                        icon: Icons.language, title: widget.contact.site)),
+            widget.contact.email.isEmpty
+                ? Container()
+                : Padding(
+                    padding:
+                        const EdgeInsets.only(top: 10.0, left: 10, right: 10),
+                    child: CardIcon(
+                        icon: Icons.email, title: widget.contact.email)),
             TimeTable(timeTable: widget.contact.timeTable),
           ],
         ),

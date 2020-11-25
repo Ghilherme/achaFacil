@@ -7,11 +7,13 @@ class BackdropAndRating extends StatefulWidget {
   const BackdropAndRating({
     Key key,
     @required this.size,
-    @required this.image,
+    @required this.imageBanner,
+    this.imageAvatar,
+    this.scheduleType,
   }) : super(key: key);
 
   final Size size;
-  final String image;
+  final String imageBanner, imageAvatar, scheduleType;
 
   @override
   _BackdropAndRatingState createState() => _BackdropAndRatingState();
@@ -31,9 +33,10 @@ class _BackdropAndRatingState extends State<BackdropAndRating> {
               borderRadius: BorderRadius.only(bottomLeft: Radius.circular(50)),
               image: DecorationImage(
                   fit: BoxFit.cover,
-                  image: widget.image == null || widget.image.isEmpty
-                      ? AssetImage('assets/images/in_construction.jpg')
-                      : Image.network(widget.image).image),
+                  image:
+                      widget.imageBanner == null || widget.imageBanner.isEmpty
+                          ? AssetImage('assets/images/in_construction.jpg')
+                          : Image.network(widget.imageBanner).image),
             ),
           ),
           // Rating Box
@@ -65,6 +68,16 @@ class _BackdropAndRatingState extends State<BackdropAndRating> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
                     Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          CircleAvatar(
+                              radius: 35,
+                              backgroundImage: widget.imageAvatar == '' ||
+                                      widget.imageAvatar == null
+                                  ? AssetImage('assets/images/contacts.jpeg')
+                                  : Image.network(widget.imageAvatar).image),
+                        ]),
+                    Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         SvgPicture.asset("assets/icons/star_fill.svg"),
@@ -89,36 +102,10 @@ class _BackdropAndRatingState extends State<BackdropAndRating> {
                         ),
                       ],
                     ),
-                    // Rate this
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        SvgPicture.asset("assets/icons/star.svg"),
-                        SizedBox(height: kDefaultPadding / 4),
-                        Text("Vote",
-                            style: Theme.of(context).textTheme.bodyText2),
-                      ],
-                    ),
-                    // Metascore
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Container(
-                          padding: EdgeInsets.all(6),
-                          decoration: BoxDecoration(
-                            color: Color(0xFF51CF66),
-                            borderRadius: BorderRadius.circular(2),
-                          ),
-                          child: Text(
-                            //"${movie.metascoreRating}",
-                            '24hrs',
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
+                        renderScheduleType(widget.scheduleType),
                         SizedBox(height: kDefaultPadding / 4),
                         Text(
                           "Funcionamento",
@@ -126,7 +113,7 @@ class _BackdropAndRatingState extends State<BackdropAndRating> {
                               fontSize: 14, fontWeight: FontWeight.w500),
                         ),
                         Text(
-                          "Atende emergências",
+                          widget.scheduleType,
                           style:
                               TextStyle(fontSize: 12, color: kTextLightColor),
                         )
@@ -145,5 +132,48 @@ class _BackdropAndRatingState extends State<BackdropAndRating> {
         ],
       ),
     );
+  }
+
+  Widget renderScheduleType(String scheduleType) {
+    if (widget.scheduleType == schedule[0]) //Atende Emergências
+      return Container(
+        padding: EdgeInsets.all(6),
+        decoration: BoxDecoration(
+          color: Color(0xFF51CF66),
+          borderRadius: BorderRadius.circular(2),
+        ),
+        child: Text(
+          '24hrs',
+          style: TextStyle(
+            fontSize: 16,
+            color: Colors.white,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      );
+    else if (widget.scheduleType == schedule[1]) //Comercial
+      return Container(
+          padding: EdgeInsets.all(6),
+          decoration: BoxDecoration(
+            color: Colors.blue,
+            borderRadius: BorderRadius.circular(2),
+          ),
+          child: Icon(
+            Icons.business,
+            color: Colors.white,
+          ));
+    else if (widget.scheduleType == schedule[2]) //Com agendamento
+      return Container(
+          padding: EdgeInsets.all(6),
+          decoration: BoxDecoration(
+            color: Colors.blue,
+            borderRadius: BorderRadius.circular(2),
+          ),
+          child: Icon(
+            Icons.schedule,
+            color: Colors.white,
+          ));
+
+    return Container();
   }
 }
