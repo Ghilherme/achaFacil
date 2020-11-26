@@ -14,11 +14,14 @@ class ContactsModel {
       this.image,
       this.imageAvatar,
       this.timeTable,
-      this.id});
+      this.id,
+      this.lastModification,
+      this.createdAt});
   String id, name, email, description, site, image, imageAvatar;
   Map<String, dynamic> telNumbers, timeTable;
   List<dynamic> serviceType, scheduleType;
   Address address;
+  DateTime lastModification, createdAt;
 
   ContactsModel.fromContact(ContactsModel contact) {
     this.id = contact.id;
@@ -33,6 +36,8 @@ class ContactsModel {
     this.address = contact.address;
     this.image = contact.image;
     this.imageAvatar = contact.imageAvatar;
+    this.lastModification = contact.lastModification;
+    this.createdAt = contact.createdAt;
   }
   ContactsModel.fromFirestore(QueryDocumentSnapshot snapshot) {
     this.id = snapshot.id;
@@ -46,6 +51,12 @@ class ContactsModel {
     this.telNumbers = Map<String, dynamic>.from(snapshot.data()['telefone1']);
     this.timeTable = Map<String, dynamic>.from(snapshot.data()['horarios']);
     this.scheduleType = snapshot.data()['funcionamento'];
+    this.lastModification = snapshot.data()['atualizacao'] == null
+        ? null
+        : snapshot.data()['atualizacao'].toDate();
+    this.createdAt = snapshot.data()['criacao'] == null
+        ? null
+        : snapshot.data()['criacao'].toDate();
     this.address = Address(
         strAvnName: snapshot.data()['endereco']['endereco'],
         cep: snapshot.data()['endereco']['cep'],
@@ -69,6 +80,8 @@ class ContactsModel {
     this.telNumbers = Map<String, dynamic>();
     this.timeTable = Map<String, dynamic>();
     this.scheduleType = [''];
+    this.lastModification = null;
+    this.createdAt = null;
     this.address = Address.empty();
   }
 }

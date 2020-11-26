@@ -68,6 +68,10 @@ class _CreateContactBodyState extends State<CreateContactBody> {
           .where((element) => element == _contactModel.scheduleType.first)
           .first;
     }
+
+    if (_contactModel.lastModification == null)
+      _contactModel.lastModification = DateTime.now();
+
     _contactModel.address.uf = _dropdownStates.uf;
     _contactModel.address.state = _dropdownStates.state;
     _contactModel.scheduleType.first = _dropdownSchedule;
@@ -393,6 +397,11 @@ class _CreateContactBodyState extends State<CreateContactBody> {
                 '_avatar.png',
             _fileAvatarUpload);
 
+      if (_contactModel.createdAt == null)
+        _contactModel.createdAt = DateTime.now();
+
+      _contactModel.lastModification = DateTime.now();
+
       contactDB
           .set({
             'nome': _contactModel.name,
@@ -405,6 +414,8 @@ class _CreateContactBodyState extends State<CreateContactBody> {
             'avatar': _contactModel.imageAvatar,
             'horarios': _contactModel.timeTable,
             'funcionamento': _contactModel.scheduleType,
+            'atualizacao': _contactModel.lastModification,
+            'criacao': _contactModel.createdAt,
             'endereco': {
               'endereco': _contactModel.address.strAvnName,
               'complemento': _contactModel.address.compliment,
