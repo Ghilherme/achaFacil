@@ -19,7 +19,7 @@ class CardIcon extends StatelessWidget {
             child: Row(
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(right: kDefaultPaddin),
+                  padding: const EdgeInsets.only(right: kDefaultPadding),
                   child: Icon(icon, color: Colors.blue, size: 28),
                 ),
                 Flexible(

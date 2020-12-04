@@ -33,6 +33,7 @@ dependencies:
   flutter_native_splash: ^0.1.9
   image_picker: ^0.6.7+14
   expandable: ^4.1.4
+  flutter_rating_bar: ^3.2.0+1
 
 
 

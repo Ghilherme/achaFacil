@@ -4,7 +4,7 @@ import 'package:AchaFacil/components/expandable_widget.dart';
 import 'package:flutter/material.dart';
 import '../constants.dart';
 import 'title_address_name.dart';
-import 'backdrop_rating.dart';
+import 'card_header.dart';
 import 'genres.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:expandable/expandable.dart';
@@ -57,12 +57,9 @@ class _BodyState extends State<Body> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            BackdropAndRating(
+            CardHeader(
               size: size,
-              imageBanner: widget.contact.image,
-              imageAvatar: widget.contact.imageAvatar,
-              scheduleType: widget
-                  .contact.scheduleType[0], // only one scheduleType for now..
+              contact: widget.contact,
             ),
             SizedBox(height: kDefaultPadding / 2),
             TitleAdressName(

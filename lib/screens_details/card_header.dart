@@ -1,25 +1,28 @@
+import 'package:AchaFacil/apis/models/contacts.dart';
+import 'package:AchaFacil/screens_details/rating_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'package:AchaFacil/constants.dart';
 
-class BackdropAndRating extends StatefulWidget {
-  const BackdropAndRating({
+class CardHeader extends StatefulWidget {
+  const CardHeader({
     Key key,
+    this.contact,
     @required this.size,
-    @required this.imageBanner,
-    this.imageAvatar,
-    this.scheduleType,
   }) : super(key: key);
 
+  final ContactsModel contact;
   final Size size;
-  final String imageBanner, imageAvatar, scheduleType;
 
   @override
-  _BackdropAndRatingState createState() => _BackdropAndRatingState();
+  _CardHeaderState createState() => _CardHeaderState(contact.scheduleType[0]);
 }
 
-class _BackdropAndRatingState extends State<BackdropAndRating> {
+class _CardHeaderState extends State<CardHeader> {
+  _CardHeaderState(this.scheduleType);
+  final String scheduleType;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -33,10 +36,10 @@ class _BackdropAndRatingState extends State<BackdropAndRating> {
               borderRadius: BorderRadius.only(bottomLeft: Radius.circular(50)),
               image: DecorationImage(
                   fit: BoxFit.cover,
-                  image:
-                      widget.imageBanner == null || widget.imageBanner.isEmpty
-                          ? AssetImage('assets/images/in_construction.jpg')
-                          : Image.network(widget.imageBanner).image),
+                  image: widget.contact.image == null ||
+                          widget.contact.image.isEmpty
+                      ? AssetImage('assets/images/in_construction.jpg')
+                      : Image.network(widget.contact.image).image),
             ),
           ),
           // Rating Box
@@ -72,15 +75,27 @@ class _BackdropAndRatingState extends State<BackdropAndRating> {
                         children: <Widget>[
                           CircleAvatar(
                               radius: 35,
-                              backgroundImage: widget.imageAvatar == '' ||
-                                      widget.imageAvatar == null
+                              backgroundImage: widget.contact.imageAvatar ==
+                                          '' ||
+                                      widget.contact.imageAvatar == null
                                   ? AssetImage('assets/images/contacts.jpeg')
-                                  : Image.network(widget.imageAvatar).image),
+                                  : Image.network(widget.contact.imageAvatar)
+                                      .image),
                         ]),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        SvgPicture.asset("assets/icons/star_fill.svg"),
+                        GestureDetector(
+                          child: SvgPicture.asset("assets/icons/star_fill.svg"),
+                          onTap: () => showDialog(
+                            context: context,
+                            builder: (context) {
+                              return RatingDialog(
+                                contact: widget.contact,
+                              );
+                            },
+                          ),
+                        ),
                         SizedBox(height: kDefaultPadding / 4),
                         RichText(
                           text: TextSpan(
@@ -105,7 +120,7 @@ class _BackdropAndRatingState extends State<BackdropAndRating> {
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        renderScheduleType(widget.scheduleType),
+                        renderScheduleType(scheduleType),
                         SizedBox(height: kDefaultPadding / 4),
                         Text(
                           "Funcionamento",
@@ -113,7 +128,7 @@ class _BackdropAndRatingState extends State<BackdropAndRating> {
                               fontSize: 14, fontWeight: FontWeight.w500),
                         ),
                         Text(
-                          widget.scheduleType,
+                          scheduleType,
                           style:
                               TextStyle(fontSize: 12, color: kTextLightColor),
                         )
@@ -135,7 +150,7 @@ class _BackdropAndRatingState extends State<BackdropAndRating> {
   }
 
   Widget renderScheduleType(String scheduleType) {
-    if (widget.scheduleType == schedule[0]) //Atende Emergências
+    if (scheduleType == schedule[0]) //Atende Emergências
       return Container(
         padding: EdgeInsets.all(6),
         decoration: BoxDecoration(
@@ -151,7 +166,7 @@ class _BackdropAndRatingState extends State<BackdropAndRating> {
           ),
         ),
       );
-    else if (widget.scheduleType == schedule[1]) //Comercial
+    else if (scheduleType == schedule[1]) //Comercial
       return Container(
           padding: EdgeInsets.all(6),
           decoration: BoxDecoration(
@@ -162,7 +177,7 @@ class _BackdropAndRatingState extends State<BackdropAndRating> {
             Icons.business,
             color: Colors.white,
           ));
-    else if (widget.scheduleType == schedule[2]) //Com agendamento
+    else if (scheduleType == schedule[2]) //Com agendamento
       return Container(
           padding: EdgeInsets.all(6),
           decoration: BoxDecoration(

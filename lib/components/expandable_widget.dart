@@ -67,7 +67,8 @@ class TimeTable extends StatelessWidget {
                             iconColor: Colors.blue,
                             iconSize: 28.0,
                             iconRotationAngle: 0,
-                            iconPadding: EdgeInsets.only(right: kDefaultPaddin),
+                            iconPadding:
+                                EdgeInsets.only(right: kDefaultPadding),
                             hasIcon: false,
                           ),
                         ),
