@@ -6,14 +6,13 @@ import 'apis/models/states.dart';
 const kTextColor = Color(0xFF535353);
 const kTextLightColor = Color(0xFFACACAC);
 
-const kDefaultPaddin = 20.0;
-
 const String mainTitleApp = 'Acha Fácil!';
 
 // Colos that use in our app
 const kFillStarColor = Color(0xFFFCC419);
 
 const kDefaultPadding = 20.0;
+const daysWaitingRate = 7;
 
 const kDefaultShadow = BoxShadow(
   offset: Offset(0, 4),
@@ -59,4 +58,10 @@ List<WeekDays> weekDays = [
   WeekDays(dayName: 'Sexta-feira', dayNumber: 5),
   WeekDays(dayName: 'Sábado', dayNumber: 6),
   WeekDays(dayName: 'Domingo', dayNumber: 7),
+];
+
+const List<String> schedule = const [
+  'Atende Emergências',
+  'Comercial',
+  'Com Agendamento'
 ];

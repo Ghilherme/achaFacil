@@ -9,7 +9,8 @@ import 'create_contact.dart';
 class BodyContactListAdmin extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    Query query = FirebaseFirestore.instance.collection('contatos');
+    Query query =
+        FirebaseFirestore.instance.collection('contatos').orderBy('nome');
 
     return Scaffold(
         appBar: AppBar(
@@ -70,10 +71,10 @@ class BodyContactListAdmin extends StatelessWidget {
               '\nEstado: ' +
               contact.address.uf,
           okFunction: () {
-            if (contact.image != null)
+            if (contact.image.isNotEmpty)
               FirebaseStorage.instance.refFromURL(contact.image).delete();
 
-            if (contact.imageAvatar != null)
+            if (contact.imageAvatar.isNotEmpty)
               FirebaseStorage.instance.refFromURL(contact.imageAvatar).delete();
 
             FirebaseFirestore.instance

@@ -1,9 +1,10 @@
 import 'package:AchaFacil/apis/models/contacts.dart';
+import 'package:AchaFacil/components/card_icon.dart';
 import 'package:AchaFacil/components/expandable_widget.dart';
 import 'package:flutter/material.dart';
 import '../constants.dart';
 import 'title_address_name.dart';
-import 'backdrop_rating.dart';
+import 'card_header.dart';
 import 'genres.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:expandable/expandable.dart';
@@ -56,9 +57,9 @@ class _BodyState extends State<Body> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            BackdropAndRating(
+            CardHeader(
               size: size,
-              image: widget.contact.image,
+              contact: widget.contact,
             ),
             SizedBox(height: kDefaultPadding / 2),
             TitleAdressName(
@@ -82,11 +83,35 @@ class _BodyState extends State<Body> {
               padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
               child: Text(
                 widget.contact.description,
-                style: TextStyle(
-                  color: kTextLightColor,
-                ),
+                style: TextStyle(color: kTextLightColor),
               ),
             ),
+            widget.contact.address.strAvnName.isEmpty
+                ? Container()
+                : Padding(
+                    padding:
+                        const EdgeInsets.only(top: 10.0, left: 10, right: 10),
+                    child: CardIcon(
+                        icon: Icons.room,
+                        title: widget.contact.address.strAvnName +
+                            ', ' +
+                            widget.contact.address.number +
+                            ' ' +
+                            widget.contact.address.compliment)),
+            widget.contact.site.isEmpty
+                ? Container()
+                : Padding(
+                    padding:
+                        const EdgeInsets.only(top: 10.0, left: 10, right: 10),
+                    child: CardIcon(
+                        icon: Icons.language, title: widget.contact.site)),
+            widget.contact.email.isEmpty
+                ? Container()
+                : Padding(
+                    padding:
+                        const EdgeInsets.only(top: 10.0, left: 10, right: 10),
+                    child: CardIcon(
+                        icon: Icons.email, title: widget.contact.email)),
             TimeTable(timeTable: widget.contact.timeTable),
           ],
         ),

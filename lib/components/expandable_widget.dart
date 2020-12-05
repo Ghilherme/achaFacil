@@ -1,4 +1,3 @@
-import 'package:AchaFacil/apis/models/weekdays.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
@@ -68,7 +67,8 @@ class TimeTable extends StatelessWidget {
                             iconColor: Colors.blue,
                             iconSize: 28.0,
                             iconRotationAngle: 0,
-                            iconPadding: EdgeInsets.only(right: 20),
+                            iconPadding:
+                                EdgeInsets.only(right: kDefaultPadding),
                             hasIcon: false,
                           ),
                         ),

@@ -1,23 +1,28 @@
+import 'package:AchaFacil/apis/models/contacts.dart';
+import 'package:AchaFacil/screens_details/rating_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'package:AchaFacil/constants.dart';
 
-class BackdropAndRating extends StatefulWidget {
-  const BackdropAndRating({
+class CardHeader extends StatefulWidget {
+  const CardHeader({
     Key key,
+    this.contact,
     @required this.size,
-    @required this.image,
   }) : super(key: key);
 
+  final ContactsModel contact;
   final Size size;
-  final String image;
 
   @override
-  _BackdropAndRatingState createState() => _BackdropAndRatingState();
+  _CardHeaderState createState() => _CardHeaderState(contact.scheduleType[0]);
 }
 
-class _BackdropAndRatingState extends State<BackdropAndRating> {
+class _CardHeaderState extends State<CardHeader> {
+  _CardHeaderState(this.scheduleType);
+  final String scheduleType;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -31,9 +36,10 @@ class _BackdropAndRatingState extends State<BackdropAndRating> {
               borderRadius: BorderRadius.only(bottomLeft: Radius.circular(50)),
               image: DecorationImage(
                   fit: BoxFit.cover,
-                  image: widget.image == null || widget.image.isEmpty
+                  image: widget.contact.image == null ||
+                          widget.contact.image.isEmpty
                       ? AssetImage('assets/images/in_construction.jpg')
-                      : Image.network(widget.image).image),
+                      : Image.network(widget.contact.image).image),
             ),
           ),
           // Rating Box
@@ -65,22 +71,49 @@ class _BackdropAndRatingState extends State<BackdropAndRating> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
                     Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          CircleAvatar(
+                              radius: 35,
+                              backgroundImage: widget.contact.imageAvatar ==
+                                          '' ||
+                                      widget.contact.imageAvatar == null
+                                  ? AssetImage('assets/images/contacts.jpeg')
+                                  : Image.network(widget.contact.imageAvatar)
+                                      .image),
+                        ]),
+                    Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        SvgPicture.asset("assets/icons/star_fill.svg"),
+                        GestureDetector(
+                          child: SvgPicture.asset("assets/icons/star_fill.svg"),
+                          onTap: () => showDialog(
+                            context: context,
+                            builder: (context) {
+                              return RatingDialog(
+                                contact: widget.contact,
+                                callback: callbackRating,
+                              );
+                            },
+                          ),
+                        ),
                         SizedBox(height: kDefaultPadding / 4),
                         RichText(
                           text: TextSpan(
                             style: TextStyle(color: Colors.black),
                             children: [
                               TextSpan(
-                                text: '5/',
+                                text: widget.contact.rating.general
+                                        .toStringAsFixed(1) +
+                                    "/",
                                 style: TextStyle(
                                     fontSize: 16, fontWeight: FontWeight.w600),
                               ),
                               TextSpan(text: "5\n"),
                               TextSpan(
-                                text: "de 120",
+                                text: "  de " +
+                                    widget.contact.rating.number
+                                        .toStringAsFixed(0),
                                 style: TextStyle(
                                     fontSize: 11, color: kTextLightColor),
                               ),
@@ -89,36 +122,10 @@ class _BackdropAndRatingState extends State<BackdropAndRating> {
                         ),
                       ],
                     ),
-                    // Rate this
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        SvgPicture.asset("assets/icons/star.svg"),
-                        SizedBox(height: kDefaultPadding / 4),
-                        Text("Vote",
-                            style: Theme.of(context).textTheme.bodyText2),
-                      ],
-                    ),
-                    // Metascore
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Container(
-                          padding: EdgeInsets.all(6),
-                          decoration: BoxDecoration(
-                            color: Color(0xFF51CF66),
-                            borderRadius: BorderRadius.circular(2),
-                          ),
-                          child: Text(
-                            //"${movie.metascoreRating}",
-                            '24hrs',
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
+                        renderScheduleType(scheduleType),
                         SizedBox(height: kDefaultPadding / 4),
                         Text(
                           "Funcionamento",
@@ -126,7 +133,7 @@ class _BackdropAndRatingState extends State<BackdropAndRating> {
                               fontSize: 14, fontWeight: FontWeight.w500),
                         ),
                         Text(
-                          "Atende emergências",
+                          scheduleType,
                           style:
                               TextStyle(fontSize: 12, color: kTextLightColor),
                         )
@@ -145,5 +152,54 @@ class _BackdropAndRatingState extends State<BackdropAndRating> {
         ],
       ),
     );
+  }
+
+  callbackRating(rating) {
+    setState(() {
+      widget.contact.rating = rating;
+    });
+  }
+
+  Widget renderScheduleType(String scheduleType) {
+    if (scheduleType == schedule[0]) //Atende Emergências
+      return Container(
+        padding: EdgeInsets.all(6),
+        decoration: BoxDecoration(
+          color: Color(0xFF51CF66),
+          borderRadius: BorderRadius.circular(2),
+        ),
+        child: Text(
+          '24hrs',
+          style: TextStyle(
+            fontSize: 16,
+            color: Colors.white,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      );
+    else if (scheduleType == schedule[1]) //Comercial
+      return Container(
+          padding: EdgeInsets.all(6),
+          decoration: BoxDecoration(
+            color: Colors.blue,
+            borderRadius: BorderRadius.circular(2),
+          ),
+          child: Icon(
+            Icons.business,
+            color: Colors.white,
+          ));
+    else if (scheduleType == schedule[2]) //Com agendamento
+      return Container(
+          padding: EdgeInsets.all(6),
+          decoration: BoxDecoration(
+            color: Colors.blue,
+            borderRadius: BorderRadius.circular(2),
+          ),
+          child: Icon(
+            Icons.schedule,
+            color: Colors.white,
+          ));
+
+    return Container();
   }
 }

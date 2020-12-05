@@ -44,7 +44,8 @@ class CreateContactBody extends StatefulWidget {
 class _CreateContactBodyState extends State<CreateContactBody> {
   _CreateContactBodyState(this.contact);
   final ContactsModel contact;
-  States _dropdownValue = statesList[24]; //SAO PAULO
+  States _dropdownStates = statesList[24]; //SAO PAULO
+  String _dropdownSchedule = schedule[1]; //Comercial
 
   final _form = GlobalKey<FormState>();
   ContactsModel _contactModel;
@@ -58,12 +59,22 @@ class _CreateContactBodyState extends State<CreateContactBody> {
 
     _contactModel = ContactsModel.fromContact(contact);
     if (_contactModel.address.state.isNotEmpty) {
-      _dropdownValue = statesList
+      _dropdownStates = statesList
           .where((element) => element.state == _contactModel.address.state)
           .first;
     }
-    _contactModel.address.uf = _dropdownValue.uf;
-    _contactModel.address.state = _dropdownValue.state;
+    if (_contactModel.scheduleType.first.isNotEmpty) {
+      _dropdownSchedule = schedule
+          .where((element) => element == _contactModel.scheduleType.first)
+          .first;
+    }
+
+    if (_contactModel.lastModification == null)
+      _contactModel.lastModification = DateTime.now();
+
+    _contactModel.address.uf = _dropdownStates.uf;
+    _contactModel.address.state = _dropdownStates.state;
+    _contactModel.scheduleType.first = _dropdownSchedule;
   }
 
   List<MultiSelectItem> _items = List<MultiSelectItem>();
@@ -155,16 +166,42 @@ class _CreateContactBodyState extends State<CreateContactBody> {
             ListTile(
               leading: Icon(Icons.phone),
               title: TextFormField(
-                initialValue: _contactModel.telNumbers['whatsapp'],
+                maxLength: 15,
+                initialValue: _contactModel.telNumbers['whatsapp'] == null
+                    ? '+55'
+                    : _contactModel.telNumbers['whatsapp'],
                 onChanged: (value) {
                   _contactModel.telNumbers = {'whatsapp': value};
                 },
                 keyboardType: TextInputType.phone,
                 decoration: InputDecoration(
-                  hintText: "Telefone",
+                  hintText: "+55 (DDD) + 9 dígitos",
                 ),
                 validator: (value) =>
                     value.isEmpty ? 'Campo obrigatório' : null,
+              ),
+            ),
+            ListTile(
+              leading: Icon(Icons.schedule),
+              title: DropdownButton<String>(
+                isExpanded: true,
+                hint: Text('Funcionamento'),
+                value: _dropdownSchedule,
+                icon: Icon(Icons.arrow_downward),
+                iconSize: 24,
+                elevation: 16,
+                onChanged: (String newValue) {
+                  _contactModel.scheduleType.first = newValue;
+                  setState(() {
+                    _dropdownSchedule = newValue;
+                  });
+                },
+                items: schedule.map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
               ),
             ),
             Divider(),
@@ -254,7 +291,7 @@ class _CreateContactBodyState extends State<CreateContactBody> {
               title: DropdownButton<States>(
                 isExpanded: true,
                 hint: Text('Estado'),
-                value: _dropdownValue,
+                value: _dropdownStates,
                 icon: Icon(Icons.arrow_downward),
                 iconSize: 24,
                 elevation: 16,
@@ -262,7 +299,7 @@ class _CreateContactBodyState extends State<CreateContactBody> {
                   _contactModel.address.uf = newValue.uf;
                   _contactModel.address.state = newValue.state;
                   setState(() {
-                    _dropdownValue = newValue;
+                    _dropdownStates = newValue;
                   });
                 },
                 items: statesList.map<DropdownMenuItem<States>>((States value) {
@@ -360,6 +397,11 @@ class _CreateContactBodyState extends State<CreateContactBody> {
                 '_avatar.png',
             _fileAvatarUpload);
 
+      if (_contactModel.createdAt == null)
+        _contactModel.createdAt = DateTime.now();
+
+      _contactModel.lastModification = DateTime.now();
+
       contactDB
           .set({
             'nome': _contactModel.name,
@@ -371,6 +413,9 @@ class _CreateContactBodyState extends State<CreateContactBody> {
             'imagem': _contactModel.image,
             'avatar': _contactModel.imageAvatar,
             'horarios': _contactModel.timeTable,
+            'funcionamento': _contactModel.scheduleType,
+            'atualizacao': _contactModel.lastModification,
+            'criacao': _contactModel.createdAt,
             'endereco': {
               'endereco': _contactModel.address.strAvnName,
               'complemento': _contactModel.address.compliment,
