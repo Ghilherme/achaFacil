@@ -92,6 +92,7 @@ class _CardHeaderState extends State<CardHeader> {
                             builder: (context) {
                               return RatingDialog(
                                 contact: widget.contact,
+                                callback: callbackRating,
                               );
                             },
                           ),
@@ -102,13 +103,17 @@ class _CardHeaderState extends State<CardHeader> {
                             style: TextStyle(color: Colors.black),
                             children: [
                               TextSpan(
-                                text: '5/',
+                                text: widget.contact.rating.general
+                                        .toStringAsFixed(1) +
+                                    "/",
                                 style: TextStyle(
                                     fontSize: 16, fontWeight: FontWeight.w600),
                               ),
                               TextSpan(text: "5\n"),
                               TextSpan(
-                                text: "de 120",
+                                text: "  de " +
+                                    widget.contact.rating.number
+                                        .toStringAsFixed(0),
                                 style: TextStyle(
                                     fontSize: 11, color: kTextLightColor),
                               ),
@@ -147,6 +152,12 @@ class _CardHeaderState extends State<CardHeader> {
         ],
       ),
     );
+  }
+
+  callbackRating(rating) {
+    setState(() {
+      widget.contact.rating = rating;
+    });
   }
 
   Widget renderScheduleType(String scheduleType) {

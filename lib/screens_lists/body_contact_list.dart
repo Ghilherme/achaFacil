@@ -1,4 +1,5 @@
 import 'package:AchaFacil/apis/models/contacts.dart';
+import 'package:AchaFacil/apis/models/rating.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:AchaFacil/screens_details/body_contact_details.dart';
@@ -52,6 +53,24 @@ class BodyContactList extends StatelessWidget {
         ));
   }
 
+  Widget _buildSubtitle(RatingModel rating) {
+    return Column(
+      children: [
+        Row(
+          children: [
+            Text("Atendimento: " + rating.attendance.toStringAsFixed(1))
+          ],
+        ),
+        Row(
+          children: [Text("Qualidade: " + rating.quality.toStringAsFixed(1))],
+        ),
+        Row(
+          children: [Text("Preço: " + rating.price.toStringAsFixed(1))],
+        )
+      ],
+    );
+  }
+
   Widget _buildRow(BuildContext context, QueryDocumentSnapshot snapshot,
       int indice, int size) {
     ContactsModel contact = ContactsModel.fromFirestore(snapshot);
@@ -63,9 +82,13 @@ class BodyContactList extends StatelessWidget {
                   contact.imageAvatar == '' || contact.imageAvatar == null
                       ? AssetImage('assets/images/contacts.jpeg')
                       : Image.network(contact.imageAvatar).image),
-          subtitle: Text('Avaliação: 5'),
+          subtitle: _buildSubtitle(contact.rating),
           title: Text(
             contact.name,
+          ),
+          trailing: Text(
+            contact.rating.general.toStringAsFixed(1),
+            style: TextStyle(fontSize: 15),
           ),
           onTap: () {
             Navigator.of(context).push(MaterialPageRoute(
