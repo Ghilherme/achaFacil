@@ -425,6 +425,13 @@ class _CreateContactBodyState extends State<CreateContactBody> {
               'estado': _contactModel.address.state,
               'UF': _contactModel.address.uf,
             },
+            'avaliacao': {
+              'atendimento': _contactModel.rating.attendance,
+              'geral': _contactModel.rating.general,
+              'preco': _contactModel.rating.price,
+              'qualidade': _contactModel.rating.quality,
+              'quantidade': _contactModel.rating.number,
+            }
           })
           .then((value) => showDialog(
                 context: context,
