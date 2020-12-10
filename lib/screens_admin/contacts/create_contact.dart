@@ -381,20 +381,12 @@ class _CreateContactBodyState extends State<CreateContactBody> {
       //Se houve alteração na imagem, faz um novo upload
       if (_fileImageUpload.isNotEmpty)
         _contactModel.image = await uploadFileImage(
-            'uploads/' +
-                _contactModel.id +
-                '/' +
-                _contactModel.id +
-                '_background.png',
+            'uploads/' + contactDB.id + '/' + contactDB.id + '_background.png',
             _fileImageUpload);
 
       if (_fileAvatarUpload.isNotEmpty)
         _contactModel.imageAvatar = await uploadFileImage(
-            'uploads/' +
-                _contactModel.id +
-                '/' +
-                _contactModel.id +
-                '_avatar.png',
+            'uploads/' + contactDB.id + '/' + contactDB.id + '_avatar.png',
             _fileAvatarUpload);
 
       if (_contactModel.createdAt == null)
