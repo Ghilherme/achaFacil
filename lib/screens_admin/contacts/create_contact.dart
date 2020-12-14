@@ -381,20 +381,12 @@ class _CreateContactBodyState extends State<CreateContactBody> {
       //Se houve alteração na imagem, faz um novo upload
       if (_fileImageUpload.isNotEmpty)
         _contactModel.image = await uploadFileImage(
-            'uploads/' +
-                _contactModel.id +
-                '/' +
-                _contactModel.id +
-                '_background.png',
+            'uploads/' + contactDB.id + '/' + contactDB.id + '_background.png',
             _fileImageUpload);
 
       if (_fileAvatarUpload.isNotEmpty)
         _contactModel.imageAvatar = await uploadFileImage(
-            'uploads/' +
-                _contactModel.id +
-                '/' +
-                _contactModel.id +
-                '_avatar.png',
+            'uploads/' + contactDB.id + '/' + contactDB.id + '_avatar.png',
             _fileAvatarUpload);
 
       if (_contactModel.createdAt == null)
@@ -425,6 +417,13 @@ class _CreateContactBodyState extends State<CreateContactBody> {
               'estado': _contactModel.address.state,
               'UF': _contactModel.address.uf,
             },
+            'avaliacao': {
+              'atendimento': _contactModel.rating.attendance,
+              'geral': _contactModel.rating.general,
+              'preco': _contactModel.rating.price,
+              'qualidade': _contactModel.rating.quality,
+              'quantidade': _contactModel.rating.number,
+            }
           })
           .then((value) => showDialog(
                 context: context,
