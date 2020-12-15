@@ -328,8 +328,10 @@ class _CreateContactBodyState extends State<CreateContactBody> {
               height: 60,
               child: ElevatedButton(
                 child: _progressBarActive == true
-                    ? const CircularProgressIndicator(
-                        backgroundColor: Colors.white,
+                    ? Center(
+                        child: CircularProgressIndicator(
+                          backgroundColor: Colors.white,
+                        ),
                       )
                     : Text('Salvar'),
                 onPressed: saveContact,
