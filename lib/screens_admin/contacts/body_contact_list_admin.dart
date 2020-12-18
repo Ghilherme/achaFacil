@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:AchaFacil/apis/models/contacts.dart';
 import 'package:AchaFacil/components/confirmation_dialog.dart';
 import 'package:AchaFacil/components/list_tile_admin.dart';
+import '../../constants.dart';
 import 'create_contact.dart';
 
 class BodyContactListAdmin extends StatelessWidget {
@@ -48,7 +49,10 @@ class BodyContactListAdmin extends StatelessWidget {
             QuerySnapshot querySnapshot = stream.data;
 
             return ListView.builder(
-                padding: EdgeInsets.only(top: 10.0, bottom: 10, left: 10),
+                padding: EdgeInsets.only(
+                    top: kDefaultPaddingListView,
+                    bottom: kDefaultPaddingListView,
+                    left: kDefaultPaddingListView),
                 itemCount: querySnapshot.size,
                 itemBuilder: (context, i) {
                   return _buildRow(

@@ -12,7 +12,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  Placemark currentPlace;
+  Placemark _currentPlaceMark;
+  Position _currentPosition;
 
   initState() {
     super.initState();
@@ -22,31 +23,32 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: mainTitleApp,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: Scaffold(
-        drawer: CustomDrawer(),
-        appBar: AppBar(
-          title: Text(mainTitleApp),
-          actions: [
-            currentPlace == null
-                ? Center(
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      backgroundColor: Colors.white,
-                    ),
-                  )
-                : CurrentLocation(currentPosition: currentPlace),
-          ],
-        ),
-        body: BodyCategoriesList(),
-      ),
-    );
+    return CurrentPositionInherited(
+        child: MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: mainTitleApp,
+            theme: ThemeData(
+              primarySwatch: Colors.blue,
+              visualDensity: VisualDensity.adaptivePlatformDensity,
+            ),
+            home: Scaffold(
+              drawer: CustomDrawer(),
+              appBar: AppBar(
+                title: Text(mainTitleApp),
+                actions: [
+                  _currentPlaceMark == null
+                      ? Center(
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            backgroundColor: Colors.white,
+                          ),
+                        )
+                      : CurrentLocation(currentPlaceMark: _currentPlaceMark),
+                ],
+              ),
+              body: BodyCategoriesList(),
+            )),
+        currentPosition: _currentPosition);
   }
 
   void _determinePosition() async {
@@ -74,24 +76,51 @@ class _HomeScreenState extends State<HomeScreen> {
     }
 
     var pos = await Geolocator.getCurrentPosition();
+    setState(() {
+      _currentPosition = pos;
+    });
 
     print(pos.latitude);
     print(pos.longitude);
 
     placemarkFromCoordinates(pos.latitude, pos.longitude)
         .then((value) => setState(() {
-              currentPlace = value.first;
+              _currentPlaceMark = value.first;
             }))
         .whenComplete(() {
-      print(currentPlace.street);
-      print(currentPlace.locality);
-      print(currentPlace.administrativeArea);
-      print(currentPlace.country);
-      print(currentPlace.name);
-      print(currentPlace.subAdministrativeArea);
-      print(currentPlace.subLocality);
-      print(currentPlace.subThoroughfare);
-      print(currentPlace.thoroughfare);
+      print(_currentPlaceMark.street);
+      print(_currentPlaceMark.locality);
+      print(_currentPlaceMark.administrativeArea);
+      print(_currentPlaceMark.country);
+      print(_currentPlaceMark.name);
+      print(_currentPlaceMark.subAdministrativeArea);
+      print(_currentPlaceMark.subLocality);
+      print(_currentPlaceMark.subThoroughfare);
+      print(_currentPlaceMark.thoroughfare);
     });
+
+    /* locationFromAddress('Dracena').then((value) => print(
+        value.first.latitude.toString() +
+            "  -  " +
+            value.first.longitude.toString())); */
   }
+}
+
+class CurrentPositionInherited extends InheritedWidget {
+  const CurrentPositionInherited({
+    Key key,
+    @required this.currentPosition,
+    @required Widget child,
+  })  : assert(child != null),
+        super(key: key, child: child);
+
+  final Position currentPosition;
+
+  static CurrentPositionInherited of(BuildContext context) {
+    return context.dependOnInheritedWidgetOfExactType();
+  }
+
+  @override
+  bool updateShouldNotify(CurrentPositionInherited old) =>
+      currentPosition != old.currentPosition;
 }

@@ -249,8 +249,10 @@ class _RatingDialogState extends State<RatingDialog> {
                 _canRate
                     ? ElevatedButton(
                         child: _progressBarActive == true
-                            ? const CircularProgressIndicator(
-                                backgroundColor: Colors.white,
+                            ? Center(
+                                child: CircularProgressIndicator(
+                                  backgroundColor: Colors.white,
+                                ),
                               )
                             : Text('Avaliar'),
                         onPressed: saveRating,

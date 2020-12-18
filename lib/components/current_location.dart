@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 
 class CurrentLocation extends StatelessWidget {
-  final Placemark currentPosition;
+  final Placemark currentPlaceMark;
 
   const CurrentLocation({
     Key key,
-    this.currentPosition,
+    this.currentPlaceMark,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -20,11 +20,11 @@ class CurrentLocation extends StatelessWidget {
               style: TextStyle(color: Colors.white),
               children: [
                 TextSpan(
-                  text: currentPosition.subLocality + ",\n",
+                  text: currentPlaceMark.subLocality + ",\n",
                   style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600),
                 ),
                 TextSpan(
-                  text: currentPosition.subAdministrativeArea,
+                  text: currentPlaceMark.subAdministrativeArea,
                   style: TextStyle(fontSize: 10),
                 ),
               ],

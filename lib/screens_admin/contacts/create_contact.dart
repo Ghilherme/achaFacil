@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:AchaFacil/components/image_picker.dart';
 import 'package:AchaFacil/components/timetable_admin.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -7,6 +6,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:AchaFacil/apis/models/contacts.dart';
 import 'package:AchaFacil/apis/models/states.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 
 import '../../constants.dart';
@@ -396,6 +396,18 @@ class _CreateContactBodyState extends State<CreateContactBody> {
 
       _contactModel.lastModification = DateTime.now();
 
+      //tenta pegar geopoint com endereço providenciado
+      var loc = await locationFromAddress(_contactModel.address.strAvnName +
+          ' ' +
+          _contactModel.address.number +
+          ',' +
+          _contactModel.address.neighborhood +
+          ',' +
+          _contactModel.address.city);
+
+      _contactModel.address.coordinates =
+          GeoPoint(loc.first.latitude, loc.first.longitude);
+
       contactDB
           .set({
             'nome': _contactModel.name,
@@ -418,6 +430,7 @@ class _CreateContactBodyState extends State<CreateContactBody> {
               'cidade': _contactModel.address.city,
               'estado': _contactModel.address.state,
               'UF': _contactModel.address.uf,
+              'coordenadas': _contactModel.address.coordinates,
             },
             'avaliacao': {
               'atendimento': _contactModel.rating.attendance,

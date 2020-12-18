@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+import '../constants.dart';
 import '../screens_lists/body_service_list.dart';
 
 class BodyCategoriesList extends StatelessWidget {
@@ -25,7 +26,7 @@ class BodyCategoriesList extends StatelessWidget {
           QuerySnapshot querySnapshot = stream.data;
 
           return ListView.builder(
-              padding: EdgeInsets.all(10.0),
+              padding: EdgeInsets.all(kDefaultPaddingListView),
               itemCount: querySnapshot.size,
               itemBuilder: (context, index) {
                 return _buildRow(context, querySnapshot.docs[index], index,

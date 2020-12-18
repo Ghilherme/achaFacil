@@ -5,6 +5,8 @@ import 'package:AchaFacil/components/confirmation_dialog.dart';
 import 'package:AchaFacil/components/list_tile_admin.dart';
 import 'package:AchaFacil/screens_admin/categories/create_categories.dart';
 
+import '../../constants.dart';
+
 class BodyCategoriesListAdmin extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -47,7 +49,10 @@ class BodyCategoriesListAdmin extends StatelessWidget {
             QuerySnapshot querySnapshot = stream.data;
 
             return ListView.builder(
-                padding: EdgeInsets.only(top: 10.0, bottom: 10, left: 10),
+                padding: EdgeInsets.only(
+                    top: kDefaultPaddingListView,
+                    bottom: kDefaultPaddingListView,
+                    left: kDefaultPaddingListView),
                 itemCount: querySnapshot.size,
                 itemBuilder: (context, i) {
                   return _buildRow(
