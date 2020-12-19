@@ -1,7 +1,4 @@
 import 'package:AchaFacil/apis/models/contacts.dart';
-import 'package:AchaFacil/apis/models/rating.dart';
-import 'package:AchaFacil/components/current_location.dart';
-import 'package:AchaFacil/home/home_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:AchaFacil/screens_details/body_contact_details.dart';
@@ -61,6 +58,7 @@ class BodyContactList extends StatelessWidget {
   Widget _buildRow(BuildContext context, QueryDocumentSnapshot snapshot,
       int indice, int size) {
     ContactsModel contact = ContactsModel.fromFirestore(snapshot);
+    Position _currentPosition = globalPosition;
 
     return Column(children: <Widget>[
       ListTile(
@@ -91,15 +89,12 @@ class BodyContactList extends StatelessWidget {
                   style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
                 ),
                 TextSpan(
-                  text: contact.address.coordinates == null
+                  text: contact.address.coordinates == null ||
+                          _currentPosition == null
                       ? ''
                       : (Geolocator.distanceBetween(
-                                          CurrentPositionInherited.of(context)
-                                              .currentPosition
-                                              .latitude,
-                                          CurrentPositionInherited.of(context)
-                                              .currentPosition
-                                              .longitude,
+                                          _currentPosition.latitude,
+                                          _currentPosition.longitude,
                                           contact.address.coordinates.latitude,
                                           contact.address.coordinates.longitude)
                                       .floor() /

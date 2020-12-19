@@ -112,7 +112,9 @@ class _BodyState extends State<Body> {
                         const EdgeInsets.only(top: 10.0, left: 10, right: 10),
                     child: CardIcon(
                         icon: Icons.email, title: widget.contact.email)),
-            TimeTable(timeTable: widget.contact.timeTable),
+            widget.contact.timeTable.values.every((element) => element == '')
+                ? Container()
+                : TimeTable(timeTable: widget.contact.timeTable),
           ],
         ),
       ),
