@@ -1,8 +1,10 @@
 import 'package:AchaFacil/apis/models/contacts.dart';
-import 'package:AchaFacil/apis/models/rating.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:AchaFacil/screens_details/body_contact_details.dart';
+import 'package:geolocator/geolocator.dart';
+
+import '../constants.dart';
 
 class BodyContactList extends StatelessWidget {
   BodyContactList({Key key, @required this.title, this.serviceType})
@@ -43,7 +45,7 @@ class BodyContactList extends StatelessWidget {
             QuerySnapshot querySnapshot = stream.data;
 
             return ListView.builder(
-                padding: EdgeInsets.all(10.0),
+                padding: EdgeInsets.all(kDefaultPaddingListView),
                 itemCount: querySnapshot.size,
                 itemBuilder: (context, i) {
                   return _buildRow(
@@ -53,42 +55,56 @@ class BodyContactList extends StatelessWidget {
         ));
   }
 
-  Widget _buildSubtitle(RatingModel rating) {
-    return Column(
-      children: [
-        Row(
-          children: [
-            Text("Atendimento: " + rating.attendance.toStringAsFixed(1))
-          ],
-        ),
-        Row(
-          children: [Text("Qualidade: " + rating.quality.toStringAsFixed(1))],
-        ),
-        Row(
-          children: [Text("Preço: " + rating.price.toStringAsFixed(1))],
-        )
-      ],
-    );
-  }
-
   Widget _buildRow(BuildContext context, QueryDocumentSnapshot snapshot,
       int indice, int size) {
     ContactsModel contact = ContactsModel.fromFirestore(snapshot);
+    Position _currentPosition = globalPosition;
+
     return Column(children: <Widget>[
       ListTile(
+          isThreeLine: true,
           leading: CircleAvatar(
               radius: 25,
               backgroundImage:
                   contact.imageAvatar == '' || contact.imageAvatar == null
                       ? AssetImage('assets/images/contacts.jpeg')
                       : Image.network(contact.imageAvatar).image),
-          subtitle: _buildSubtitle(contact.rating),
+          subtitle: Text("Atendimento: " +
+              contact.rating.attendance.toStringAsFixed(1) +
+              '\n' +
+              'Qualidade: ' +
+              contact.rating.quality.toStringAsFixed(1) +
+              '\n' +
+              'Preço: ' +
+              contact.rating.price.toStringAsFixed(1)),
           title: Text(
             contact.name,
           ),
-          trailing: Text(
-            contact.rating.general.toStringAsFixed(1),
-            style: TextStyle(fontSize: 15),
+          trailing: RichText(
+            text: TextSpan(
+              style: TextStyle(color: Colors.black),
+              children: [
+                TextSpan(
+                  text: contact.rating.general.toStringAsFixed(1) + "\n",
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                ),
+                TextSpan(
+                  text: contact.address.coordinates == null ||
+                          _currentPosition == null
+                      ? ''
+                      : (Geolocator.distanceBetween(
+                                          _currentPosition.latitude,
+                                          _currentPosition.longitude,
+                                          contact.address.coordinates.latitude,
+                                          contact.address.coordinates.longitude)
+                                      .floor() /
+                                  1000)
+                              .toStringAsFixed(1) +
+                          ' kms',
+                  style: TextStyle(fontSize: 11, color: kTextLightColor),
+                ),
+              ],
+            ),
           ),
           onTap: () {
             Navigator.of(context).push(MaterialPageRoute(

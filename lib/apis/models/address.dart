@@ -10,7 +10,8 @@ class AddressModel {
       this.uf,
       this.cep,
       this.country,
-      this.compliment});
+      this.compliment,
+      this.coordinates});
   String strAvnName,
       number,
       state,
@@ -20,6 +21,7 @@ class AddressModel {
       cep,
       country,
       compliment;
+  GeoPoint coordinates;
 
   AddressModel.fromAddress(AddressModel address) {
     this.strAvnName = address.strAvnName;
@@ -31,6 +33,7 @@ class AddressModel {
     this.cep = address.cep;
     this.country = address.country;
     this.compliment = address.compliment;
+    this.coordinates = address.coordinates;
   }
 
   AddressModel.fromFirestore(QueryDocumentSnapshot snapshot) {
@@ -43,6 +46,7 @@ class AddressModel {
     this.number = snapshot.data()['endereco']['numero'];
     this.state = snapshot.data()['endereco']['estado'];
     this.uf = snapshot.data()['endereco']['UF'];
+    this.coordinates = snapshot.data()['endereco']['coordenadas'];
   }
 
   AddressModel.empty() {
@@ -55,5 +59,6 @@ class AddressModel {
     this.cep = '';
     this.country = '';
     this.compliment = '';
+    this.coordinates = null;
   }
 }
