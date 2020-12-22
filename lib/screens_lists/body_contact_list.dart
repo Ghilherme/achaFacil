@@ -62,32 +62,52 @@ class BodyContactList extends StatelessWidget {
 
     return Column(children: <Widget>[
       ListTile(
-          isThreeLine: true,
+          //isThreeLine: true,
           leading: CircleAvatar(
               radius: 25,
               backgroundImage:
                   contact.imageAvatar == '' || contact.imageAvatar == null
                       ? AssetImage('assets/images/contacts.jpeg')
                       : Image.network(contact.imageAvatar).image),
-          subtitle: Text("Atendimento: " +
-              contact.rating.attendance.toStringAsFixed(1) +
-              '\n' +
-              'Qualidade: ' +
-              contact.rating.quality.toStringAsFixed(1) +
-              '\n' +
-              'Preço: ' +
-              contact.rating.price.toStringAsFixed(1)),
+          subtitle: contact.rating.general == 0
+              ? Text('Seja o primeiro a avaliar!')
+              : Text(
+                  "Atendimento: " +
+                      contact.rating.attendance.toStringAsFixed(1) +
+                      '\n' +
+                      'Qualidade: ' +
+                      contact.rating.quality.toStringAsFixed(1) +
+                      '\n' +
+                      'Preço: ' +
+                      contact.rating.price.toStringAsFixed(1),
+                  style: TextStyle(fontSize: 13.0, color: Colors.grey),
+                ),
           title: Text(
             contact.name,
+            style: TextStyle(fontWeight: FontWeight.w500),
           ),
           trailing: RichText(
+            textAlign: TextAlign.right,
             text: TextSpan(
               style: TextStyle(color: Colors.black),
               children: [
                 TextSpan(
-                  text: contact.rating.general.toStringAsFixed(1) + "\n",
+                  text: contact.rating.general == 0
+                      ? '--'
+                      : contact.rating.general.toStringAsFixed(1),
                   style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
                 ),
+                TextSpan(text: ' '),
+                WidgetSpan(
+                  child: Icon(
+                    Icons.star,
+                    color: contact.rating.general == 0
+                        ? Colors.grey
+                        : Colors.amber,
+                    size: 20,
+                  ),
+                ),
+                TextSpan(text: '\n'),
                 TextSpan(
                   text: contact.address.coordinates == null ||
                           _currentPosition == null
