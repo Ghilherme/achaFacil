@@ -3,6 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:AchaFacil/screens_lists/body_contact_list.dart';
 
+import '../constants.dart';
+
 class BodyServiceList extends StatelessWidget {
   BodyServiceList({Key key, @required this.category, this.title})
       : super(key: key);
@@ -46,7 +48,7 @@ class BodyServiceList extends StatelessWidget {
             QuerySnapshot querySnapshot = stream.data;
 
             return ListView.builder(
-                padding: EdgeInsets.all(10.0),
+                padding: EdgeInsets.all(kDefaultPaddingListView),
                 itemCount: querySnapshot.size,
                 itemBuilder: (context, i) {
                   return _buildRow(
@@ -59,6 +61,7 @@ class BodyServiceList extends StatelessWidget {
   Widget _buildRow(
       BuildContext context, DocumentSnapshot snapshot, int indice, int size) {
     ServiceTypesModel services = ServiceTypesModel.fromFirestore(snapshot);
+
     return Column(children: <Widget>[
       ListTile(
           title: Text(services.name),

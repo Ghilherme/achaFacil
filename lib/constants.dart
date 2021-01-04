@@ -1,5 +1,6 @@
 import 'package:AchaFacil/apis/models/weekdays.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 
 import 'apis/models/states.dart';
 
@@ -13,6 +14,9 @@ const kFillStarColor = Color(0xFFFCC419);
 
 const kDefaultPadding = 20.0;
 const daysWaitingRate = 7;
+const kDefaultPaddingListView = 5.0;
+
+Position globalPosition;
 
 const kDefaultShadow = BoxShadow(
   offset: Offset(0, 4),
