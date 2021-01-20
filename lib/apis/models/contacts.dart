@@ -20,13 +20,15 @@ class ContactsModel {
       this.timeTable,
       this.id,
       this.lastModification,
-      this.createdAt});
+      this.createdAt,
+      this.zapClickedAmount});
   String id, name, email, description, site, image, imageAvatar;
   Map<String, dynamic> telNumbers, timeTable;
   List<dynamic> serviceType, scheduleType;
   AddressModel address;
   RatingModel rating;
   DateTime lastModification, createdAt;
+  int zapClickedAmount;
 
   ContactsModel.fromContact(ContactsModel contact) {
     this.id = contact.id;
@@ -44,6 +46,7 @@ class ContactsModel {
     this.lastModification = contact.lastModification;
     this.createdAt = contact.createdAt;
     this.rating = contact.rating;
+    this.zapClickedAmount = contact.zapClickedAmount;
   }
   ContactsModel.fromFirestore(QueryDocumentSnapshot snapshot) {
     this.id = snapshot.id;
@@ -65,6 +68,7 @@ class ContactsModel {
         ? null
         : snapshot.data()['criacao'].toDate();
     this.rating = RatingModel.fromFirestore(snapshot);
+    this.zapClickedAmount = snapshot.data()['zapclicado'];
   }
 
   ContactsModel.empty() {
@@ -82,5 +86,6 @@ class ContactsModel {
     this.lastModification = null;
     this.createdAt = null;
     this.rating = RatingModel.empty();
+    this.zapClickedAmount = 0;
   }
 }
