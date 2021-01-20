@@ -1,6 +1,7 @@
 import 'package:AchaFacil/apis/models/contacts.dart';
 import 'package:AchaFacil/components/card_icon.dart';
 import 'package:AchaFacil/components/expandable_widget.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../constants.dart';
 import 'title_address_name.dart';
@@ -20,6 +21,7 @@ class BodyContactDetails extends StatelessWidget {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () async {
           launchZap(contact.telNumbers['whatsapp']);
+          increaseTagCount(contact.id, contact.zapClickedAmount);
         },
         label: Text('Zap'),
         icon: Icon(Icons.call),
@@ -30,6 +32,14 @@ class BodyContactDetails extends StatelessWidget {
   Future<bool> launchZap(numberPhone) async {
     var whatsappUrl = "whatsapp://send?phone=$numberPhone";
     return await canLaunch(whatsappUrl) ? launch(whatsappUrl) : false;
+  }
+
+  void increaseTagCount(String id, int zapClickedAmount) {
+    DocumentReference contactDB =
+        FirebaseFirestore.instance.collection('contatos').doc(id);
+    int zap = zapClickedAmount == null ? 1 : zapClickedAmount + 1;
+    contactDB.update({'zapclicado': zap});
+    contact.zapClickedAmount = zap;
   }
 }
 
