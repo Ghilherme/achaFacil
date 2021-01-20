@@ -1,7 +1,7 @@
 class States {
-  States({
+  const States({
     this.state,
     this.uf,
   });
-  String state, uf;
+  final String state, uf;
 }
