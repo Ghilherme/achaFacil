@@ -42,7 +42,9 @@ class BodyCategoriesList extends StatelessWidget {
           title: Text(
             snapshot.data()['titulo'],
           ),
-          subtitle: Text(snapshot.data()['subtitulo']),
+          subtitle: Text(
+            snapshot.data()['subtitulo'],
+          ),
           leading:
               snapshot.data()['icone'] == null || snapshot.data()['icone'] == ''
                   ? Icon(Icons.home_repair_service)
