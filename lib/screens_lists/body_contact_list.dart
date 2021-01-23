@@ -24,20 +24,6 @@ class BodyContactList extends StatelessWidget {
         appBar: AppBar(
             title: Text(title),
             elevation: 0,
-            actions: [
-              /* IconButton(
-                icon: Icon(Icons.more_vert),
-                onPressed: () {},
-              ) */
-              /* PopupMenuButton(
-                itemBuilder: (context) {
-                  PopupMenuItem(
-                    value: choice,
-                    child: Text(''),
-                  );
-                },
-              ) */
-            ],
             leading: IconButton(
               icon: Icon(Icons.arrow_back),
               onPressed: () {
@@ -58,23 +44,29 @@ class BodyContactList extends StatelessWidget {
             }
 
             QuerySnapshot querySnapshot = stream.data;
+            var contatos = _orderContactsByDistance(querySnapshot.docs);
 
             return ListView.builder(
                 padding: EdgeInsets.all(kDefaultPaddingListView),
-                itemCount: querySnapshot.size,
+                itemCount: contatos.length,
                 itemBuilder: (context, i) {
-                  return _buildRow(
-                      context, querySnapshot.docs[i], i, querySnapshot.size);
+                  return _buildRow(context, contatos, i, contatos.length);
                 });
           },
         ));
   }
 
-  Widget _buildRow(BuildContext context, QueryDocumentSnapshot snapshot,
-      int indice, int size) {
-    ContactsModel contact = ContactsModel.fromFirestore(snapshot);
-    Position _currentPosition = globalPosition;
+  String _distanceBetweenKms(double startLat, startLon, endLat, endLon) {
+    return (Geolocator.distanceBetween(startLat, startLon, endLat, endLon)
+                .floor() /
+            1000)
+        .toStringAsFixed(1);
+  }
 
+  Widget _buildRow(BuildContext context, List<DistanceContact> contacts,
+      int indice, int size) {
+    ContactsModel contact = contacts.elementAt(indice).contact;
+    String kms = contacts.elementAt(indice).distance.toString();
     return Column(children: <Widget>[
       ListTile(
           //isThreeLine: true,
@@ -124,18 +116,7 @@ class BodyContactList extends StatelessWidget {
                 ),
                 TextSpan(text: '\n'),
                 TextSpan(
-                  text: contact.address.coordinates == null ||
-                          _currentPosition == null
-                      ? ''
-                      : (Geolocator.distanceBetween(
-                                          _currentPosition.latitude,
-                                          _currentPosition.longitude,
-                                          contact.address.coordinates.latitude,
-                                          contact.address.coordinates.longitude)
-                                      .floor() /
-                                  1000)
-                              .toStringAsFixed(1) +
-                          ' kms',
+                  text: kms.isEmpty ? '' : kms + ' kms',
                   style: TextStyle(fontSize: 11, color: kTextLightColor),
                 ),
               ],
@@ -150,4 +131,34 @@ class BodyContactList extends StatelessWidget {
       indice + 1 == size ? Container() : Divider()
     ]);
   }
+
+  List<DistanceContact> _orderContactsByDistance(
+      List<QueryDocumentSnapshot> querySnapshots) {
+    Position _currentPosition = globalPosition;
+
+    List<DistanceContact> distanceContacts = List<DistanceContact>();
+    for (var querySnapshot in querySnapshots) {
+      ContactsModel contact = ContactsModel.fromFirestore(querySnapshot);
+      var distance =
+          contact.address.coordinates == null || _currentPosition == null
+              ? 0.0
+              : double.parse(_distanceBetweenKms(
+                  _currentPosition.latitude,
+                  _currentPosition.longitude,
+                  contact.address.coordinates.latitude,
+                  contact.address.coordinates.longitude));
+
+      distanceContacts
+          .add(DistanceContact(distance: distance, contact: contact));
+    }
+    distanceContacts.sort((a, b) => a.distance.compareTo(b.distance));
+
+    return distanceContacts;
+  }
+}
+
+class DistanceContact {
+  DistanceContact({this.distance, this.contact});
+  double distance;
+  ContactsModel contact;
 }
