@@ -1,5 +1,3 @@
-import 'dart:collection';
-
 import 'package:AchaFacil/apis/models/contacts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -118,7 +116,7 @@ class BodyContactList extends StatelessWidget {
                 ),
                 TextSpan(text: '\n'),
                 TextSpan(
-                  text: contact.address.coordinates == null ? '' : kms + ' kms',
+                  text: kms.isEmpty ? '' : kms + ' kms',
                   style: TextStyle(fontSize: 11, color: kTextLightColor),
                 ),
               ],
@@ -138,7 +136,6 @@ class BodyContactList extends StatelessWidget {
       List<QueryDocumentSnapshot> querySnapshots) {
     Position _currentPosition = globalPosition;
 
-    SplayTreeMap<double, ContactsModel> contactsMap = SplayTreeMap();
     List<DistanceContact> distanceContacts = List<DistanceContact>();
     for (var querySnapshot in querySnapshots) {
       ContactsModel contact = ContactsModel.fromFirestore(querySnapshot);
@@ -150,8 +147,6 @@ class BodyContactList extends StatelessWidget {
                   _currentPosition.longitude,
                   contact.address.coordinates.latitude,
                   contact.address.coordinates.longitude));
-
-      contactsMap[distance] = contact;
 
       distanceContacts
           .add(DistanceContact(distance: distance, contact: contact));
