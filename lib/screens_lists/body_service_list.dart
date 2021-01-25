@@ -70,8 +70,7 @@ class _BodyServiceListState extends State<BodyServiceList> {
         )
         .where('nome', isGreaterThanOrEqualTo: _searchName)
         .where('nome', isLessThan: _searchName + 'z')
-        .orderBy('nome')
-        .limit(10);
+        .orderBy('nome');
 
     return Scaffold(
         appBar: _searchBar.build(context),
