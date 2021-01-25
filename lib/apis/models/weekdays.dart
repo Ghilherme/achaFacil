@@ -1,8 +1,8 @@
 class WeekDays {
-  WeekDays({
+  const WeekDays({
     this.dayName,
     this.dayNumber,
   });
-  String dayName;
-  int dayNumber;
+  final String dayName;
+  final int dayNumber;
 }

@@ -2,14 +2,62 @@ import 'package:AchaFacil/apis/models/service_types.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:AchaFacil/screens_lists/body_contact_list.dart';
-
+import 'package:flutter_search_bar/flutter_search_bar.dart';
 import '../constants.dart';
 
-class BodyServiceList extends StatelessWidget {
+class BodyServiceList extends StatefulWidget {
   BodyServiceList({Key key, @required this.category, this.title})
       : super(key: key);
   final DocumentReference category;
   final String title;
+
+  @override
+  _BodyServiceListState createState() => _BodyServiceListState();
+}
+
+class _BodyServiceListState extends State<BodyServiceList> {
+  SearchBar _searchBar;
+  String _searchName = '';
+
+  AppBar _buildAppBar(BuildContext context) {
+    return AppBar(
+        title: Text(widget.title),
+        elevation: 0,
+        actions: <Widget>[
+          _searchBar.getSearchAction(context),
+        ],
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ));
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _searchBar = new SearchBar(
+        inBar: false,
+        hintText: 'Pesquise',
+        setState: setState,
+        onSubmitted: print,
+        onChanged: _onChanged,
+        showClearButton: false,
+        onClosed: _onClosed,
+        buildDefaultAppBar: _buildAppBar);
+  }
+
+  void _onChanged(String value) {
+    String finalSearch = value.isNotEmpty
+        ? value.substring(0, 1).toUpperCase() + value.substring(1)
+        : value;
+    setState(() => _searchName = finalSearch);
+  }
+
+  void _onClosed() {
+    setState(() => _searchName = '');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,20 +66,15 @@ class BodyServiceList extends StatelessWidget {
         .collection('prestadores')
         .where(
           'categoria',
-          isEqualTo: category,
+          isEqualTo: widget.category,
         )
-        .orderBy('nome');
+        .where('nome', isGreaterThanOrEqualTo: _searchName)
+        .where('nome', isLessThan: _searchName + 'z')
+        .orderBy('nome')
+        .limit(10);
 
     return Scaffold(
-        appBar: AppBar(
-            title: Text(title),
-            elevation: 0,
-            leading: IconButton(
-              icon: Icon(Icons.arrow_back),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            )),
+        appBar: _searchBar.build(context),
         body: StreamBuilder(
           stream: query.snapshots(),
           builder: (context, stream) {

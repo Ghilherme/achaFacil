@@ -166,12 +166,12 @@ class _CreateContactBodyState extends State<CreateContactBody> {
             ListTile(
               leading: Icon(Icons.phone),
               title: TextFormField(
-                maxLength: 15,
+                maxLength: 17,
                 initialValue: _contactModel.telNumbers['whatsapp'] == null
-                    ? '+55'
+                    ? ''
                     : _contactModel.telNumbers['whatsapp'],
                 onChanged: (value) {
-                  _contactModel.telNumbers = {'whatsapp': value};
+                  _contactModel.telNumbers = {'whatsapp': value.trim()};
                 },
                 keyboardType: TextInputType.phone,
                 decoration: InputDecoration(

@@ -34,6 +34,7 @@ class _CurrentLocationState extends State<CurrentLocation> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: RichText(
+                  textAlign: TextAlign.right,
                   text: TextSpan(
                     style: TextStyle(color: Colors.white),
                     children: [
