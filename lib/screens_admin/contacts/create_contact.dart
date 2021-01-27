@@ -6,6 +6,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:AchaFacil/apis/models/contacts.dart';
 import 'package:AchaFacil/apis/models/states.dart';
+import 'package:flutter/services.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 
@@ -160,6 +161,66 @@ class _CreateContactBodyState extends State<CreateContactBody> {
                 keyboardType: TextInputType.url,
                 decoration: InputDecoration(
                   hintText: "Site",
+                ),
+              ),
+            ),
+            ListTile(
+              leading: Image.asset(
+                'assets/icons/instagram_logo.png',
+                width: 28,
+                height: 28,
+              ),
+              title: new TextFormField(
+                inputFormatters: [
+                  FilteringTextInputFormatter.deny('@'),
+                ],
+                initialValue: _contactModel.instagram,
+                onChanged: (value) {
+                  _contactModel.instagram = value.trim();
+                },
+                keyboardType: TextInputType.url,
+                decoration: InputDecoration(
+                  hintText: "Instagram (somente username)",
+                ),
+              ),
+            ),
+            ListTile(
+              leading: Image.asset(
+                'assets/icons/facebook_logo.png',
+                width: 28,
+                height: 28,
+              ),
+              title: new TextFormField(
+                inputFormatters: [
+                  FilteringTextInputFormatter.deny('@'),
+                ],
+                initialValue: _contactModel.facebook,
+                onChanged: (value) {
+                  _contactModel.facebook = value.trim();
+                },
+                keyboardType: TextInputType.url,
+                decoration: InputDecoration(
+                  hintText: "Facebook (somente username)",
+                ),
+              ),
+            ),
+            ListTile(
+              leading: Image.asset(
+                'assets/icons/linkedin_logo.png',
+                width: 28,
+                height: 28,
+              ),
+              title: new TextFormField(
+                inputFormatters: [
+                  FilteringTextInputFormatter.deny('@'),
+                ],
+                initialValue: _contactModel.linkedin,
+                onChanged: (value) {
+                  _contactModel.linkedin = value.trim();
+                },
+                keyboardType: TextInputType.url,
+                decoration: InputDecoration(
+                  hintText: "Linkedin (somente username)",
                 ),
               ),
             ),
@@ -422,6 +483,9 @@ class _CreateContactBodyState extends State<CreateContactBody> {
             'funcionamento': _contactModel.scheduleType,
             'atualizacao': _contactModel.lastModification,
             'criacao': _contactModel.createdAt,
+            'instagram': _contactModel.instagram,
+            'facebook': _contactModel.facebook,
+            'linkedin': _contactModel.linkedin,
             'endereco': {
               'endereco': _contactModel.address.strAvnName,
               'complemento': _contactModel.address.compliment,

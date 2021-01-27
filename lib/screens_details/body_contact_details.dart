@@ -127,57 +127,59 @@ class _BodyState extends State<Body> {
             widget.contact.timeTable.values.every((element) => element == '')
                 ? Container()
                 : TimeTable(timeTable: widget.contact.timeTable),
-            widget.contact.instagramLink == null ||
-                    widget.contact.instagramLink.isEmpty
+            widget.contact.instagram == null || widget.contact.instagram.isEmpty
                 ? Container()
                 : Padding(
                     padding:
                         const EdgeInsets.only(top: 10.0, left: 10, right: 10),
                     child: CardIcon(
                       imagePath: 'assets/icons/instagram_logo.png',
-                      title: getSocialUsername(
-                          widget.contact.instagramLink, '.com/', '/'),
+                      title: widget.contact.instagram,
                       onTap: () async {
-                        launchExternal(widget.contact.instagramLink);
+                        if (widget.contact.instagram.contains('.com'))
+                          launchExternal(widget.contact.instagram.trim());
+                        else
+                          launchExternal('https://www.instagram.com/' +
+                              widget.contact.instagram);
                       },
                     )),
-            widget.contact.facebookLink == null ||
-                    widget.contact.facebookLink.isEmpty
+            widget.contact.facebook == null || widget.contact.facebook.isEmpty
                 ? Container()
                 : Padding(
                     padding:
                         const EdgeInsets.only(top: 10.0, left: 10, right: 10),
                     child: CardIcon(
                         imagePath: 'assets/icons/facebook_logo.png',
-                        title: getSocialUsername(
-                            widget.contact.facebookLink, '.com/', '/'),
+                        title: widget.contact.facebook,
                         onTap: () async {
-                          launchExternal(widget.contact.facebookLink);
+                          if (widget.contact.facebook.contains('.com'))
+                            launchExternal(widget.contact.facebook.trim());
+                          else
+                            launchExternal('https://www.facebook.com/' +
+                                widget.contact.facebook);
                         }),
                   ),
-            widget.contact.linkedinLink == null ||
-                    widget.contact.linkedinLink.isEmpty
+            widget.contact.linkedin == null || widget.contact.linkedin.isEmpty
                 ? Container()
                 : Padding(
                     padding:
                         const EdgeInsets.only(top: 10.0, left: 10, right: 10),
                     child: CardIcon(
                         imagePath: 'assets/icons/linkedin_logo.png',
-                        title: getSocialUsername(
-                            widget.contact.linkedinLink, '.com/in/', '/'),
+                        title: widget.contact.linkedin,
                         onTap: () async {
-                          launchExternal(widget.contact.linkedinLink);
+                          if (widget.contact.linkedin.contains('.com'))
+                            launchExternal(widget.contact.linkedin.trim());
+                          else
+                            launchExternal('https://www.linkedin.com/in/' +
+                                widget.contact.linkedin);
                         })),
+            Container(
+              height: 50,
+            )
           ],
         ),
       ),
     );
-  }
-
-  getSocialUsername(String fullUrl, String startUrl, String endUrl) {
-    final startIndex = fullUrl.indexOf(startUrl);
-    final endIndex = fullUrl.indexOf(endUrl, startIndex + startUrl.length);
-
-    return fullUrl.substring(startIndex + startUrl.length, endIndex);
   }
 }

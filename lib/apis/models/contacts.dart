@@ -21,9 +21,9 @@ class ContactsModel {
       this.lastModification,
       this.createdAt,
       this.zapClickedAmount,
-      this.instagramLink,
-      this.facebookLink,
-      this.linkedinLink});
+      this.instagram,
+      this.facebook,
+      this.linkedin});
   String id,
       name,
       email,
@@ -31,9 +31,9 @@ class ContactsModel {
       site,
       image,
       imageAvatar,
-      instagramLink,
-      facebookLink,
-      linkedinLink;
+      instagram,
+      facebook,
+      linkedin;
   Map<String, dynamic> telNumbers, timeTable;
   List<dynamic> serviceType, scheduleType;
   AddressModel address;
@@ -58,9 +58,9 @@ class ContactsModel {
     this.createdAt = contact.createdAt;
     this.rating = contact.rating;
     this.zapClickedAmount = contact.zapClickedAmount;
-    this.instagramLink = contact.instagramLink;
-    this.facebookLink = contact.facebookLink;
-    this.linkedinLink = contact.linkedinLink;
+    this.instagram = contact.instagram;
+    this.facebook = contact.facebook;
+    this.linkedin = contact.linkedin;
   }
   ContactsModel.fromFirestore(QueryDocumentSnapshot snapshot) {
     this.id = snapshot.id;
@@ -83,9 +83,9 @@ class ContactsModel {
         : snapshot.data()['criacao'].toDate();
     this.rating = RatingModel.fromFirestore(snapshot);
     this.zapClickedAmount = snapshot.data()['zapclicado'];
-    this.instagramLink = snapshot.data()['instagram'];
-    this.facebookLink = snapshot.data()['facebook'];
-    this.linkedinLink = snapshot.data()['linkedin'];
+    this.instagram = snapshot.data()['instagram'];
+    this.facebook = snapshot.data()['facebook'];
+    this.linkedin = snapshot.data()['linkedin'];
   }
 
   ContactsModel.empty() {
@@ -104,8 +104,8 @@ class ContactsModel {
     this.createdAt = null;
     this.rating = RatingModel.empty();
     this.zapClickedAmount = 0;
-    this.instagramLink = '';
-    this.facebookLink = '';
-    this.linkedinLink = '';
+    this.instagram = '';
+    this.facebook = '';
+    this.linkedin = '';
   }
 }
