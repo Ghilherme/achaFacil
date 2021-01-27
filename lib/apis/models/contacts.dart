@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-
 import 'address.dart';
 import 'rating.dart';
 
@@ -21,8 +20,20 @@ class ContactsModel {
       this.id,
       this.lastModification,
       this.createdAt,
-      this.zapClickedAmount});
-  String id, name, email, description, site, image, imageAvatar;
+      this.zapClickedAmount,
+      this.instagram,
+      this.facebook,
+      this.linkedin});
+  String id,
+      name,
+      email,
+      description,
+      site,
+      image,
+      imageAvatar,
+      instagram,
+      facebook,
+      linkedin;
   Map<String, dynamic> telNumbers, timeTable;
   List<dynamic> serviceType, scheduleType;
   AddressModel address;
@@ -47,6 +58,9 @@ class ContactsModel {
     this.createdAt = contact.createdAt;
     this.rating = contact.rating;
     this.zapClickedAmount = contact.zapClickedAmount;
+    this.instagram = contact.instagram;
+    this.facebook = contact.facebook;
+    this.linkedin = contact.linkedin;
   }
   ContactsModel.fromFirestore(QueryDocumentSnapshot snapshot) {
     this.id = snapshot.id;
@@ -69,6 +83,9 @@ class ContactsModel {
         : snapshot.data()['criacao'].toDate();
     this.rating = RatingModel.fromFirestore(snapshot);
     this.zapClickedAmount = snapshot.data()['zapclicado'];
+    this.instagram = snapshot.data()['instagram'];
+    this.facebook = snapshot.data()['facebook'];
+    this.linkedin = snapshot.data()['linkedin'];
   }
 
   ContactsModel.empty() {
@@ -87,5 +104,8 @@ class ContactsModel {
     this.createdAt = null;
     this.rating = RatingModel.empty();
     this.zapClickedAmount = 0;
+    this.instagram = '';
+    this.facebook = '';
+    this.linkedin = '';
   }
 }
