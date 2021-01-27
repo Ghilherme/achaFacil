@@ -20,18 +20,14 @@ class BodyContactDetails extends StatelessWidget {
       body: Body(contact: contact),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () async {
-          launchZap(contact.telNumbers['whatsapp']);
+          launchExternal(
+              "whatsapp://send?phone=" + contact.telNumbers['whatsapp']);
           increaseTagCount(contact.id, contact.zapClickedAmount);
         },
         label: Text('Zap'),
         icon: Icon(Icons.call),
       ),
     );
-  }
-
-  Future<bool> launchZap(numberPhone) async {
-    var whatsappUrl = "whatsapp://send?phone=$numberPhone";
-    return await canLaunch(whatsappUrl) ? launch(whatsappUrl) : false;
   }
 
   void increaseTagCount(String id, int zapClickedAmount) {
@@ -41,6 +37,10 @@ class BodyContactDetails extends StatelessWidget {
     contactDB.update({'zapclicado': zap});
     contact.zapClickedAmount = zap;
   }
+}
+
+Future<bool> launchExternal(String url) async {
+  return await canLaunch(url) ? launch(url) : false;
 }
 
 class Body extends StatefulWidget {
@@ -114,7 +114,9 @@ class _BodyState extends State<Body> {
                     padding:
                         const EdgeInsets.only(top: 10.0, left: 10, right: 10),
                     child: CardIcon(
-                        icon: Icons.language, title: widget.contact.site)),
+                      icon: Icons.language,
+                      title: widget.contact.site,
+                    )),
             widget.contact.email.isEmpty
                 ? Container()
                 : Padding(
@@ -125,9 +127,57 @@ class _BodyState extends State<Body> {
             widget.contact.timeTable.values.every((element) => element == '')
                 ? Container()
                 : TimeTable(timeTable: widget.contact.timeTable),
+            widget.contact.instagramLink == null ||
+                    widget.contact.instagramLink.isEmpty
+                ? Container()
+                : Padding(
+                    padding:
+                        const EdgeInsets.only(top: 10.0, left: 10, right: 10),
+                    child: CardIcon(
+                      imagePath: 'assets/icons/instagram_logo.png',
+                      title: getSocialUsername(
+                          widget.contact.instagramLink, '.com/', '/'),
+                      onTap: () async {
+                        launchExternal(widget.contact.instagramLink);
+                      },
+                    )),
+            widget.contact.facebookLink == null ||
+                    widget.contact.facebookLink.isEmpty
+                ? Container()
+                : Padding(
+                    padding:
+                        const EdgeInsets.only(top: 10.0, left: 10, right: 10),
+                    child: CardIcon(
+                        imagePath: 'assets/icons/facebook_logo.png',
+                        title: getSocialUsername(
+                            widget.contact.facebookLink, '.com/', '/'),
+                        onTap: () async {
+                          launchExternal(widget.contact.facebookLink);
+                        }),
+                  ),
+            widget.contact.linkedinLink == null ||
+                    widget.contact.linkedinLink.isEmpty
+                ? Container()
+                : Padding(
+                    padding:
+                        const EdgeInsets.only(top: 10.0, left: 10, right: 10),
+                    child: CardIcon(
+                        imagePath: 'assets/icons/linkedin_logo.png',
+                        title: getSocialUsername(
+                            widget.contact.linkedinLink, '.com/in/', '/'),
+                        onTap: () async {
+                          launchExternal(widget.contact.linkedinLink);
+                        })),
           ],
         ),
       ),
     );
+  }
+
+  getSocialUsername(String fullUrl, String startUrl, String endUrl) {
+    final startIndex = fullUrl.indexOf(startUrl);
+    final endIndex = fullUrl.indexOf(endUrl, startIndex + startUrl.length);
+
+    return fullUrl.substring(startIndex + startUrl.length, endIndex);
   }
 }
