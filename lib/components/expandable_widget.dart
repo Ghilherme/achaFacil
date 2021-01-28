@@ -14,14 +14,14 @@ class TimeTable extends StatelessWidget {
       return Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
         Padding(
           padding: const EdgeInsets.all(10.0),
-          child: new Text(key,
+          child: Text(key,
               style: Theme.of(context).textTheme.bodyText2.copyWith(
                     color: kTextLightColor,
                   )),
         ),
         Padding(
           padding: const EdgeInsets.all(10.0),
-          child: new Text(value,
+          child: Text(value,
               style: Theme.of(context).textTheme.bodyText2.copyWith(
                     color: kTextLightColor,
                   )),
@@ -41,7 +41,7 @@ class TimeTable extends StatelessWidget {
 
     return ExpandableNotifier(
         child: Padding(
-      padding: const EdgeInsets.all(10),
+      padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
       child: ScrollOnExpand(
         child: Card(
           elevation: 0,

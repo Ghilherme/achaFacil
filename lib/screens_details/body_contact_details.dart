@@ -20,18 +20,14 @@ class BodyContactDetails extends StatelessWidget {
       body: Body(contact: contact),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () async {
-          launchZap(contact.telNumbers['whatsapp']);
+          launchExternal(
+              "whatsapp://send?phone=" + contact.telNumbers['whatsapp']);
           increaseTagCount(contact.id, contact.zapClickedAmount);
         },
         label: Text('Zap'),
         icon: Icon(Icons.call),
       ),
     );
-  }
-
-  Future<bool> launchZap(numberPhone) async {
-    var whatsappUrl = "whatsapp://send?phone=$numberPhone";
-    return await canLaunch(whatsappUrl) ? launch(whatsappUrl) : false;
   }
 
   void increaseTagCount(String id, int zapClickedAmount) {
@@ -41,6 +37,10 @@ class BodyContactDetails extends StatelessWidget {
     contactDB.update({'zapclicado': zap});
     contact.zapClickedAmount = zap;
   }
+}
+
+Future<bool> launchExternal(String url) async {
+  return await canLaunch(url) ? launch(url) : false;
 }
 
 class Body extends StatefulWidget {
@@ -114,7 +114,9 @@ class _BodyState extends State<Body> {
                     padding:
                         const EdgeInsets.only(top: 10.0, left: 10, right: 10),
                     child: CardIcon(
-                        icon: Icons.language, title: widget.contact.site)),
+                      icon: Icons.language,
+                      title: widget.contact.site,
+                    )),
             widget.contact.email.isEmpty
                 ? Container()
                 : Padding(
@@ -125,6 +127,56 @@ class _BodyState extends State<Body> {
             widget.contact.timeTable.values.every((element) => element == '')
                 ? Container()
                 : TimeTable(timeTable: widget.contact.timeTable),
+            widget.contact.instagram == null || widget.contact.instagram.isEmpty
+                ? Container()
+                : Padding(
+                    padding:
+                        const EdgeInsets.only(top: 10.0, left: 10, right: 10),
+                    child: CardIcon(
+                      imagePath: 'assets/icons/instagram_logo.png',
+                      title: widget.contact.instagram,
+                      onTap: () async {
+                        if (widget.contact.instagram.contains('.com'))
+                          launchExternal(widget.contact.instagram.trim());
+                        else
+                          launchExternal('https://www.instagram.com/' +
+                              widget.contact.instagram);
+                      },
+                    )),
+            widget.contact.facebook == null || widget.contact.facebook.isEmpty
+                ? Container()
+                : Padding(
+                    padding:
+                        const EdgeInsets.only(top: 10.0, left: 10, right: 10),
+                    child: CardIcon(
+                        imagePath: 'assets/icons/facebook_logo.png',
+                        title: widget.contact.facebook,
+                        onTap: () async {
+                          if (widget.contact.facebook.contains('.com'))
+                            launchExternal(widget.contact.facebook.trim());
+                          else
+                            launchExternal('https://www.facebook.com/' +
+                                widget.contact.facebook);
+                        }),
+                  ),
+            widget.contact.linkedin == null || widget.contact.linkedin.isEmpty
+                ? Container()
+                : Padding(
+                    padding:
+                        const EdgeInsets.only(top: 10.0, left: 10, right: 10),
+                    child: CardIcon(
+                        imagePath: 'assets/icons/linkedin_logo.png',
+                        title: widget.contact.linkedin,
+                        onTap: () async {
+                          if (widget.contact.linkedin.contains('.com'))
+                            launchExternal(widget.contact.linkedin.trim());
+                          else
+                            launchExternal('https://www.linkedin.com/in/' +
+                                widget.contact.linkedin);
+                        })),
+            Container(
+              height: 50,
+            )
           ],
         ),
       ),
