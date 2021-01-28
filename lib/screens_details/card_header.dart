@@ -2,8 +2,8 @@ import 'package:AchaFacil/apis/models/contacts.dart';
 import 'package:AchaFacil/screens_details/rating_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-
 import 'package:AchaFacil/constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CardHeader extends StatefulWidget {
   const CardHeader({
@@ -22,6 +22,14 @@ class CardHeader extends StatefulWidget {
 class _CardHeaderState extends State<CardHeader> {
   _CardHeaderState(this.scheduleType);
   final String scheduleType;
+  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  bool _favorited = false;
+  List<String> _favoritesCache = List<String>();
+
+  initState() {
+    super.initState();
+    checkCache();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -144,6 +152,24 @@ class _CardHeaderState extends State<CardHeader> {
               ),
             ),
           ),
+          Container(
+            alignment: Alignment.bottomRight,
+            decoration: BoxDecoration(boxShadow: [
+              BoxShadow(
+                  offset: Offset(0, -5),
+                  blurRadius: 10,
+                  color: Colors.black.withOpacity(0.3))
+            ]),
+            height: widget.size.height * 0.13,
+            width: double.infinity,
+            child: IconButton(
+              icon: Icon(Icons.favorite),
+              color: _favorited ? Colors.red : Colors.grey,
+              onPressed: () async {
+                saveFavoritedCache(widget.contact.createdAt);
+              },
+            ),
+          ),
           // Back Button
           SafeArea(
               child: BackButton(
@@ -201,5 +227,35 @@ class _CardHeaderState extends State<CardHeader> {
           ));
 
     return Container();
+  }
+
+  checkCache() async {
+    //using field createdAt to store the favorites in cache
+    final SharedPreferences prefs = await _prefs;
+    List<String> cacheFavorites = prefs.getStringList('favoritos');
+
+    if (cacheFavorites != null) {
+      _favoritesCache = cacheFavorites;
+      if (cacheFavorites.contains(widget.contact.createdAt.toString()))
+        setState(() {
+          _favorited = true;
+        });
+    }
+  }
+
+  saveFavoritedCache(DateTime createdAt) async {
+    //using field createdAt to store the favorites in cache
+    final SharedPreferences prefs = await _prefs;
+    List<String> cacheFavorites = prefs.getStringList('favoritos');
+
+    if (cacheFavorites != null && cacheFavorites.contains(createdAt.toString()))
+      _favoritesCache.remove(createdAt.toString());
+    else
+      _favoritesCache.add(createdAt.toString());
+
+    prefs.setStringList('favoritos', _favoritesCache);
+    setState(() {
+      _favorited = !_favorited;
+    });
   }
 }

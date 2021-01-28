@@ -7,18 +7,25 @@ import 'package:geolocator/geolocator.dart';
 import '../constants.dart';
 
 class BodyContactList extends StatelessWidget {
-  BodyContactList({Key key, @required this.title, this.serviceType})
+  BodyContactList(
+      {Key key, @required this.title, this.serviceType, this.idFavorites})
       : super(key: key);
   final String title;
   final DocumentReference serviceType;
+  final List<DateTime> idFavorites;
 
   @override
   Widget build(BuildContext context) {
     //Pega a tabela contatos somente dos prestadores cadastrados com x categoria
-    Query query = FirebaseFirestore.instance
-        .collection('contatos')
-        .where('servicos', arrayContains: title)
-        .orderBy('avaliacao.geral', descending: true);
+    Query query = idFavorites == null
+        ? FirebaseFirestore.instance
+            .collection('contatos')
+            .where('servicos', arrayContains: title)
+            .orderBy('avaliacao.geral', descending: true)
+        : FirebaseFirestore.instance
+            .collection('contatos')
+            .where('criacao', whereIn: idFavorites)
+            .orderBy('avaliacao.geral', descending: true);
 
     return Scaffold(
         appBar: AppBar(
