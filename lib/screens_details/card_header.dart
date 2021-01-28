@@ -230,28 +230,27 @@ class _CardHeaderState extends State<CardHeader> {
   }
 
   checkCache() async {
+    //using field createdAt to store the favorites in cache
     final SharedPreferences prefs = await _prefs;
+    List<String> cacheFavorites = prefs.getStringList('favoritos');
 
-    if (prefs.getStringList('favoritos') != null) {
-      _favoritesCache = prefs.getStringList('favoritos');
-      if (prefs
-          .getStringList('favoritos')
-          .contains(widget.contact.createdAt.toString()))
-        setState(() {
-          _favorited = true;
-        });
-    }
+    _favoritesCache = cacheFavorites;
+    if (cacheFavorites.contains(widget.contact.createdAt.toString()))
+      setState(() {
+        _favorited = true;
+      });
   }
 
   void saveFavoritedCache(DateTime createdAt) async {
+    //using field createdAt to store the favorites in cache
     final SharedPreferences prefs = await _prefs;
+    List<String> cacheFavorites = prefs.getStringList('favoritos');
 
-    if (prefs.getStringList('favoritos') != null) {
-      if (prefs.getStringList('favoritos').contains(createdAt.toString()))
-        _favoritesCache.remove(createdAt.toString());
-      else
-        _favoritesCache.add(createdAt.toString());
-    }
+    if (cacheFavorites.contains(createdAt.toString()))
+      _favoritesCache.remove(createdAt.toString());
+    else
+      _favoritesCache.add(createdAt.toString());
+
     prefs.setStringList('favoritos', _favoritesCache);
     setState(() {
       _favorited = !_favorited;

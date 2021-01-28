@@ -1,4 +1,4 @@
-import 'package:AchaFacil/screens_lists/favorites_list.dart';
+import 'package:AchaFacil/screens_lists/body_contact_list.dart';
 import 'package:flutter/material.dart';
 import 'package:AchaFacil/login/login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -8,8 +8,6 @@ import '../constants.dart';
 class CustomDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-
     return Drawer(
         child: Column(
       children: [
@@ -28,8 +26,10 @@ class CustomDrawer extends StatelessWidget {
           title: Text('Favoritos'),
           subtitle: Text('Meus contatos preferidos'),
           onTap: () async {
+            Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
             final SharedPreferences prefs = await _prefs;
-            if (prefs.getStringList('favoritos').isEmpty)
+            var cacheFavorites = prefs.getStringList('favoritos');
+            if (cacheFavorites.isEmpty)
               showDialog(
                 context: context,
                 builder: (context) {
@@ -49,8 +49,11 @@ class CustomDrawer extends StatelessWidget {
               );
             else
               Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => FavoritesList(
-                        idDates: prefs.getStringList('favoritos'),
+                  builder: (context) => BodyContactList(
+                        title: 'Favoritos!',
+                        idFavorites: cacheFavorites
+                            .map((e) => DateTime.parse(e))
+                            .toList(),
                       )));
           },
         ),
