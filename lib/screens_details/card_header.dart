@@ -234,19 +234,21 @@ class _CardHeaderState extends State<CardHeader> {
     final SharedPreferences prefs = await _prefs;
     List<String> cacheFavorites = prefs.getStringList('favoritos');
 
-    _favoritesCache = cacheFavorites;
-    if (cacheFavorites.contains(widget.contact.createdAt.toString()))
-      setState(() {
-        _favorited = true;
-      });
+    if (cacheFavorites != null) {
+      _favoritesCache = cacheFavorites;
+      if (cacheFavorites.contains(widget.contact.createdAt.toString()))
+        setState(() {
+          _favorited = true;
+        });
+    }
   }
 
-  void saveFavoritedCache(DateTime createdAt) async {
+  saveFavoritedCache(DateTime createdAt) async {
     //using field createdAt to store the favorites in cache
     final SharedPreferences prefs = await _prefs;
     List<String> cacheFavorites = prefs.getStringList('favoritos');
 
-    if (cacheFavorites.contains(createdAt.toString()))
+    if (cacheFavorites != null && cacheFavorites.contains(createdAt.toString()))
       _favoritesCache.remove(createdAt.toString());
     else
       _favoritesCache.add(createdAt.toString());

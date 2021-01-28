@@ -29,7 +29,7 @@ class CustomDrawer extends StatelessWidget {
             Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
             final SharedPreferences prefs = await _prefs;
             var cacheFavorites = prefs.getStringList('favoritos');
-            if (cacheFavorites.isEmpty)
+            if (cacheFavorites == null || cacheFavorites.isEmpty)
               showDialog(
                 context: context,
                 builder: (context) {
