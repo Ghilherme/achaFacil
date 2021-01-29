@@ -84,8 +84,8 @@ class _CardHeaderState extends State<CardHeader> {
                           CircleAvatar(
                               radius: 35,
                               backgroundImage: widget.contact.imageAvatar ==
-                                          '' ||
-                                      widget.contact.imageAvatar == null
+                                          null ||
+                                      widget.contact.imageAvatar == ''
                                   ? Image.network(urlAvatarInitials +
                                           widget.contact.name)
                                       .image
