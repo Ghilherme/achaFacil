@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:AchaFacil/apis/models/categories.dart';
 import 'package:AchaFacil/components/confirmation_dialog.dart';
@@ -15,6 +16,7 @@ class BodyCategoriesListAdmin extends StatelessWidget {
 
     return Scaffold(
         appBar: AppBar(
+            backgroundColor: Colors.redAccent,
             title: Text('Lista de Categorias'),
             actions: <Widget>[
               IconButton(
@@ -73,6 +75,8 @@ class BodyCategoriesListAdmin extends StatelessWidget {
               '\nSubtítulo: ' +
               categories.subtitle,
           okFunction: () {
+            if (categories.banner.isNotEmpty)
+              FirebaseStorage.instance.refFromURL(categories.banner).delete();
             FirebaseFirestore.instance
                 .collection('categorias')
                 .doc(categories.id)

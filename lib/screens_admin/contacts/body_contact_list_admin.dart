@@ -15,6 +15,7 @@ class BodyContactListAdmin extends StatelessWidget {
 
     return Scaffold(
         appBar: AppBar(
+            backgroundColor: Colors.redAccent,
             title: Text('Lista de Contatos'),
             actions: <Widget>[
               IconButton(

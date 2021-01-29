@@ -10,6 +10,7 @@ class BodyAdminArea extends StatelessWidget {
     return Scaffold(
         drawer: CustomDrawerAdmin(),
         appBar: AppBar(
+          backgroundColor: Colors.redAccent,
           title: Text('Área Administrativa'),
           elevation: 0,
         ),

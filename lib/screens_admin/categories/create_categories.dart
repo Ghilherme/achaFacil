@@ -14,6 +14,7 @@ class CreateCategories extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+          backgroundColor: Colors.redAccent,
           title: Text('Criar Categoria'),
           elevation: 0,
           leading: IconButton(
