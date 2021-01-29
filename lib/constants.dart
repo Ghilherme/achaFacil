@@ -8,6 +8,9 @@ const kTextColor = Color(0xFF535353);
 const kTextLightColor = Color(0xFFACACAC);
 
 const String mainTitleApp = 'Acha Fácil!';
+const String emailApp = 'achafacilcomercial@gmail.com';
+const String urlAvatarInitials =
+    'https://ui-avatars.com/api/?background=random&name=';
 
 // Colos that use in our app
 const kFillStarColor = Color(0xFFFCC419);

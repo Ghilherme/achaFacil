@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:AchaFacil/home/home_screen.dart';
-import 'package:AchaFacil/login/reset_password.dart';
 import '../constants.dart';
 import 'login_form.dart';
 
@@ -50,25 +49,6 @@ class _LoginBodyState extends State<LoginBody> {
           LoginForm(),
           SizedBox(
             height: 10,
-          ),
-          Container(
-            height: 40,
-            width: double.infinity,
-            alignment: Alignment.center,
-            child: FlatButton(
-              child: Text(
-                "Recuperar Senha",
-                textAlign: TextAlign.right,
-              ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ResetPasswordPage(),
-                  ),
-                );
-              },
-            ),
           ),
           SizedBox(
             height: 10,

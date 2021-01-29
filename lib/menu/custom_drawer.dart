@@ -1,3 +1,4 @@
+import 'package:AchaFacil/screens_admin/body_admin_area.dart';
 import 'package:AchaFacil/screens_lists/body_contact_list.dart';
 import 'package:flutter/material.dart';
 import 'package:AchaFacil/login/login.dart';
@@ -6,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../constants.dart';
 
 class CustomDrawer extends StatelessWidget {
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -26,7 +28,6 @@ class CustomDrawer extends StatelessWidget {
           title: Text('Favoritos'),
           subtitle: Text('Meus contatos preferidos'),
           onTap: () async {
-            Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
             final SharedPreferences prefs = await _prefs;
             var cacheFavorites = prefs.getStringList('favoritos');
             if (cacheFavorites == null || cacheFavorites.isEmpty)
@@ -61,9 +62,14 @@ class CustomDrawer extends StatelessWidget {
           leading: Icon(Icons.save),
           title: Text('Cadastrar'),
           subtitle: Text('Prestadores'),
-          onTap: () {
-            Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (context) => Login()));
+          onTap: () async {
+            final SharedPreferences prefs = await _prefs;
+            if (prefs.getBool('logado') != null && prefs.getBool('logado'))
+              Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (context) => BodyAdminArea()));
+            else
+              Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (context) => Login()));
           },
         ),
       ],

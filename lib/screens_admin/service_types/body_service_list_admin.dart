@@ -15,6 +15,7 @@ class BodyServiceListAdmin extends StatelessWidget {
 
     return Scaffold(
         appBar: AppBar(
+            backgroundColor: Colors.redAccent,
             title: Text('Lista de Prestadores'),
             actions: <Widget>[
               IconButton(

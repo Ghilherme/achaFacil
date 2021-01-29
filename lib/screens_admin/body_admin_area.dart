@@ -10,6 +10,7 @@ class BodyAdminArea extends StatelessWidget {
     return Scaffold(
         drawer: CustomDrawerAdmin(),
         appBar: AppBar(
+          backgroundColor: Colors.redAccent,
           title: Text('Área Administrativa'),
           elevation: 0,
         ),
@@ -23,6 +24,7 @@ class Entities extends StatelessWidget {
     return GridView.count(
       primary: false,
       padding: const EdgeInsets.all(20),
+      childAspectRatio: 1.1,
       crossAxisSpacing: 10,
       mainAxisSpacing: 10,
       crossAxisCount: 2,
@@ -41,7 +43,6 @@ class Entities extends StatelessWidget {
               "Contatos",
               style: TextStyle(
                 color: Colors.white,
-                fontWeight: FontWeight.bold,
                 fontSize: 25,
               ),
             )),
@@ -65,7 +66,6 @@ class Entities extends StatelessWidget {
               "Prestadores",
               style: TextStyle(
                 color: Colors.white,
-                fontWeight: FontWeight.bold,
                 fontSize: 25,
               ),
             )),
@@ -89,7 +89,6 @@ class Entities extends StatelessWidget {
               "Categorias",
               style: TextStyle(
                 color: Colors.white,
-                fontWeight: FontWeight.bold,
                 fontSize: 25,
               ),
             )),

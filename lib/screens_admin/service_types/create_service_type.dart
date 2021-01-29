@@ -10,6 +10,7 @@ class CreateServiceType extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+          backgroundColor: Colors.redAccent,
           title: Text('Criar Prestadores'),
           elevation: 0,
           leading: IconButton(

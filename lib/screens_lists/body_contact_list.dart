@@ -81,7 +81,7 @@ class BodyContactList extends StatelessWidget {
               radius: 25,
               backgroundImage:
                   contact.imageAvatar == '' || contact.imageAvatar == null
-                      ? AssetImage('assets/images/contacts.jpeg')
+                      ? Image.network(urlAvatarInitials + contact.name).image
                       : Image.network(contact.imageAvatar).image),
           subtitle: contact.rating.general == 0
               ? Text('Seja o primeiro a avaliar!')

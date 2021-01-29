@@ -46,7 +46,7 @@ class _CardHeaderState extends State<CardHeader> {
                   fit: BoxFit.cover,
                   image: widget.contact.image == null ||
                           widget.contact.image.isEmpty
-                      ? AssetImage('assets/images/in_construction.jpg')
+                      ? AssetImage('assets/images/banner.png')
                       : Image.network(widget.contact.image).image),
             ),
           ),
@@ -84,9 +84,11 @@ class _CardHeaderState extends State<CardHeader> {
                           CircleAvatar(
                               radius: 35,
                               backgroundImage: widget.contact.imageAvatar ==
-                                          '' ||
-                                      widget.contact.imageAvatar == null
-                                  ? AssetImage('assets/images/contacts.jpeg')
+                                          null ||
+                                      widget.contact.imageAvatar == ''
+                                  ? Image.network(urlAvatarInitials +
+                                          widget.contact.name)
+                                      .image
                                   : Image.network(widget.contact.imageAvatar)
                                       .image),
                         ]),
@@ -154,12 +156,11 @@ class _CardHeaderState extends State<CardHeader> {
           ),
           Container(
             alignment: Alignment.bottomRight,
-            decoration: BoxDecoration(boxShadow: [
-              BoxShadow(
-                  offset: Offset(0, -5),
-                  blurRadius: 10,
-                  color: Colors.black.withOpacity(0.3))
-            ]),
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    colors: [Colors.black.withOpacity(0.4), Colors.transparent],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter)),
             height: widget.size.height * 0.13,
             width: double.infinity,
             child: IconButton(
