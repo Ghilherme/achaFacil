@@ -49,7 +49,7 @@ class BodyCategoriesList extends StatelessWidget {
           decoration: BoxDecoration(
               image: DecorationImage(
                   image: categories.banner == null || categories.banner == ''
-                      ? AssetImage("assets/images/contacts.jpeg")
+                      ? AssetImage("assets/images/banner.png")
                       : Image.network(categories.banner).image,
                   fit: BoxFit.cover,
                   colorFilter: ColorFilter.mode(

@@ -137,7 +137,7 @@ class _CreateCategoriesBodyState extends State<CreateCategoriesBody> {
       //Se houve alteração na imagem, faz um novo upload
       if (_fileBannerUpload.isNotEmpty)
         _categoriesModel.banner = await uploadFileImage(
-            'uploads/banners/' + contactDB.id + '_background.png',
+            'categorias/banners/' + _categoriesModel.title + '_background.png',
             _fileBannerUpload);
 
       FirebaseFirestore.instance
