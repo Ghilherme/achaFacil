@@ -1,3 +1,4 @@
+import 'package:AchaFacil/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'address.dart';
@@ -23,7 +24,9 @@ class ContactsModel {
       this.zapClickedAmount,
       this.instagram,
       this.facebook,
-      this.linkedin});
+      this.linkedin,
+      this.regionAttendanceRadar,
+      this.status});
   String id,
       name,
       email,
@@ -33,13 +36,14 @@ class ContactsModel {
       imageAvatar,
       instagram,
       facebook,
-      linkedin;
+      linkedin,
+      status;
   Map<String, dynamic> telNumbers, timeTable;
   List<dynamic> serviceType, scheduleType;
   AddressModel address;
   RatingModel rating;
   DateTime lastModification, createdAt;
-  int zapClickedAmount;
+  int zapClickedAmount, regionAttendanceRadar;
 
   ContactsModel.fromContact(ContactsModel contact) {
     this.id = contact.id;
@@ -61,6 +65,8 @@ class ContactsModel {
     this.instagram = contact.instagram;
     this.facebook = contact.facebook;
     this.linkedin = contact.linkedin;
+    this.regionAttendanceRadar = contact.regionAttendanceRadar;
+    this.status = contact.status;
   }
   ContactsModel.fromFirestore(QueryDocumentSnapshot snapshot) {
     this.id = snapshot.id;
@@ -86,6 +92,8 @@ class ContactsModel {
     this.instagram = snapshot.data()['instagram'];
     this.facebook = snapshot.data()['facebook'];
     this.linkedin = snapshot.data()['linkedin'];
+    this.regionAttendanceRadar = snapshot.data()['radarkms'];
+    this.status = snapshot.data()['status'];
   }
 
   ContactsModel.empty() {
@@ -107,5 +115,7 @@ class ContactsModel {
     this.instagram = '';
     this.facebook = '';
     this.linkedin = '';
+    this.regionAttendanceRadar = 0;
+    this.status = '';
   }
 }

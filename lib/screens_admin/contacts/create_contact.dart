@@ -143,7 +143,12 @@ class _CreateContactBodyState extends State<CreateContactBody> {
               leading: Icon(Icons.list),
               title: MultiSelectDialogField(
                   initialValue: _contactModel.serviceType,
-                  items: _items,
+                  items: _items.isEmpty
+                      ? _contactModel.serviceType
+                          .map((prestador) =>
+                              MultiSelectItem<String>(prestador, prestador))
+                          .toList()
+                      : _items,
                   title: Text('Prestadores'),
                   buttonText: Text('Prestadores',
                       style: TextStyle(fontSize: 16, color: Colors.grey)),
@@ -470,6 +475,9 @@ class _CreateContactBodyState extends State<CreateContactBody> {
       _contactModel.address.coordinates =
           GeoPoint(loc.first.latitude, loc.first.longitude);
 
+      //criado pela area administrativa é sempre ativo
+      _contactModel.status = status[1];
+
       contactDB
           .set({
             'nome': _contactModel.name,
@@ -487,6 +495,7 @@ class _CreateContactBodyState extends State<CreateContactBody> {
             'instagram': _contactModel.instagram,
             'facebook': _contactModel.facebook,
             'linkedin': _contactModel.linkedin,
+            'status': _contactModel.status,
             'endereco': {
               'endereco': _contactModel.address.strAvnName,
               'complemento': _contactModel.address.compliment,

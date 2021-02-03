@@ -1,5 +1,6 @@
 import 'package:AchaFacil/screens_admin/body_admin_area.dart';
 import 'package:AchaFacil/screens_lists/body_contact_list.dart';
+import 'package:AchaFacil/screens_register/register_journey.dart';
 import 'package:flutter/material.dart';
 import 'package:AchaFacil/login/login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -16,13 +17,6 @@ class CustomDrawer extends StatelessWidget {
         UserAccountsDrawerHeader(
             accountName: Text(mainTitleApp),
             accountEmail: Text('Tudo em 3 cliques ou menos!')),
-        ListTile(
-          leading: Icon(Icons.home),
-          enabled: false,
-          title: Text('Perfil'),
-          subtitle: Text('Meu perfil'),
-          onTap: () {},
-        ),
         ListTile(
           leading: Icon(Icons.favorite),
           title: Text('Favoritos'),
@@ -59,9 +53,9 @@ class CustomDrawer extends StatelessWidget {
           },
         ),
         ListTile(
-          leading: Icon(Icons.save),
-          title: Text('Cadastrar'),
-          subtitle: Text('Prestadores'),
+          leading: Icon(Icons.login),
+          title: Text('Área'),
+          subtitle: Text('Administrativa'),
           onTap: () async {
             final SharedPreferences prefs = await _prefs;
             if (prefs.getBool('logado') != null && prefs.getBool('logado'))
@@ -70,6 +64,15 @@ class CustomDrawer extends StatelessWidget {
             else
               Navigator.of(context).pushReplacement(
                   MaterialPageRoute(builder: (context) => Login()));
+          },
+        ),
+        ListTile(
+          leading: Icon(Icons.save),
+          title: Text('Solicitar'),
+          subtitle: Text('Criação de prestadores'),
+          onTap: () {
+            Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => RegisterJourney()));
           },
         ),
       ],

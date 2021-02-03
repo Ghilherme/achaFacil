@@ -20,8 +20,10 @@ class BodyContactDetails extends StatelessWidget {
       body: Body(contact: contact),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () async {
-          launchExternal(
-              "whatsapp://send?phone=" + contact.telNumbers['whatsapp']);
+          launchExternal("whatsapp://send?phone=" +
+              contact.telNumbers['whatsapp'] +
+              '&text=' +
+              whatsMessageContact);
           increaseTagCount(contact.id, contact.zapClickedAmount);
         },
         label: Text('Zap'),
