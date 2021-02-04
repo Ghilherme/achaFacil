@@ -74,7 +74,8 @@ class BodyContactList extends StatelessWidget {
   Widget _buildRow(BuildContext context, List<DistanceContact> contacts,
       int indice, int size) {
     ContactsModel contact = contacts.elementAt(indice).contact;
-    if (contact.status == Status.pending) //se for pendente não exibe
+    if (contact.status !=
+        Status.active) //se for qualquer status diferente de ativo não exibe
       return Container();
     String kms = contacts.elementAt(indice).distance.toString();
     return Column(children: <Widget>[
