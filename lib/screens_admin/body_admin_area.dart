@@ -56,6 +56,29 @@ class Entities extends StatelessWidget {
           child: Container(
             decoration: BoxDecoration(
                 image: DecorationImage(
+                    image: AssetImage("assets/images/check.jpg"),
+                    fit: BoxFit.cover,
+                    colorFilter: ColorFilter.mode(
+                        Colors.black.withOpacity(0.6), BlendMode.darken))),
+            padding: const EdgeInsets.all(8),
+            child: Center(
+                child: Text(
+              "Contatos Pendentes",
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 25,
+              ),
+            )),
+          ),
+          onTap: () {
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => BodyContactListAdmin()));
+          },
+        ),
+        InkWell(
+          child: Container(
+            decoration: BoxDecoration(
+                image: DecorationImage(
                     image: AssetImage("assets/images/providers.jpg"),
                     fit: BoxFit.cover,
                     colorFilter: ColorFilter.mode(

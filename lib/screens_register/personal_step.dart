@@ -45,6 +45,7 @@ class ProfessionalStepState extends State<ProfessionalStep> {
             leading: const Icon(Icons.person),
             contentPadding: EdgeInsets.all(0),
             title: TextFormField(
+              textCapitalization: TextCapitalization.sentences,
               initialValue: _contactModel.name,
               onChanged: (value) {
                 _contactModel.name = value;
@@ -84,19 +85,24 @@ class ProfessionalStepState extends State<ProfessionalStep> {
               leading: const Icon(Icons.email),
               contentPadding: EdgeInsets.all(0),
               title: TextFormField(
-                initialValue: _contactModel.email,
-                onChanged: (value) {
-                  _contactModel.email = value;
-                },
-                keyboardType: TextInputType.emailAddress,
-                maxLines: 1,
-                decoration: InputDecoration(
-                    contentPadding: EdgeInsets.zero,
-                    labelText: 'Email',
-                    hintText: 'Ex: achafacil@gmail.com'),
-                validator: (value) =>
-                    value.isEmpty ? 'Campo obrigatório' : null,
-              )),
+                  initialValue: _contactModel.email,
+                  onChanged: (value) {
+                    _contactModel.email = value;
+                  },
+                  keyboardType: TextInputType.emailAddress,
+                  maxLines: 1,
+                  decoration: InputDecoration(
+                      contentPadding: EdgeInsets.zero,
+                      labelText: 'Email',
+                      hintText: 'Ex: achafacil@gmail.com'),
+                  validator: (value) {
+                    return value.isEmpty
+                        ? 'Campo obrigatório'
+                        : RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                .hasMatch(value)
+                            ? null
+                            : 'Email inválido';
+                  })),
           Container(height: kDefaultPadding),
           ListTile(
             leading: const Icon(

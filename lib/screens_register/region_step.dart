@@ -46,6 +46,7 @@ class RegionStepState extends State<RegionStep> {
             leading: const Icon(Icons.business),
             contentPadding: EdgeInsets.all(0),
             title: TextFormField(
+              textCapitalization: TextCapitalization.sentences,
               initialValue: _contactModel.address.strAvnName,
               onChanged: (value) {
                 _contactModel.address.strAvnName = value;
@@ -64,6 +65,7 @@ class RegionStepState extends State<RegionStep> {
             leading: const Icon(Icons.add_road),
             contentPadding: EdgeInsets.all(0),
             title: TextFormField(
+              textCapitalization: TextCapitalization.sentences,
               initialValue: _contactModel.address.compliment,
               onChanged: (value) {
                 _contactModel.address.compliment = value;
@@ -82,6 +84,7 @@ class RegionStepState extends State<RegionStep> {
             leading: const Icon(Icons.confirmation_number),
             contentPadding: EdgeInsets.all(0),
             title: TextFormField(
+              textCapitalization: TextCapitalization.sentences,
               initialValue: _contactModel.address.number,
               onChanged: (value) {
                 _contactModel.address.number = value;
@@ -99,6 +102,7 @@ class RegionStepState extends State<RegionStep> {
             leading: const Icon(MdiIcons.homeCity),
             contentPadding: EdgeInsets.all(0),
             title: TextFormField(
+              textCapitalization: TextCapitalization.sentences,
               initialValue: _contactModel.address.neighborhood,
               onChanged: (value) {
                 _contactModel.address.neighborhood = value;
@@ -117,6 +121,7 @@ class RegionStepState extends State<RegionStep> {
             leading: const Icon(MdiIcons.cityVariant),
             contentPadding: EdgeInsets.all(0),
             title: TextFormField(
+              textCapitalization: TextCapitalization.sentences,
               initialValue: _contactModel.address.city,
               onChanged: (value) {
                 _contactModel.address.city = value;

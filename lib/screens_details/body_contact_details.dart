@@ -1,4 +1,5 @@
 import 'package:AchaFacil/apis/models/contacts.dart';
+import 'package:AchaFacil/apis/requests/gets.dart';
 import 'package:AchaFacil/components/card_icon.dart';
 import 'package:AchaFacil/components/expandable_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -7,7 +8,6 @@ import '../constants.dart';
 import 'title_address_name.dart';
 import 'card_header.dart';
 import 'genres.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:expandable/expandable.dart';
 
 class BodyContactDetails extends StatelessWidget {
@@ -20,7 +20,7 @@ class BodyContactDetails extends StatelessWidget {
       body: Body(contact: contact),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () async {
-          launchExternal("whatsapp://send?phone=" +
+          Gets.launchExternal("whatsapp://send?phone=" +
               contact.telNumbers['whatsapp'] +
               '&text=' +
               whatsMessageContact);
@@ -39,10 +39,6 @@ class BodyContactDetails extends StatelessWidget {
     contactDB.update({'zapclicado': zap});
     contact.zapClickedAmount = zap;
   }
-}
-
-Future<bool> launchExternal(String url) async {
-  return await canLaunch(url) ? launch(url) : false;
 }
 
 class Body extends StatefulWidget {
@@ -139,9 +135,9 @@ class _BodyState extends State<Body> {
                       title: widget.contact.instagram,
                       onTap: () async {
                         if (widget.contact.instagram.contains('.com'))
-                          launchExternal(widget.contact.instagram.trim());
+                          Gets.launchExternal(widget.contact.instagram.trim());
                         else
-                          launchExternal('https://www.instagram.com/' +
+                          Gets.launchExternal('https://www.instagram.com/' +
                               widget.contact.instagram);
                       },
                     )),
@@ -155,9 +151,9 @@ class _BodyState extends State<Body> {
                         title: widget.contact.facebook,
                         onTap: () async {
                           if (widget.contact.facebook.contains('.com'))
-                            launchExternal(widget.contact.facebook.trim());
+                            Gets.launchExternal(widget.contact.facebook.trim());
                           else
-                            launchExternal('https://www.facebook.com/' +
+                            Gets.launchExternal('https://www.facebook.com/' +
                                 widget.contact.facebook);
                         }),
                   ),
@@ -171,9 +167,9 @@ class _BodyState extends State<Body> {
                         title: widget.contact.linkedin,
                         onTap: () async {
                           if (widget.contact.linkedin.contains('.com'))
-                            launchExternal(widget.contact.linkedin.trim());
+                            Gets.launchExternal(widget.contact.linkedin.trim());
                           else
-                            launchExternal('https://www.linkedin.com/in/' +
+                            Gets.launchExternal('https://www.linkedin.com/in/' +
                                 widget.contact.linkedin);
                         })),
             Container(

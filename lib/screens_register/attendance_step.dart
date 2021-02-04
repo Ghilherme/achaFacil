@@ -67,6 +67,7 @@ class AttendanceStepState extends State<AttendanceStep> {
             leading: Icon(Icons.description),
             contentPadding: EdgeInsets.all(0),
             title: TextFormField(
+              textCapitalization: TextCapitalization.sentences,
               initialValue: _contactModel.description,
               onChanged: (value) {
                 _contactModel.description = value;
@@ -106,26 +107,28 @@ class AttendanceStepState extends State<AttendanceStep> {
           ListTile(
             contentPadding: EdgeInsets.all(0),
             leading: Icon(Icons.schedule),
-            title: DropdownButton<String>(
-              isExpanded: true,
-              hint: Text('Funcionamento'),
-              value: _dropdownSchedule,
-              icon: Icon(Icons.arrow_downward),
-              iconSize: 24,
-              elevation: 16,
-              onChanged: (String newValue) {
-                _contactModel.scheduleType.first = newValue;
-                setState(() {
-                  _dropdownSchedule = newValue;
-                });
-              },
-              items: schedule.map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
-            ),
+            title: DropdownButtonFormField<String>(
+                isExpanded: true,
+                hint: Text('Funcionamento'),
+                value: _dropdownSchedule,
+                icon: Icon(Icons.arrow_downward),
+                iconSize: 24,
+                elevation: 16,
+                onChanged: (String newValue) {
+                  _contactModel.scheduleType.first = newValue;
+                  setState(() {
+                    _dropdownSchedule = newValue;
+                  });
+                },
+                items: schedule.map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+                validator: (value) => value == null || value.isEmpty
+                    ? 'Campo obrigatório'
+                    : null),
           ),
           Container(height: 30),
           ListTile(

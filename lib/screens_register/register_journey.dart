@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:AchaFacil/apis/models/contacts_status.dart';
 import 'package:AchaFacil/screens_register/personal_step.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -7,6 +8,7 @@ import 'package:AchaFacil/apis/models/contacts.dart';
 import 'package:geocoding/geocoding.dart';
 import '../constants.dart';
 import 'attendance_step.dart';
+import 'end_journey.dart';
 import 'region_step.dart';
 
 class RegisterJourney extends StatelessWidget {
@@ -149,9 +151,10 @@ class _RegisterJourneyBodyState extends State<RegisterJourneyBody> {
     setState(() {
       _progressBarActive = true;
     });
-    //referencia o doc e se tiver ID atualiza, se nao cria um ID novo
+
+    //cria um ID novo
     DocumentReference contactDB =
-        FirebaseFirestore.instance.collection('contatos').doc(contact.id);
+        FirebaseFirestore.instance.collection('contatos').doc();
 
     //Se houve alteração na imagem, faz um novo upload
     if (contact.image.isNotEmpty)
@@ -184,8 +187,8 @@ class _RegisterJourneyBodyState extends State<RegisterJourneyBody> {
           GeoPoint(globalPosition.latitude, globalPosition.longitude);
     }
 
-    //criado pelo usuario é sempre pendente
-    contact.status = status[0];
+    //Solicitação sempre criada como pendente
+    contact.status = Status.pending;
 
     contactDB
         .set({
@@ -227,9 +230,8 @@ class _RegisterJourneyBodyState extends State<RegisterJourneyBody> {
               context: context,
               builder: (context) {
                 return AlertDialog(
-                  title: contact.id == null
-                      ? Text('Contato adicionado com sucesso.')
-                      : Text('Contato atualizado com sucesso.'),
+                  title: Text('Solicitação enviada com sucesso.'),
+                  content: Text('A aprovação será feita em até 48 horas.'),
                   actions: <Widget>[
                     TextButton(
                       child: Text('Ok'),
@@ -241,31 +243,34 @@ class _RegisterJourneyBodyState extends State<RegisterJourneyBody> {
                 );
               },
             ))
-        .then((value) => setState(() {
-              _progressBarActive = false;
-              contact.id = contactDB.id;
-            }))
-        .catchError((error) => showDialog(
-              context: context,
-              builder: (context) {
-                return AlertDialog(
-                  title: contact.id == null
-                      ? Text('Falha ao adicionar o contato.')
-                      : Text('Falha ao atualizar o contato.'),
-                  content: Text('Erro: ' + error),
-                  actions: <Widget>[
-                    TextButton(
-                      child: Text('Ok'),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                  ],
-                );
-              },
-            ))
-        .then((value) => setState(() {
-              _progressBarActive = false;
-            }));
+        .then(
+          (value) => Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => EndJourney()),
+          ),
+        )
+        .catchError((error) {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: Text('Ops... Falha ao enviar a solicitação.'),
+                content: Text(
+                    'Houve algum erro ao enviar a solicitação. Tente enviar novamente, caso o erro persista, tente mais tarde.'),
+                actions: <Widget>[
+                  TextButton(
+                    child: Text('Ok'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              );
+            },
+          );
+          setState(() {
+            _progressBarActive = false;
+          });
+        });
   }
 }

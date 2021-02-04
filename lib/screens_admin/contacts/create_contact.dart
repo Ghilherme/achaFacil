@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:AchaFacil/apis/models/contacts_status.dart';
 import 'package:AchaFacil/components/image_picker.dart';
 import 'package:AchaFacil/components/timetable_admin.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -66,9 +67,7 @@ class _CreateContactBodyState extends State<CreateContactBody> {
           .first;
     }
     if (_contactModel.scheduleType.first.isNotEmpty) {
-      _dropdownSchedule = schedule
-          .where((element) => element == _contactModel.scheduleType.first)
-          .first;
+      _dropdownSchedule = _contactModel.scheduleType.first;
     }
 
     if (_contactModel.lastModification == null)
@@ -100,6 +99,7 @@ class _CreateContactBodyState extends State<CreateContactBody> {
             ListTile(
               leading: Icon(Icons.person),
               title: TextFormField(
+                textCapitalization: TextCapitalization.sentences,
                 initialValue: _contactModel.name,
                 onChanged: (value) {
                   _contactModel.name = value;
@@ -128,6 +128,7 @@ class _CreateContactBodyState extends State<CreateContactBody> {
             ListTile(
               leading: Icon(Icons.description),
               title: new TextFormField(
+                textCapitalization: TextCapitalization.sentences,
                 initialValue: _contactModel.description,
                 keyboardType: TextInputType.multiline,
                 onChanged: (value) {
@@ -290,6 +291,7 @@ class _CreateContactBodyState extends State<CreateContactBody> {
             ListTile(
               leading: Icon(Icons.person),
               title: TextFormField(
+                textCapitalization: TextCapitalization.sentences,
                 initialValue: _contactModel.address.strAvnName,
                 onChanged: (value) {
                   _contactModel.address.strAvnName = value;
@@ -303,6 +305,7 @@ class _CreateContactBodyState extends State<CreateContactBody> {
             ListTile(
               leading: Icon(Icons.person),
               title: TextFormField(
+                textCapitalization: TextCapitalization.sentences,
                 initialValue: _contactModel.address.compliment,
                 onChanged: (value) {
                   _contactModel.address.compliment = value;
@@ -315,6 +318,7 @@ class _CreateContactBodyState extends State<CreateContactBody> {
             ListTile(
               leading: Icon(Icons.person),
               title: TextFormField(
+                textCapitalization: TextCapitalization.sentences,
                 initialValue: _contactModel.address.number,
                 onChanged: (value) {
                   _contactModel.address.number = value;
@@ -327,6 +331,7 @@ class _CreateContactBodyState extends State<CreateContactBody> {
             ListTile(
               leading: Icon(Icons.person),
               title: TextFormField(
+                textCapitalization: TextCapitalization.sentences,
                 initialValue: _contactModel.address.neighborhood,
                 onChanged: (value) {
                   _contactModel.address.neighborhood = value;
@@ -341,6 +346,7 @@ class _CreateContactBodyState extends State<CreateContactBody> {
             ListTile(
               leading: Icon(Icons.person),
               title: TextFormField(
+                textCapitalization: TextCapitalization.sentences,
                 initialValue: _contactModel.address.city,
                 onChanged: (value) {
                   _contactModel.address.city = value;
@@ -475,8 +481,8 @@ class _CreateContactBodyState extends State<CreateContactBody> {
       _contactModel.address.coordinates =
           GeoPoint(loc.first.latitude, loc.first.longitude);
 
-      //criado pela area administrativa é sempre ativo
-      _contactModel.status = status[1];
+      //Criado pela area administrativa é sempre ativo
+      _contactModel.status = Status.active;
 
       contactDB
           .set({

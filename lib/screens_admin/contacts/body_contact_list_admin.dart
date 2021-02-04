@@ -1,5 +1,5 @@
+import 'package:AchaFacil/apis/models/contacts_status.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:AchaFacil/apis/models/contacts.dart';
 import 'package:AchaFacil/components/confirmation_dialog.dart';
@@ -66,6 +66,9 @@ class BodyContactListAdmin extends StatelessWidget {
   Widget _buildRow(BuildContext context, QueryDocumentSnapshot snapshot,
       int indice, int size) {
     ContactsModel contact = ContactsModel.fromFirestore(snapshot);
+    //se for pendente ou desabilitado não exibe
+    if (contact.status == Status.disabled || contact.status == Status.pending)
+      return Container();
     return Column(children: <Widget>[
       ListTileAdmin(
         confirmationDialog: ConfirmationDialog(
@@ -76,18 +79,12 @@ class BodyContactListAdmin extends StatelessWidget {
               '\nEstado: ' +
               contact.address.uf,
           okFunction: () {
-            if (contact.image.isNotEmpty)
-              FirebaseStorage.instance.refFromURL(contact.image).delete();
-
-            if (contact.imageAvatar.isNotEmpty)
-              FirebaseStorage.instance.refFromURL(contact.imageAvatar).delete();
-
             FirebaseFirestore.instance
                 .collection('contatos')
                 .doc(contact.id)
-                .delete();
+                .update({'status': Status.disabled});
           },
-          title: 'Deseja excluir o contato?',
+          title: 'Deseja desabilitar o contato?',
         ),
         title: contact.name,
         subtitle: contact.address.city + ' ' + contact.address.uf,

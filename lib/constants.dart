@@ -74,8 +74,3 @@ const List<String> schedule = const [
   'Comercial',
   'Com Agendamento'
 ];
-const List<String> status = const [
-  'P', //Pendente
-  'A', //Ativo
-  'D' //Desabilitado
-];
