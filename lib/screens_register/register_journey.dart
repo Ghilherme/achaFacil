@@ -208,6 +208,7 @@ class _RegisterJourneyBodyState extends State<RegisterJourneyBody> {
           'facebook': contact.facebook,
           'linkedin': contact.linkedin,
           'status': contact.status,
+          'radarkms': contact.regionAttendanceRadar,
           'endereco': {
             'endereco': contact.address.strAvnName,
             'complemento': contact.address.compliment,

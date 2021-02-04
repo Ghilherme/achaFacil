@@ -8,15 +8,27 @@ import '../../constants.dart';
 import 'create_contact.dart';
 
 class BodyContactListAdmin extends StatelessWidget {
+  final String orderBy, title;
+  final List<String> showWithStatus;
+
+  const BodyContactListAdmin(
+      {Key key,
+      @required this.orderBy,
+      @required this.showWithStatus,
+      this.title})
+      : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    Query query =
-        FirebaseFirestore.instance.collection('contatos').orderBy('nome');
+    Query query = FirebaseFirestore.instance
+        .collection('contatos')
+        .where('status', whereIn: showWithStatus)
+        .orderBy(orderBy);
 
     return Scaffold(
         appBar: AppBar(
             backgroundColor: Colors.redAccent,
-            title: Text('Lista de Contatos'),
+            title: Text(title),
             actions: <Widget>[
               IconButton(
                   icon: const Icon(Icons.add),
@@ -66,9 +78,7 @@ class BodyContactListAdmin extends StatelessWidget {
   Widget _buildRow(BuildContext context, QueryDocumentSnapshot snapshot,
       int indice, int size) {
     ContactsModel contact = ContactsModel.fromFirestore(snapshot);
-    //se for pendente ou desabilitado não exibe
-    if (contact.status == Status.disabled || contact.status == Status.pending)
-      return Container();
+
     return Column(children: <Widget>[
       ListTileAdmin(
         confirmationDialog: ConfirmationDialog(
@@ -87,7 +97,11 @@ class BodyContactListAdmin extends StatelessWidget {
           title: 'Deseja desabilitar o contato?',
         ),
         title: contact.name,
-        subtitle: contact.address.city + ' ' + contact.address.uf,
+        subtitle: contact.address.city +
+            ' ' +
+            contact.address.uf +
+            '\nCriado em: ' +
+            "${contact.createdAt.day.toString().padLeft(2, '0')}-${contact.createdAt.month.toString().padLeft(2, '0')}-${contact.createdAt.year.toString()} ${contact.createdAt.hour.toString().padLeft(2, '0')}:${contact.createdAt.minute.toString().padLeft(2, '0')}",
         editFunction: () {
           Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => CreateContact(contact: contact)));

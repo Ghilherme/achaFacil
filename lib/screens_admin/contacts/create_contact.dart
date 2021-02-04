@@ -9,6 +9,7 @@ import 'package:AchaFacil/apis/models/contacts.dart';
 import 'package:AchaFacil/apis/models/states.dart';
 import 'package:flutter/services.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 
 import '../../constants.dart';
@@ -272,16 +273,13 @@ class _CreateContactBodyState extends State<CreateContactBody> {
                 }).toList(),
               ),
             ),
-            Divider(),
-            Text(
-              'Horários',
-              style: TextStyle(fontWeight: FontWeight.w300, fontSize: 25),
-              textAlign: TextAlign.right,
-            ),
-            TimeTableAdmin(
-              timeTable: _contactModel.timeTable,
-              callback: callbackTimeTable,
-            ),
+            ListTile(
+                leading: Icon(MdiIcons.timetable),
+                title: RaisedButton.icon(
+                  icon: Icon(Icons.add),
+                  onPressed: openDialogSchedule,
+                  label: Text('Horário de Funcionamento'),
+                )),
             Divider(),
             Text(
               'Endereço',
@@ -289,7 +287,7 @@ class _CreateContactBodyState extends State<CreateContactBody> {
               textAlign: TextAlign.right,
             ),
             ListTile(
-              leading: Icon(Icons.person),
+              leading: Icon(Icons.business),
               title: TextFormField(
                 textCapitalization: TextCapitalization.sentences,
                 initialValue: _contactModel.address.strAvnName,
@@ -303,7 +301,7 @@ class _CreateContactBodyState extends State<CreateContactBody> {
               ),
             ),
             ListTile(
-              leading: Icon(Icons.person),
+              leading: Icon(Icons.add_road),
               title: TextFormField(
                 textCapitalization: TextCapitalization.sentences,
                 initialValue: _contactModel.address.compliment,
@@ -316,7 +314,7 @@ class _CreateContactBodyState extends State<CreateContactBody> {
               ),
             ),
             ListTile(
-              leading: Icon(Icons.person),
+              leading: Icon(MdiIcons.signRealEstate),
               title: TextFormField(
                 textCapitalization: TextCapitalization.sentences,
                 initialValue: _contactModel.address.number,
@@ -329,7 +327,7 @@ class _CreateContactBodyState extends State<CreateContactBody> {
               ),
             ),
             ListTile(
-              leading: Icon(Icons.person),
+              leading: Icon(MdiIcons.homeCity),
               title: TextFormField(
                 textCapitalization: TextCapitalization.sentences,
                 initialValue: _contactModel.address.neighborhood,
@@ -344,7 +342,7 @@ class _CreateContactBodyState extends State<CreateContactBody> {
               ),
             ),
             ListTile(
-              leading: Icon(Icons.person),
+              leading: Icon(MdiIcons.cityVariant),
               title: TextFormField(
                 textCapitalization: TextCapitalization.sentences,
                 initialValue: _contactModel.address.city,
@@ -360,7 +358,7 @@ class _CreateContactBodyState extends State<CreateContactBody> {
               ),
             ),
             ListTile(
-              leading: Icon(Icons.person),
+              leading: Icon(Icons.map),
               title: DropdownButton<States>(
                 isExpanded: true,
                 hint: Text('Estado'),
@@ -381,6 +379,19 @@ class _CreateContactBodyState extends State<CreateContactBody> {
                     child: Text(value.state),
                   );
                 }).toList(),
+              ),
+            ),
+            ListTile(
+              leading: const Icon(MdiIcons.radar),
+              title: TextFormField(
+                initialValue: _contactModel.regionAttendanceRadar.toString(),
+                onChanged: (value) {
+                  _contactModel.regionAttendanceRadar = int.parse(value);
+                },
+                keyboardType: TextInputType.number,
+                maxLines: 1,
+                decoration: InputDecoration(
+                    labelText: 'Atende em até (kms)', hintText: 'Ex: 80 kms'),
               ),
             ),
             Divider(),
@@ -414,6 +425,36 @@ class _CreateContactBodyState extends State<CreateContactBody> {
           ],
         ),
       ),
+    );
+  }
+
+  openDialogSchedule() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return SimpleDialog(
+          title: Text('Revise os horários de atendimento'),
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(kDefaultPadding),
+              child: TimeTableAdmin(
+                timeTable: _contactModel.timeTable,
+                callback: callbackTimeTable,
+                preFillTimeTable: _contactModel.timeTable.isEmpty
+                    ? _contactModel.scheduleType.first
+                    : null,
+              ),
+            ),
+            Center(
+                child: ElevatedButton(
+                    child: Text('OK'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    }))
+          ],
+          contentPadding: const EdgeInsets.all(kDefaultPadding),
+        );
+      },
     );
   }
 
@@ -502,6 +543,7 @@ class _CreateContactBodyState extends State<CreateContactBody> {
             'facebook': _contactModel.facebook,
             'linkedin': _contactModel.linkedin,
             'status': _contactModel.status,
+            'radarkms': _contactModel.regionAttendanceRadar,
             'endereco': {
               'endereco': _contactModel.address.strAvnName,
               'complemento': _contactModel.address.compliment,

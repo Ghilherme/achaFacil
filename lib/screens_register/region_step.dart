@@ -81,7 +81,7 @@ class RegionStepState extends State<RegionStep> {
           ),
           Container(height: kDefaultPadding),
           ListTile(
-            leading: const Icon(Icons.confirmation_number),
+            leading: const Icon(MdiIcons.signRealEstate),
             contentPadding: EdgeInsets.all(0),
             title: TextFormField(
               textCapitalization: TextCapitalization.sentences,
@@ -137,7 +137,7 @@ class RegionStepState extends State<RegionStep> {
           ),
           Container(height: kDefaultPadding),
           ListTile(
-            leading: const Icon(Icons.location_city),
+            leading: const Icon(Icons.map),
             contentPadding: EdgeInsets.all(0),
             title: DropdownButton<States>(
               isExpanded: true,

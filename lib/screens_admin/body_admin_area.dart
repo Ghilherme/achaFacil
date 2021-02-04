@@ -1,3 +1,4 @@
+import 'package:AchaFacil/apis/models/contacts_status.dart';
 import 'package:flutter/material.dart';
 import 'package:AchaFacil/menu/custom_drawer_admin.dart';
 import 'package:AchaFacil/screens_admin/categories/body_categories_list_admin.dart';
@@ -49,7 +50,11 @@ class Entities extends StatelessWidget {
           ),
           onTap: () {
             Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => BodyContactListAdmin()));
+                builder: (context) => BodyContactListAdmin(
+                      title: 'Lista de Contatos',
+                      orderBy: 'nome',
+                      showWithStatus: [Status.active],
+                    )));
           },
         ),
         InkWell(
@@ -72,7 +77,10 @@ class Entities extends StatelessWidget {
           ),
           onTap: () {
             Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => BodyContactListAdmin()));
+                builder: (context) => BodyContactListAdmin(
+                    title: 'Contatos Pendentes',
+                    orderBy: 'criacao',
+                    showWithStatus: [Status.pending])));
           },
         ),
         InkWell(
