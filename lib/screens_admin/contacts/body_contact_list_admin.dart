@@ -1,4 +1,5 @@
 import 'package:AchaFacil/apis/models/contacts_status.dart';
+import 'package:AchaFacil/components/list_view_header.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:AchaFacil/apis/models/contacts.dart';
@@ -79,21 +80,8 @@ class BodyContactListAdmin extends StatelessWidget {
   Widget _buildRow(BuildContext context, List<QueryDocumentSnapshot> snapshot,
       int index, int size) {
     if (index == 0)
-      return new Padding(
-        padding: EdgeInsets.symmetric(
-          vertical: kDefaultPadding / 2,
-          horizontal: kDefaultPadding,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              size.toString() + ' Contatos no total',
-              style: Theme.of(context).textTheme.headline5,
-            ),
-            Container(height: 30)
-          ],
-        ),
+      return ListViewHeader(
+        title: size.toString() + ' Contatos no total',
       );
 
     index -= 1;

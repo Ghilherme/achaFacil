@@ -1,3 +1,4 @@
+import 'package:AchaFacil/components/list_view_header.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -68,21 +69,8 @@ class BodyCategoriesListAdmin extends StatelessWidget {
   Widget _buildRow(BuildContext context, List<QueryDocumentSnapshot> snapshot,
       int index, int size) {
     if (index == 0)
-      return new Padding(
-        padding: EdgeInsets.symmetric(
-          vertical: kDefaultPadding / 2,
-          horizontal: kDefaultPadding,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              size.toString() + ' Categorias no total',
-              style: Theme.of(context).textTheme.headline5,
-            ),
-            Container(height: 30)
-          ],
-        ),
+      return ListViewHeader(
+        title: size.toString() + ' Categorias no total',
       );
     index -= 1;
 

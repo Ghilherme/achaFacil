@@ -16,7 +16,7 @@ class CustomDrawer extends StatelessWidget {
       children: [
         UserAccountsDrawerHeader(
             accountName: Text(mainTitleApp),
-            accountEmail: Text('Tudo em 3 cliques ou menos!')),
+            accountEmail: Text('Tudo em até 3 cliques!')),
         ListTile(
           leading: Icon(Icons.favorite),
           title: Text('Favoritos'),
@@ -53,6 +53,15 @@ class CustomDrawer extends StatelessWidget {
           },
         ),
         ListTile(
+          leading: Icon(Icons.save),
+          title: Text('Solicitar'),
+          subtitle: Text('Criação de prestadores'),
+          onTap: () {
+            Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => RegisterJourney()));
+          },
+        ),
+        ListTile(
           leading: Icon(Icons.login),
           title: Text('Área'),
           subtitle: Text('Administrativa'),
@@ -65,16 +74,7 @@ class CustomDrawer extends StatelessWidget {
               Navigator.of(context).pushReplacement(
                   MaterialPageRoute(builder: (context) => Login()));
           },
-        ),
-        ListTile(
-          leading: Icon(Icons.save),
-          title: Text('Solicitar'),
-          subtitle: Text('Criação de prestadores'),
-          onTap: () {
-            Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => RegisterJourney()));
-          },
-        ),
+        )
       ],
     ));
   }
