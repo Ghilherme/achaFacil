@@ -54,18 +54,39 @@ class BodyServiceListAdmin extends StatelessWidget {
                     top: kDefaultPaddingListView,
                     bottom: kDefaultPaddingListView,
                     left: kDefaultPaddingListView),
-                itemCount: querySnapshot.size,
+                itemCount:
+                    querySnapshot.size == null ? 1 : querySnapshot.size + 1,
                 itemBuilder: (context, i) {
                   return _buildRow(
-                      context, querySnapshot.docs[i], i, querySnapshot.size);
+                      context, querySnapshot.docs, i, querySnapshot.size);
                 });
           },
         ));
   }
 
-  Widget _buildRow(BuildContext context, QueryDocumentSnapshot snapshot,
-      int indice, int size) {
-    ServiceTypesModel serviceType = ServiceTypesModel.fromFirestore(snapshot);
+  Widget _buildRow(BuildContext context, List<QueryDocumentSnapshot> snapshot,
+      int index, int size) {
+    if (index == 0)
+      return new Padding(
+        padding: EdgeInsets.symmetric(
+          vertical: kDefaultPadding / 2,
+          horizontal: kDefaultPadding,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              size.toString() + ' Prestadores no total',
+              style: Theme.of(context).textTheme.headline5,
+            ),
+            Container(height: 30)
+          ],
+        ),
+      );
+
+    index -= 1;
+    ServiceTypesModel serviceType =
+        ServiceTypesModel.fromFirestore(snapshot[index]);
 
     return Column(children: <Widget>[
       ListTileAdmin(
@@ -91,7 +112,7 @@ class BodyServiceListAdmin extends StatelessWidget {
                   CreateServiceType(serviceTypes: serviceType)));
         },
       ),
-      indice + 1 == size ? Container() : Divider()
+      index + 1 == size ? Container() : Divider()
     ]);
   }
 }
