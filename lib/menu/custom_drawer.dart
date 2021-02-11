@@ -68,11 +68,11 @@ class CustomDrawer extends StatelessWidget {
           onTap: () async {
             final SharedPreferences prefs = await _prefs;
             if (prefs.getBool('logado') != null && prefs.getBool('logado'))
-              Navigator.of(context).pushReplacement(
+              Navigator.of(context).push(
                   MaterialPageRoute(builder: (context) => BodyAdminArea()));
             else
-              Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (context) => Login()));
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => Login()));
           },
         )
       ],
