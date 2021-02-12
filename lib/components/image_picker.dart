@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:AchaFacil/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -38,81 +39,123 @@ class _ImagePickerSourceState extends State<ImagePickerSource> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        _previewImage(),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            IconButton(
-              icon: Icon(Icons.photo_camera, size: 35, color: Colors.blue),
-              onPressed: () {
-                showModal(context);
-              },
+    return widget.isAvatar
+        ? Column(children: [
+            CircleAvatar(
+              child: IconButton(
+                iconSize: 40,
+                color: Colors.grey[600],
+                icon: _imageFile == null
+                    ? Icon(
+                        Icons.add_a_photo,
+                      )
+                    : Icon(Icons.add_a_photo, color: Colors.transparent),
+                onPressed: () {
+                  showModal(context);
+                },
+              ),
+              radius: 60,
+              backgroundImage: _imageFile == null
+                  ? Image.asset(
+                      'assets/icons/avatar_placeholder.png',
+                    ).image
+                  : _previewImage(),
             ),
-            Container(width: 20),
             _imageFile == null
                 ? Container()
-                : IconButton(
-                    icon: Icon(Icons.cancel, size: 35),
-                    onPressed: () {
-                      setState(() {
-                        _imageFile = null;
-                      });
-                    },
+                : Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      _imageFile == null
+                          ? Container()
+                          : IconButton(
+                              icon: Icon(
+                                Icons.cancel,
+                                size: 35,
+                                color: kTextLightColor,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _imageFile = null;
+                                });
+                              },
+                            ),
+                      Container(width: 20),
+                      IconButton(
+                        iconSize: 40,
+                        color: Colors.blue,
+                        icon: Icon(Icons.add_a_photo),
+                        onPressed: () {
+                          showModal(context);
+                        },
+                      )
+                    ],
                   ),
-          ],
-        ),
-      ],
-    );
+          ])
+        : Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              _imageFile == null
+                  ? Container(
+                      height: 200,
+                      child: RaisedButton.icon(
+                        color: Colors.grey[300],
+                        label: Text('Imagem de fundo'),
+                        icon: Icon(Icons.add_a_photo, color: Colors.grey[600]),
+                        onPressed: () {
+                          showModal(context);
+                        },
+                      ),
+                    )
+                  : Image(image: _previewImage()),
+              _imageFile == null
+                  ? Container()
+                  : Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        _imageFile == null
+                            ? Container()
+                            : IconButton(
+                                icon: Icon(
+                                  Icons.cancel,
+                                  size: 35,
+                                  color: kTextLightColor,
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    _imageFile = null;
+                                  });
+                                },
+                              ),
+                        Container(width: 20),
+                        IconButton(
+                          iconSize: 40,
+                          color: Colors.blue,
+                          icon: Icon(Icons.add_a_photo),
+                          onPressed: () {
+                            showModal(context);
+                          },
+                        )
+                      ],
+                    ),
+            ],
+          );
   }
 
-  Widget _previewImage() {
+  ImageProvider _previewImage() {
     final Text retrieveError = _getRetrieveErrorWidget();
     if (retrieveError != null) {
-      return retrieveError;
+      return Image.file(File('assets/images/error_message.png')).image;
     }
     if (_imageFile != null) {
       if (kIsWeb) {
-        return widget.isAvatar
-            ? CircleAvatar(
-                radius: 50,
-                backgroundImage: loadImage().image,
-              )
-            : loadImage();
+        return Image.network(_imageFile.path).image;
       } else {
-        return Semantics(
-            child: widget.isAvatar
-                ? CircleAvatar(
-                    radius: 50,
-                    backgroundImage: Image.file(File(_imageFile.path)).image,
-                  )
-                : Image.file(File(_imageFile.path)),
-            label: 'image_picker_example_picked_image');
+        return Image.file(File(_imageFile.path)).image;
       }
     } else if (_pickImageError != null) {
-      return Text(
-        'Pick image error: $_pickImageError',
-        textAlign: TextAlign.center,
-      );
-    } else {
-      return Container();
+      return Image.file(File('assets/images/error_message.png')).image;
     }
-  }
-
-  Image loadImage() {
-    return Image.network(_imageFile.path, loadingBuilder:
-        (BuildContext context, Widget child, ImageChunkEvent loadingProgress) {
-      if (loadingProgress == null) return child;
-      return Center(
-        child: CircularProgressIndicator(
-          value: loadingProgress.expectedTotalBytes != null
-              ? loadingProgress.cumulativeBytesLoaded /
-                  loadingProgress.expectedTotalBytes
-              : null,
-        ),
-      );
-    });
   }
 
   Text _getRetrieveErrorWidget() {

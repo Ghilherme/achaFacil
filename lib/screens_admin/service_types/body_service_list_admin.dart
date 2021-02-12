@@ -1,3 +1,4 @@
+import 'package:AchaFacil/components/list_view_header.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:AchaFacil/apis/models/service_types.dart';
@@ -15,6 +16,7 @@ class BodyServiceListAdmin extends StatelessWidget {
 
     return Scaffold(
         appBar: AppBar(
+            backgroundColor: Colors.redAccent,
             title: Text('Lista de Prestadores'),
             actions: <Widget>[
               IconButton(
@@ -53,18 +55,26 @@ class BodyServiceListAdmin extends StatelessWidget {
                     top: kDefaultPaddingListView,
                     bottom: kDefaultPaddingListView,
                     left: kDefaultPaddingListView),
-                itemCount: querySnapshot.size,
+                itemCount:
+                    querySnapshot.size == null ? 1 : querySnapshot.size + 1,
                 itemBuilder: (context, i) {
                   return _buildRow(
-                      context, querySnapshot.docs[i], i, querySnapshot.size);
+                      context, querySnapshot.docs, i, querySnapshot.size);
                 });
           },
         ));
   }
 
-  Widget _buildRow(BuildContext context, QueryDocumentSnapshot snapshot,
-      int indice, int size) {
-    ServiceTypesModel serviceType = ServiceTypesModel.fromFirestore(snapshot);
+  Widget _buildRow(BuildContext context, List<QueryDocumentSnapshot> snapshot,
+      int index, int size) {
+    if (index == 0)
+      return ListViewHeader(
+        title: size.toString() + ' Prestadores no total',
+      );
+
+    index -= 1;
+    ServiceTypesModel serviceType =
+        ServiceTypesModel.fromFirestore(snapshot[index]);
 
     return Column(children: <Widget>[
       ListTileAdmin(
@@ -90,7 +100,7 @@ class BodyServiceListAdmin extends StatelessWidget {
                   CreateServiceType(serviceTypes: serviceType)));
         },
       ),
-      indice + 1 == size ? Container() : Divider()
+      index + 1 == size ? Container() : Divider()
     ]);
   }
 }

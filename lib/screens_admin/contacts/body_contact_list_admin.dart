@@ -1,5 +1,6 @@
+import 'package:AchaFacil/apis/models/contacts_status.dart';
+import 'package:AchaFacil/components/list_view_header.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:AchaFacil/apis/models/contacts.dart';
 import 'package:AchaFacil/components/confirmation_dialog.dart';
@@ -8,14 +9,27 @@ import '../../constants.dart';
 import 'create_contact.dart';
 
 class BodyContactListAdmin extends StatelessWidget {
+  final String orderBy, title;
+  final List<String> showWithStatus;
+
+  const BodyContactListAdmin(
+      {Key key,
+      @required this.orderBy,
+      @required this.showWithStatus,
+      this.title})
+      : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    Query query =
-        FirebaseFirestore.instance.collection('contatos').orderBy('nome');
+    Query query = FirebaseFirestore.instance
+        .collection('contatos')
+        .where('status', whereIn: showWithStatus)
+        .orderBy(orderBy);
 
     return Scaffold(
         appBar: AppBar(
-            title: Text('Lista de Contatos'),
+            backgroundColor: Colors.redAccent,
+            title: Text(title),
             actions: <Widget>[
               IconButton(
                   icon: const Icon(Icons.add),
@@ -53,18 +67,26 @@ class BodyContactListAdmin extends StatelessWidget {
                     top: kDefaultPaddingListView,
                     bottom: kDefaultPaddingListView,
                     left: kDefaultPaddingListView),
-                itemCount: querySnapshot.size,
+                itemCount:
+                    querySnapshot.size == null ? 1 : querySnapshot.size + 1,
                 itemBuilder: (context, i) {
                   return _buildRow(
-                      context, querySnapshot.docs[i], i, querySnapshot.size);
+                      context, querySnapshot.docs, i, querySnapshot.size);
                 });
           },
         ));
   }
 
-  Widget _buildRow(BuildContext context, QueryDocumentSnapshot snapshot,
-      int indice, int size) {
-    ContactsModel contact = ContactsModel.fromFirestore(snapshot);
+  Widget _buildRow(BuildContext context, List<QueryDocumentSnapshot> snapshot,
+      int index, int size) {
+    if (index == 0)
+      return ListViewHeader(
+        title: size.toString() + ' Contatos no total',
+      );
+
+    index -= 1;
+    ContactsModel contact = ContactsModel.fromFirestore(snapshot[index]);
+
     return Column(children: <Widget>[
       ListTileAdmin(
         confirmationDialog: ConfirmationDialog(
@@ -75,27 +97,25 @@ class BodyContactListAdmin extends StatelessWidget {
               '\nEstado: ' +
               contact.address.uf,
           okFunction: () {
-            if (contact.image.isNotEmpty)
-              FirebaseStorage.instance.refFromURL(contact.image).delete();
-
-            if (contact.imageAvatar.isNotEmpty)
-              FirebaseStorage.instance.refFromURL(contact.imageAvatar).delete();
-
             FirebaseFirestore.instance
                 .collection('contatos')
                 .doc(contact.id)
-                .delete();
+                .update({'status': Status.disabled});
           },
-          title: 'Deseja excluir o contato?',
+          title: 'Deseja desabilitar o contato?',
         ),
         title: contact.name,
-        subtitle: contact.address.city + ' ' + contact.address.uf,
+        subtitle: contact.address.city +
+            ' ' +
+            contact.address.uf +
+            '\nCriado em: ' +
+            "${contact.createdAt.day.toString().padLeft(2, '0')}-${contact.createdAt.month.toString().padLeft(2, '0')}-${contact.createdAt.year.toString()} ${contact.createdAt.hour.toString().padLeft(2, '0')}:${contact.createdAt.minute.toString().padLeft(2, '0')}",
         editFunction: () {
           Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => CreateContact(contact: contact)));
         },
       ),
-      indice + 1 == size ? Container() : Divider()
+      index + 1 == size ? Container() : Divider()
     ]);
   }
 }

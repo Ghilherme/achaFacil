@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:AchaFacil/screens_admin/body_admin_area.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constants.dart';
 
@@ -10,6 +11,7 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
+  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   @override
   Widget build(BuildContext context) {
     String pass = '';
@@ -74,9 +76,11 @@ class _LoginFormState extends State<LoginForm> {
   }
 
   void _validateLogin(GlobalKey<FormState> _formKey, String login, String pass,
-      BuildContext context) {
+      BuildContext context) async {
     if (_formKey.currentState.validate()) {
-      if (login == 'admin' && pass == '123') {
+      if (login == 'admin' && pass == 'FACIL2021') {
+        final SharedPreferences prefs = await _prefs;
+        prefs.setBool('logado', true);
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(

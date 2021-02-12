@@ -1,4 +1,5 @@
 import 'package:AchaFacil/apis/models/contacts.dart';
+import 'package:AchaFacil/apis/models/contacts_status.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:AchaFacil/screens_details/body_contact_details.dart';
@@ -73,6 +74,9 @@ class BodyContactList extends StatelessWidget {
   Widget _buildRow(BuildContext context, List<DistanceContact> contacts,
       int indice, int size) {
     ContactsModel contact = contacts.elementAt(indice).contact;
+    if (contact.status !=
+        Status.active) //se for qualquer status diferente de ativo não exibe
+      return Container();
     String kms = contacts.elementAt(indice).distance.toString();
     return Column(children: <Widget>[
       ListTile(
@@ -81,7 +85,7 @@ class BodyContactList extends StatelessWidget {
               radius: 25,
               backgroundImage:
                   contact.imageAvatar == '' || contact.imageAvatar == null
-                      ? AssetImage('assets/images/contacts.jpeg')
+                      ? Image.network(urlAvatarInitials + contact.name).image
                       : Image.network(contact.imageAvatar).image),
           subtitle: contact.rating.general == 0
               ? Text('Seja o primeiro a avaliar!')

@@ -1,4 +1,8 @@
+import 'dart:io';
+
+import 'package:AchaFacil/components/image_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:AchaFacil/apis/models/categories.dart';
 
@@ -10,6 +14,7 @@ class CreateCategories extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+          backgroundColor: Colors.redAccent,
           title: Text('Criar Categoria'),
           elevation: 0,
           leading: IconButton(
@@ -39,6 +44,7 @@ class _CreateCategoriesBodyState extends State<CreateCategoriesBody> {
   final _form = GlobalKey<FormState>();
   CategoriesModel _categoriesModel;
   bool _progressBarActive = false;
+  String _fileBannerUpload = '';
 
   initState() {
     super.initState();
@@ -79,18 +85,14 @@ class _CreateCategoriesBodyState extends State<CreateCategoriesBody> {
                 ),
               ),
             ),
+            Container(height: 30),
             ListTile(
-              leading: Icon(Icons.text_fields),
-              title: new TextFormField(
-                initialValue: _categoriesModel.icons,
-                onChanged: (value) {
-                  _categoriesModel.icons = value;
-                },
-                decoration: InputDecoration(
-                  hintText: "Ícone",
-                ),
-              ),
-            ),
+                leading: Text('Banner'),
+                title: ImagePickerSource(
+                  image: categories.banner,
+                  callback: callbackImage,
+                  imageQuality: 40,
+                )),
             Container(height: 30),
             SizedBox(
               width: 200,
@@ -110,6 +112,19 @@ class _CreateCategoriesBodyState extends State<CreateCategoriesBody> {
     );
   }
 
+  callbackImage(file) {
+    setState(() {
+      _fileBannerUpload = file;
+    });
+  }
+
+  Future<String> uploadFileImage(String refPath, String filePath) async {
+    File file = File(filePath);
+
+    await FirebaseStorage.instance.ref(refPath).putFile(file);
+    return await FirebaseStorage.instance.ref(refPath).getDownloadURL();
+  }
+
   void saveCategories() async {
     if (_form.currentState.validate()) {
       setState(() {
@@ -119,6 +134,12 @@ class _CreateCategoriesBodyState extends State<CreateCategoriesBody> {
       DocumentReference contactDB = FirebaseFirestore.instance
           .collection('categorias')
           .doc(_categoriesModel.id);
+
+      //Se houve alteração na imagem, faz um novo upload
+      if (_fileBannerUpload.isNotEmpty)
+        _categoriesModel.banner = await uploadFileImage(
+            'categorias/banners/' + _categoriesModel.title + '_background.png',
+            _fileBannerUpload);
 
       FirebaseFirestore.instance
           .runTransaction((transaction) async {
@@ -139,6 +160,7 @@ class _CreateCategoriesBodyState extends State<CreateCategoriesBody> {
               'titulo': _categoriesModel.title,
               'subtitulo': _categoriesModel.subtitle,
               'icone': _categoriesModel.icons,
+              'banner': _categoriesModel.banner
             });
           })
           .then((value) => showDialog(
