@@ -42,6 +42,12 @@
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 	<key>UIStatusBarHidden</key>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Acessamos a galeria somente para em caso de o usuário querer fazer algum upload de foto a partir do dispositivo.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Acessamos a localização para dar uma melhor experiência ao usuário final, exibindo somente contatos próximos a sua localização.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Acessamos a localização para dar uma melhor experiência ao usuário final, exibindo somente contatos próximos a sua localização.</string>
 	<true/>
 
 </dict>
