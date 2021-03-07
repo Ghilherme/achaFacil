@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:AchaFacil/apis/models/contacts.dart';
 import 'package:AchaFacil/apis/models/states.dart';
 import 'package:flutter/services.dart';
-import 'package:geocoding/geocoding.dart';
+import 'package:geocoder/geocoder.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 
@@ -511,16 +511,17 @@ class _CreateContactBodyState extends State<CreateContactBody> {
       _contactModel.lastModification = DateTime.now();
 
       //tenta pegar geopoint com endereço providenciado
-      var loc = await locationFromAddress(_contactModel.address.strAvnName +
-          ' ' +
-          _contactModel.address.number +
-          ',' +
-          _contactModel.address.neighborhood +
-          ',' +
-          _contactModel.address.city);
+      var loc = await Geocoder.local.findAddressesFromQuery(
+          contact.address.strAvnName +
+              ' ' +
+              contact.address.number +
+              ',' +
+              contact.address.neighborhood +
+              ',' +
+              contact.address.city);
 
-      _contactModel.address.coordinates =
-          GeoPoint(loc.first.latitude, loc.first.longitude);
+      _contactModel.address.coordinates = GeoPoint(
+          loc.first.coordinates.latitude, loc.first.coordinates.longitude);
 
       //Criado pela area administrativa é sempre ativo
       _contactModel.status = Status.active;
