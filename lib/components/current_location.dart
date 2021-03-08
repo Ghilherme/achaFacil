@@ -1,6 +1,6 @@
 import 'package:AchaFacil/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:geocoding/geocoding.dart';
+import 'package:geocoder/geocoder.dart';
 import 'package:geolocator/geolocator.dart';
 
 class CurrentLocation extends StatefulWidget {
@@ -13,7 +13,7 @@ class CurrentLocation extends StatefulWidget {
 }
 
 class _CurrentLocationState extends State<CurrentLocation> {
-  Placemark _currentPlaceMark;
+  Address _currentPlaceMark;
   initState() {
     super.initState();
     _determinePosition();
@@ -44,7 +44,7 @@ class _CurrentLocationState extends State<CurrentLocation> {
                             fontSize: 11, fontWeight: FontWeight.w600),
                       ),
                       TextSpan(
-                        text: _currentPlaceMark.subAdministrativeArea,
+                        text: _currentPlaceMark.subAdminArea,
                         style: TextStyle(fontSize: 10),
                       ),
                     ],
@@ -83,7 +83,10 @@ class _CurrentLocationState extends State<CurrentLocation> {
     // Setando variavel para todo app
     globalPosition = pos;
 
-    placemarkFromCoordinates(pos.latitude, pos.longitude)
+    Coordinates coord = Coordinates(pos.latitude, pos.longitude);
+
+    Geocoder.local
+        .findAddressesFromCoordinates(coord)
         .then((value) => setState(() {
               _currentPlaceMark = value.first;
             }));
