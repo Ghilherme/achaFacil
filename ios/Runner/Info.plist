@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSCameraUsageDescription</key>
+	<string>Acessamos a câmera somente para em caso de o usuário querer fazer algum upload de foto a partir do dispositivo.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Acessamos a galeria somente para em caso de o usuário querer fazer algum upload de foto a partir do dispositivo.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
