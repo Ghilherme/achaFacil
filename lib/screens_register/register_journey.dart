@@ -85,7 +85,7 @@ class _RegisterJourneyBodyState extends State<RegisterJourneyBody> {
                       onPressed: onStepCancel)
                   : Container(),
               ElevatedButton(
-                  onPressed: onStepContinue,
+                  onPressed: _progressBarActive ? null : onStepContinue,
                   child: _progressBarActive
                       ? Center(
                           child: CircularProgressIndicator(
