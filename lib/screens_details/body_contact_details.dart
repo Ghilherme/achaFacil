@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:AchaFacil/apis/models/contacts.dart';
 import 'package:AchaFacil/apis/requests/gets.dart';
 import 'package:AchaFacil/components/card_icon.dart';
@@ -22,22 +20,21 @@ class BodyContactDetails extends StatelessWidget {
       body: Body(contact: contact),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () async {
-          if (Platform.isAndroid)
-            Gets.launchExternal("whatsapp://send?phone=" +
-                    contact.telNumbers['whatsapp'] +
-                    '&text=' +
-                    Uri.encodeFull(whatsMessageContact))
-                .then((launched) {
-              if (launched)
-                increaseTagCount(contact.id, contact.zapClickedAmount);
-            });
-          else
-            Gets.launchExternal(
-                    "https://api.whatsapp.com/send?phone=${contact.telNumbers['whatsapp']}=${Uri.parse(whatsMessageContact)}")
-                .then((launched) {
-              if (launched)
-                increaseTagCount(contact.id, contact.zapClickedAmount);
-            });
+          Gets.launchExternal("whatsapp://send?phone=" +
+                  contact.telNumbers['whatsapp'] +
+                  '&text=' +
+                  Uri.encodeFull(whatsMessageContact))
+              .then((launched) {
+            if (launched)
+              increaseTagCount(contact.id, contact.zapClickedAmount);
+            else
+              Gets.launchExternal(
+                      "whatsapp://wa.me/${contact.telNumbers['whatsapp']}/?text=${Uri.encodeFull(whatsMessageContact)}")
+                  .then((launched) {
+                if (launched)
+                  increaseTagCount(contact.id, contact.zapClickedAmount);
+              });
+          });
         },
         label: Text('Zap'),
         icon: Icon(Icons.call),
