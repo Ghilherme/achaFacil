@@ -6,14 +6,6 @@
 	<array>
 		<string>whatsapp</string>
 	</array>
-	<key>NSCameraUsageDescription</key>
-	<string>Acessamos a câmera somente para em caso de o usuário querer fazer algum upload de foto a partir do dispositivo.</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Acessamos a galeria somente para em caso de o usuário querer fazer algum upload de foto a partir do dispositivo.</string>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Acessamos a localização para dar uma melhor experiência ao usuário final, exibindo somente contatos próximos a sua localização.</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Acessamos a localização para dar uma melhor experiência ao usuário final, exibindo somente contatos próximos a sua localização.</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
