@@ -32,7 +32,8 @@ class BodyContactDetails extends StatelessWidget {
                 increaseTagCount(contact.id, contact.zapClickedAmount);
             });
           else
-            Gets.launchExternal("https://api.whatsapp.com/send?phone=${contact.telNumbers['whatsapp']}=${Uri.parse(whatsMessageContact)}";)
+            Gets.launchExternal(
+                    "https://api.whatsapp.com/send?phone=${contact.telNumbers['whatsapp']}=${Uri.parse(whatsMessageContact)}")
                 .then((launched) {
               if (launched)
                 increaseTagCount(contact.id, contact.zapClickedAmount);
