@@ -1,5 +1,6 @@
 import 'package:AchaFacil/apis/models/contacts.dart';
 import 'package:AchaFacil/apis/models/contacts_status.dart';
+import 'package:AchaFacil/components/not_found.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:AchaFacil/screens_details/body_contact_details.dart';
@@ -53,6 +54,10 @@ class BodyContactList extends StatelessWidget {
 
             QuerySnapshot querySnapshot = stream.data;
             var contatos = _orderContactsByDistance(querySnapshot.docs);
+
+            if (contatos.length == 0) {
+              return NotFound();
+            }
 
             return ListView.builder(
                 padding: EdgeInsets.all(kDefaultPaddingListView),

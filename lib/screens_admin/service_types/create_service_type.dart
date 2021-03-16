@@ -96,6 +96,8 @@ class _CreateServiceTypesBodyState extends State<CreateServiceTypesBody> {
                       if (setDefaultCategory) {
                         category = snapshot.data.docs[0].get('titulo');
                         _serviceModel.categoryTitle = category;
+                        _serviceModel.category =
+                            snapshot.data.docs[0].reference;
                       }
 
                       return DropdownButton(
