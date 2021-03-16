@@ -105,11 +105,13 @@ class BodyContactListAdmin extends StatelessWidget {
           title: 'Deseja desabilitar o contato?',
         ),
         title: contact.name,
-        subtitle: contact.address.city +
-            ' ' +
-            contact.address.uf +
+        subtitle: contact.serviceType.join(', ') +
             '\nCriado em: ' +
-            "${contact.createdAt.day.toString().padLeft(2, '0')}-${contact.createdAt.month.toString().padLeft(2, '0')}-${contact.createdAt.year.toString()} ${contact.createdAt.hour.toString().padLeft(2, '0')}:${contact.createdAt.minute.toString().padLeft(2, '0')}",
+            "${contact.createdAt.day.toString().padLeft(2, '0')}-${contact.createdAt.month.toString().padLeft(2, '0')}-${contact.createdAt.year.toString()} ${contact.createdAt.hour.toString().padLeft(2, '0')}:${contact.createdAt.minute.toString().padLeft(2, '0')}" +
+            '\n' +
+            contact.address.city +
+            ' - ' +
+            contact.address.uf,
         editFunction: () {
           Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => CreateContact(contact: contact)));
