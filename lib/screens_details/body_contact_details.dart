@@ -21,10 +21,20 @@ class BodyContactDetails extends StatelessWidget {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () async {
           Gets.launchExternal("whatsapp://send?phone=" +
-              contact.telNumbers['whatsapp'] +
-              '&text=' +
-              whatsMessageContact);
-          increaseTagCount(contact.id, contact.zapClickedAmount);
+                  contact.telNumbers['whatsapp'] +
+                  '&text=' +
+                  Uri.encodeFull(whatsMessageContact))
+              .then((launched) {
+            if (launched)
+              increaseTagCount(contact.id, contact.zapClickedAmount);
+            else
+              Gets.launchExternal(
+                      "https://wa.me/${contact.telNumbers['whatsapp']}/?text=${Uri.encodeFull(whatsMessageContact)}")
+                  .then((launched) {
+                if (launched)
+                  increaseTagCount(contact.id, contact.zapClickedAmount);
+              });
+          });
         },
         label: Text('Zap'),
         icon: Icon(Icons.call),

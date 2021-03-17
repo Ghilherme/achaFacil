@@ -5,7 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:AchaFacil/apis/models/contacts.dart';
-import 'package:geocoding/geocoding.dart';
+import 'package:geocoder/geocoder.dart';
 import '../constants.dart';
 import 'attendance_step.dart';
 import 'end_journey.dart';
@@ -85,7 +85,7 @@ class _RegisterJourneyBodyState extends State<RegisterJourneyBody> {
                       onPressed: onStepCancel)
                   : Container(),
               ElevatedButton(
-                  onPressed: onStepContinue,
+                  onPressed: _progressBarActive ? null : onStepContinue,
                   child: _progressBarActive
                       ? Center(
                           child: CircularProgressIndicator(
@@ -173,15 +173,17 @@ class _RegisterJourneyBodyState extends State<RegisterJourneyBody> {
 
     //tenta pegar geopoint com endereço providenciado, senão pega da localização atual
     try {
-      await locationFromAddress(contact.address.strAvnName +
+      await Geocoder.local
+          .findAddressesFromQuery(contact.address.strAvnName +
               ' ' +
               contact.address.number +
               ',' +
               contact.address.neighborhood +
               ',' +
               contact.address.city)
-          .then((value) => contact.address.coordinates =
-              GeoPoint(value.first.latitude, value.first.longitude));
+          .then((value) => contact.address.coordinates = GeoPoint(
+              value.first.coordinates.latitude,
+              value.first.coordinates.latitude));
     } catch (e) {
       contact.address.coordinates =
           GeoPoint(globalPosition.latitude, globalPosition.longitude);
