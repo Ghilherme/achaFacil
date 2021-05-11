@@ -39,6 +39,7 @@ dependencies:
   geocoder: ^0.2.1
   flutter_search_bar: ^2.1.0
   material_design_icons_flutter: ^4.0.5855
+  google_fonts: ^2.0.0
 
 
 

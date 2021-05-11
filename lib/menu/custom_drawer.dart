@@ -1,10 +1,9 @@
-import 'package:AchaFacil/screens_admin/body_admin_area.dart';
-import 'package:AchaFacil/screens_lists/body_contact_list.dart';
-import 'package:AchaFacil/screens_register/register_journey.dart';
+import 'package:AchaFacil/screens/home/components/body_contact_list.dart';
+import 'package:AchaFacil/screens/login/login.dart';
+import 'package:AchaFacil/screens/register/register_journey.dart';
+import 'package:AchaFacil/screens/admin_area/body_admin_area.dart';
 import 'package:flutter/material.dart';
-import 'package:AchaFacil/login/login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../constants.dart';
 
 class CustomDrawer extends StatelessWidget {

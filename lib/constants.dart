@@ -1,11 +1,12 @@
 import 'package:AchaFacil/apis/models/weekdays.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-
 import 'apis/models/states.dart';
 
 const kTextColor = Color(0xFF535353);
 const kTextLightColor = Color(0xFFACACAC);
+const kSecondaryColor = Color(0xFF979797);
+const kPrimaryColor = Color(0xFF00809c);
 
 const String mainTitleApp = 'Acha Fácil!';
 const String emailApp = 'achafacilcomercial@gmail.com';
@@ -74,3 +75,5 @@ const List<String> schedule = const [
   'Comercial',
   'Com Agendamento'
 ];
+
+enum MenuState { home, search, favorites, profile }

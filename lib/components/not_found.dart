@@ -1,4 +1,4 @@
-import 'package:AchaFacil/screens_register/register_journey.dart';
+import 'package:AchaFacil/screens/register/register_journey.dart';
 import 'package:flutter/material.dart';
 
 class NotFound extends StatelessWidget {

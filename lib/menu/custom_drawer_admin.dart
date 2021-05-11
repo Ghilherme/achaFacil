@@ -1,6 +1,7 @@
-import 'package:AchaFacil/home/home_screen.dart';
+import 'package:AchaFacil/screens/home/home_screen.dart';
+import 'package:AchaFacil/screens/login/login.dart';
 import 'package:flutter/material.dart';
-import 'package:AchaFacil/login/login.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 import '../constants.dart';
 
