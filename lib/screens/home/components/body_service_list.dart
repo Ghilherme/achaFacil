@@ -1,9 +1,10 @@
 import 'package:AchaFacil/apis/models/service_types.dart';
+import 'package:AchaFacil/components/custom_bottom_nav_bar.dart';
 import 'package:AchaFacil/constants.dart';
+import 'package:AchaFacil/screens/contact_list/contact_list.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_search_bar/flutter_search_bar.dart';
-import 'body_contact_list.dart';
 
 class BodyServiceList extends StatefulWidget {
   BodyServiceList({Key key, @required this.category, this.title})
@@ -61,7 +62,6 @@ class _BodyServiceListState extends State<BodyServiceList> {
 
   @override
   Widget build(BuildContext context) {
-    //Pega a tabela categorias somente da categoria selecionada
     Query query = FirebaseFirestore.instance
         .collection('prestadores')
         .where(
@@ -73,48 +73,63 @@ class _BodyServiceListState extends State<BodyServiceList> {
         .orderBy('nome');
 
     return Scaffold(
-        appBar: _searchBar.build(context),
-        body: StreamBuilder(
-          stream: query.snapshots(),
-          builder: (context, stream) {
-            //Trata Load
-            if (stream.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
-            }
+        appBar: AppBar(
+            title: Text(widget.title),
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            )),
+        bottomNavigationBar: CustomBottomNavBar(selectedMenu: MenuState.home),
+        body: SafeArea(
+          child: StreamBuilder(
+            stream: query.snapshots(),
+            builder: (context, stream) {
+              //Trata Load
+              if (stream.connectionState == ConnectionState.waiting) {
+                return Center(child: CircularProgressIndicator());
+              }
 
-            //Trata Erro
-            if (stream.hasError) {
-              return Center(child: Text(stream.error.toString()));
-            }
+              //Trata Erro
+              if (stream.hasError) {
+                return Center(child: Text(stream.error.toString()));
+              }
 
-            QuerySnapshot querySnapshot = stream.data;
+              QuerySnapshot querySnapshot = stream.data;
 
-            return ListView.builder(
-                padding: EdgeInsets.all(kDefaultPaddingListView),
-                itemCount: querySnapshot.size,
-                itemBuilder: (context, i) {
-                  return _buildRow(
-                      context, querySnapshot.docs[i], i, querySnapshot.size);
-                });
-          },
+              return ListView.separated(
+                  padding: EdgeInsets.all(kDefaultPaddingListView),
+                  itemCount: querySnapshot.size,
+                  separatorBuilder: (BuildContext context, int index) =>
+                      Divider(),
+                  itemBuilder: (context, i) {
+                    return _buildRow(
+                        context, querySnapshot.docs[i], querySnapshot.size);
+                  });
+            },
+          ),
         ));
   }
 
-  Widget _buildRow(
-      BuildContext context, DocumentSnapshot snapshot, int indice, int size) {
+  Widget _buildRow(BuildContext context, DocumentSnapshot snapshot, int size) {
     ServiceTypesModel services = ServiceTypesModel.fromFirestore(snapshot);
 
     return Column(children: <Widget>[
       ListTile(
           title: Text(services.name),
+          trailing: Icon(
+            Icons.arrow_forward_ios,
+            size: 15,
+          ),
           onTap: () {
             Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => BodyContactList(
+                builder: (context) => ContactList(
                       title: services.name,
                       serviceType: services.category,
+                      menuState: MenuState.home,
                     )));
           }),
-      indice + 1 == size ? Container() : Divider()
     ]);
   }
 }

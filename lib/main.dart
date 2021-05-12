@@ -19,9 +19,13 @@ class MainApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: mainTitleApp,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
+          primarySwatch: Colors.blue,
+          primaryColor: kPrimaryColor,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+          appBarTheme: AppBarTheme(
+            elevation: 0,
+            centerTitle: true,
+          )),
 
       // home: SplashScreen(),
       // We use routeName so that we dont need to remember the name

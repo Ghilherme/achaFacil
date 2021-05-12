@@ -1,4 +1,3 @@
-import 'package:AchaFacil/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -14,14 +13,14 @@ class HomeHeader extends StatelessWidget {
             TextSpan(
               text: "Bem-vindo ao",
               style: GoogleFonts.quicksand(
-                  color: kPrimaryColor,
+                  color: Theme.of(context).primaryColor,
                   textStyle: Theme.of(context).textTheme.headline6),
             ),
             TextSpan(text: "\n"),
             TextSpan(
               text: "Acha Fácil",
               style: GoogleFonts.quicksand(
-                  color: kPrimaryColor,
+                  color: Theme.of(context).primaryColor,
                   textStyle:
                       TextStyle(fontWeight: FontWeight.bold, fontSize: 40)),
             ),

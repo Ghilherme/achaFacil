@@ -7,6 +7,7 @@ const kTextColor = Color(0xFF535353);
 const kTextLightColor = Color(0xFFACACAC);
 const kSecondaryColor = Color(0xFF979797);
 const kPrimaryColor = Color(0xFF00809c);
+//const kPrimaryColor = Color(0xFF015FFF);
 
 const String mainTitleApp = 'Acha Fácil!';
 const String emailApp = 'achafacilcomercial@gmail.com';

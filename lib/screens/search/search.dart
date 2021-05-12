@@ -9,7 +9,7 @@ class Search extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("search"),
+        title: Text("Ofertas"),
       ),
       body: SearchGrid(),
       bottomNavigationBar: CustomBottomNavBar(selectedMenu: MenuState.search),

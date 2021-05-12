@@ -34,7 +34,7 @@ class BodyCategoriesList extends StatelessWidget {
                 Text(
                   "Categorias",
                   style: GoogleFonts.quicksand(
-                      color: kPrimaryColor,
+                      color: Theme.of(context).primaryColor,
                       textStyle: Theme.of(context).textTheme.headline4),
                 ),
                 SizedBox(

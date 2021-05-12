@@ -1,4 +1,5 @@
-import 'package:AchaFacil/screens/home/components/body_contact_list.dart';
+import 'package:AchaFacil/screens/contact_list/components/body_contact_list.dart';
+import 'package:AchaFacil/screens/contact_list/contact_list.dart';
 import 'package:AchaFacil/screens/login/login.dart';
 import 'package:AchaFacil/screens/register/register_journey.dart';
 import 'package:AchaFacil/screens/admin_area/body_admin_area.dart';
@@ -43,7 +44,7 @@ class CustomDrawer extends StatelessWidget {
               );
             else
               Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => BodyContactList(
+                  builder: (context) => ContactList(
                         title: 'Favoritos!',
                         idFavorites: cacheFavorites
                             .map((e) => DateTime.parse(e))

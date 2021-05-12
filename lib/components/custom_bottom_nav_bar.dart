@@ -1,4 +1,4 @@
-import 'package:AchaFacil/screens/home/components/body_contact_list.dart';
+import 'package:AchaFacil/screens/contact_list/contact_list.dart';
 import 'package:AchaFacil/screens/home/home_screen.dart';
 import 'package:AchaFacil/screens/profile/profile.dart';
 import 'package:AchaFacil/screens/search/search.dart';
@@ -84,8 +84,9 @@ class CustomBottomNavBar extends StatelessWidget {
                     );
                   else
                     Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => BodyContactList(
-                              title: 'Favoritos!',
+                        builder: (context) => ContactList(
+                              title: 'Favoritos',
+                              menuState: MenuState.favorites,
                               idFavorites: cacheFavorites
                                   .map((e) => DateTime.parse(e))
                                   .toList(),
