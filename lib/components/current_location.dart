@@ -1,7 +1,5 @@
-import 'package:AchaFacil/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoder/geocoder.dart';
-import 'package:geolocator/geolocator.dart';
 
 class CurrentLocation extends StatefulWidget {
   const CurrentLocation({
@@ -16,7 +14,6 @@ class _CurrentLocationState extends State<CurrentLocation> {
   Address _currentPlaceMark;
   initState() {
     super.initState();
-    _determinePosition();
   }
 
   @override
@@ -53,42 +50,5 @@ class _CurrentLocationState extends State<CurrentLocation> {
               ),
             ],
           );
-  }
-
-  void _determinePosition() async {
-    bool serviceEnabled;
-    LocationPermission permission;
-
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      return Future.error('Location services are disabled.');
-    }
-
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.deniedForever) {
-      return Future.error(
-          'Location permissions are permantly denied, we cannot request permissions.');
-    }
-
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission != LocationPermission.whileInUse &&
-          permission != LocationPermission.always) {
-        return Future.error(
-            'Location permissions are denied (actual value: $permission).');
-      }
-    }
-
-    var pos = await Geolocator.getCurrentPosition();
-    // Setando variavel para todo app
-    globalPosition = pos;
-
-    Coordinates coord = Coordinates(pos.latitude, pos.longitude);
-
-    Geocoder.local
-        .findAddressesFromCoordinates(coord)
-        .then((value) => setState(() {
-              _currentPlaceMark = value.first;
-            }));
   }
 }
