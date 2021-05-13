@@ -1,3 +1,4 @@
+import 'package:AchaFacil/screens/sign_up/sign_up_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intro_slider/intro_slider.dart';
@@ -57,7 +58,7 @@ class _IntroSliderScreenState extends State<IntroSliderScreen> {
   }
 
   void onDonePress() {
-    // Do what you want
+    Navigator.pushNamed(context, SignUpScreen.routeName);
   }
 
   @override

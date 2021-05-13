@@ -25,7 +25,7 @@ class _CardHeaderState extends State<CardHeader> {
   final String scheduleType;
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   bool _favorited = false;
-  List<String> _favoritesCache = List<String>();
+  List<String> _favoritesCache = [];
 
   initState() {
     super.initState();

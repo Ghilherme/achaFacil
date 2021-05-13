@@ -1,9 +1,8 @@
 import 'package:AchaFacil/apis/models/categories.dart';
-import 'package:AchaFacil/constants.dart';
+import 'package:AchaFacil/screens/service_list/service_list.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'body_service_list.dart';
 
 class BodyCategoriesList extends StatelessWidget {
   @override
@@ -85,7 +84,7 @@ class BodyCategoriesList extends StatelessWidget {
         ),
         onTap: () {
           Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => BodyServiceList(
+              builder: (context) => ServiceList(
                     category: snapshot.reference,
                     title: categories.title,
                   )));

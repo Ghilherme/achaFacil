@@ -16,6 +16,17 @@ const String urlAvatarInitials =
 const String whatsMessageContact =
     'Olá, tudo bem?\nEstou entrando em contato com você através do aplicativo Acha Fácil. Podemos Conversar?';
 
+final RegExp emailValidatorRegExp =
+    RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+const String kEmailNullError = "Please Enter your email";
+const String kInvalidEmailError = "Please Enter Valid Email";
+const String kPassNullError = "Please Enter your password";
+const String kShortPassError = "Password is too short";
+const String kMatchPassError = "Passwords don't match";
+const String kNamelNullError = "Please Enter your name";
+const String kPhoneNumberNullError = "Please Enter your phone number";
+const String kAddressNullError = "Please Enter your address";
+
 // Colos that use in our app
 const kFillStarColor = Color(0xFFFCC419);
 

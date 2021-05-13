@@ -21,10 +21,18 @@ class MainApp extends StatelessWidget {
       theme: ThemeData(
           primarySwatch: Colors.blue,
           primaryColor: kPrimaryColor,
+          scaffoldBackgroundColor: Colors.white,
           visualDensity: VisualDensity.adaptivePlatformDensity,
           appBarTheme: AppBarTheme(
+            actionsIconTheme: IconThemeData(color: Colors.blue),
+            color: Colors.white,
             elevation: 0,
             centerTitle: true,
+            brightness: Brightness.light,
+            iconTheme: IconThemeData(color: Colors.black),
+            textTheme: TextTheme(
+              headline6: TextStyle(color: kPrimaryColor, fontSize: 18),
+            ),
           )),
 
       // home: SplashScreen(),

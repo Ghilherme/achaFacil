@@ -10,6 +10,7 @@ class Search extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("Ofertas"),
+        leading: BackButton(color: kTextColor),
       ),
       body: SearchGrid(),
       bottomNavigationBar: CustomBottomNavBar(selectedMenu: MenuState.search),
