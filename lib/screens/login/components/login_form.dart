@@ -1,9 +1,10 @@
+import 'package:AchaFacil/components/default_button.dart';
+import 'package:AchaFacil/constants.dart';
 import 'package:AchaFacil/screens/admin_area/body_admin_area.dart';
+import 'package:AchaFacil/size_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../../constants.dart';
 
 class LoginForm extends StatefulWidget {
   @override
@@ -36,9 +37,7 @@ class _LoginFormState extends State<LoginForm> {
           style: TextStyle(fontSize: 18),
           validator: (value) => value.isEmpty ? 'Campo obrigatório' : null,
         ),
-        SizedBox(
-          height: 10,
-        ),
+        SizedBox(height: getProportionateScreenHeight(30)),
         TextFormField(
           onChanged: (text) {
             pass = text;
@@ -55,21 +54,12 @@ class _LoginFormState extends State<LoginForm> {
           style: TextStyle(fontSize: 18),
           validator: (value) => value.isEmpty ? 'Campo obrigatório' : null,
         ),
-        SizedBox(
-          height: 40,
-        ),
-        SizedBox(
-          width: 200,
-          height: 50,
-          child: ElevatedButton(
-            child: Text(
-              'Login',
-              style: TextStyle(fontSize: 20),
-            ),
-            onPressed: () {
-              _validateLogin(_formKey, login, pass, context);
-            },
-          ),
+        SizedBox(height: getProportionateScreenHeight(40)),
+        DefaultButton(
+          text: "Login",
+          press: () {
+            _validateLogin(_formKey, login, pass, context);
+          },
         ),
       ]),
     );

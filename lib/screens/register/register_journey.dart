@@ -13,6 +13,7 @@ import 'region_step.dart';
 
 class RegisterJourney extends StatelessWidget {
   const RegisterJourney({Key key}) : super(key: key);
+  static String routeName = "/register";
   @override
   Widget build(BuildContext context) {
     return Scaffold(

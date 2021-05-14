@@ -1,6 +1,9 @@
 import 'package:AchaFacil/components/social_card.dart';
+import 'package:AchaFacil/constants.dart';
+import 'package:AchaFacil/screens/login/login.dart';
 import 'package:AchaFacil/size_config.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'sign_up_form.dart';
 
@@ -17,20 +20,24 @@ class BodySignUp extends StatelessWidget {
             child: Column(
               children: [
                 SizedBox(height: SizeConfig.screenHeight * 0.04), // 4%
-                Text("Register Account",
-                    style: TextStyle(
-                      fontSize: getProportionateScreenWidth(28),
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                      height: 1.5,
-                    )),
                 Text(
-                  "Complete your details or continue \nwith social media",
+                  "É grátis!",
+                  style: GoogleFonts.quicksand(
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).primaryColor,
+                      textStyle: Theme.of(context).textTheme.headline4),
+                ),
+                Text(
+                  "Cadastre-se e exponha seus serviços para onde preferir!",
                   textAlign: TextAlign.center,
+                  style: GoogleFonts.quicksand(
+                    fontSize: 16,
+                    color: kTextColor,
+                  ),
                 ),
                 SizedBox(height: SizeConfig.screenHeight * 0.08),
                 SignUpForm(),
-                SizedBox(height: SizeConfig.screenHeight * 0.08),
+                SizedBox(height: SizeConfig.screenHeight * 0.06),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -44,12 +51,29 @@ class BodySignUp extends StatelessWidget {
                     )
                   ],
                 ),
-                SizedBox(height: getProportionateScreenHeight(20)),
-                Text(
-                  'By continuing your confirm that you agree \nwith our Term and Condition',
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.caption,
-                )
+                SizedBox(height: SizeConfig.screenHeight * 0.04),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Já possui uma conta?",
+                      style: GoogleFonts.quicksand(
+                          fontSize: getProportionateScreenWidth(16)),
+                    ),
+                    GestureDetector(
+                      onTap: () =>
+                          Navigator.pushNamed(context, Login.routeName),
+                      child: Text(
+                        " Faça login!",
+                        style: GoogleFonts.quicksand(
+                            fontWeight: FontWeight.w500,
+                            fontSize: getProportionateScreenWidth(18),
+                            color: kPrimaryColor),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: getProportionateScreenHeight(30)),
               ],
             ),
           ),
