@@ -1,7 +1,11 @@
-import 'package:AchaFacil/apis/models/weekdays.dart';
+import 'package:AchaFacil/models/contacts.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'apis/models/states.dart';
+
+import 'models/states.dart';
+import 'models/weekdays.dart';
 
 const kTextColor = Color(0xFF535353);
 const kTextLightColor = Color(0xFFACACAC);
@@ -31,6 +35,9 @@ const daysWaitingRate = 7;
 const kDefaultPaddingListView = 5.0;
 
 Position globalPosition;
+UserCredential usr;
+ContactsModel contactLogged;
+DocumentReference idContactLogged;
 
 const kDefaultShadow = BoxShadow(
   offset: Offset(0, 4),

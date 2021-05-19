@@ -1,5 +1,5 @@
-import 'package:AchaFacil/apis/models/contacts.dart';
 import 'package:AchaFacil/components/timetable_admin.dart';
+import 'package:AchaFacil/models/contacts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';

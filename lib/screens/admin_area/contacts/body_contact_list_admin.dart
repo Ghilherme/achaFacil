@@ -1,8 +1,8 @@
-import 'package:AchaFacil/apis/models/contacts_status.dart';
 import 'package:AchaFacil/components/list_view_header.dart';
+import 'package:AchaFacil/models/contacts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:AchaFacil/apis/models/contacts.dart';
+import 'package:AchaFacil/models/contacts_status.dart';
 import 'package:AchaFacil/components/confirmation_dialog.dart';
 import 'package:AchaFacil/components/list_tile_admin.dart';
 import '../../../constants.dart';

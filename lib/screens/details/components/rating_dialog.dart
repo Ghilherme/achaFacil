@@ -1,6 +1,6 @@
-import 'package:AchaFacil/apis/models/contacts.dart';
-import 'package:AchaFacil/apis/models/rating.dart';
 import 'package:AchaFacil/constants.dart';
+import 'package:AchaFacil/models/contacts.dart';
+import 'package:AchaFacil/models/rating.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';

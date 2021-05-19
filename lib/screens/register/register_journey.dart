@@ -1,10 +1,10 @@
 import 'dart:io';
-import 'package:AchaFacil/apis/models/contacts_status.dart';
+import 'package:AchaFacil/models/contacts.dart';
+import 'package:AchaFacil/models/contacts_status.dart';
 import 'package:AchaFacil/screens/register/personal_step.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:AchaFacil/apis/models/contacts.dart';
 import 'package:geocoder/geocoder.dart';
 import '../../constants.dart';
 import 'attendance_step.dart';

@@ -1,4 +1,4 @@
-import 'package:AchaFacil/apis/models/contacts.dart';
+import 'package:AchaFacil/models/contacts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:AchaFacil/constants.dart';

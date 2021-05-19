@@ -1,5 +1,5 @@
-import 'package:AchaFacil/apis/models/service_types.dart';
 import 'package:AchaFacil/constants.dart';
+import 'package:AchaFacil/models/service_types.dart';
 import 'package:AchaFacil/screens/contact_list/contact_list.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';

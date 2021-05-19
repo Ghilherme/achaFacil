@@ -1,12 +1,11 @@
-import 'package:AchaFacil/apis/models/contacts.dart';
-import 'package:AchaFacil/apis/requests/gets.dart';
+import 'package:AchaFacil/apis/gets.dart';
 import 'package:AchaFacil/components/card_icon.dart';
 import 'package:AchaFacil/components/expandable_widget.dart';
+import 'package:AchaFacil/models/contacts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../../constants.dart';
 import 'package:expandable/expandable.dart';
-
 import 'components/card_header.dart';
 import 'components/genres.dart';
 import 'components/title_address_name.dart';

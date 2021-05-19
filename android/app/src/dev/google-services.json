@@ -8,12 +8,20 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:357003202382:android:fee6ecd26da236907a581f",
+        "mobilesdk_app_id": "1:357003202382:android:346af394c729698a7a581f",
         "android_client_info": {
           "package_name": "com.listaunica.AchaFacil.dev"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "357003202382-d8ghsdh7s1kqjn3reve4hl4cugd8r5mp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.listaunica.AchaFacil.dev",
+            "certificate_hash": "4c4940fa038b22ab9ccce6313aa0011def91f99d"
+          }
+        },
         {
           "client_id": "357003202382-00rt2880bjgncv1goblohrms8sb7qn75.apps.googleusercontent.com",
           "client_type": 3

@@ -1,6 +1,6 @@
+import 'package:AchaFacil/models/service_types.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:AchaFacil/apis/models/service_types.dart';
 
 class CreateServiceType extends StatelessWidget {
   final ServiceTypesModel serviceTypes;

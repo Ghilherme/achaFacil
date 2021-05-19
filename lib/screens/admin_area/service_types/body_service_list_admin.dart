@@ -1,7 +1,7 @@
 import 'package:AchaFacil/components/list_view_header.dart';
+import 'package:AchaFacil/models/service_types.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:AchaFacil/apis/models/service_types.dart';
 import 'package:AchaFacil/components/confirmation_dialog.dart';
 import 'package:AchaFacil/components/list_tile_admin.dart';
 

@@ -4,7 +4,7 @@ import 'package:AchaFacil/components/image_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:AchaFacil/apis/models/categories.dart';
+import 'package:AchaFacil/models/categories.dart';
 
 class CreateCategories extends StatelessWidget {
   final CategoriesModel categories;

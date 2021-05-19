@@ -1,12 +1,12 @@
 import 'dart:io';
-import 'package:AchaFacil/apis/models/contacts_status.dart';
 import 'package:AchaFacil/components/image_picker.dart';
 import 'package:AchaFacil/components/timetable_admin.dart';
+import 'package:AchaFacil/models/contacts.dart';
+import 'package:AchaFacil/models/contacts_status.dart';
+import 'package:AchaFacil/models/states.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:AchaFacil/apis/models/contacts.dart';
-import 'package:AchaFacil/apis/models/states.dart';
 import 'package:flutter/services.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';

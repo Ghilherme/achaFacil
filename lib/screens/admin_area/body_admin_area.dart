@@ -1,4 +1,4 @@
-import 'package:AchaFacil/apis/models/contacts_status.dart';
+import 'package:AchaFacil/models/contacts_status.dart';
 import 'package:AchaFacil/screens/admin_area/service_types/body_service_list_admin.dart';
 import 'package:flutter/material.dart';
 import 'package:AchaFacil/menu/custom_drawer_admin.dart';

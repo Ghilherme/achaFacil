@@ -12,7 +12,9 @@ class SignUpScreen extends StatelessWidget {
         title: Text("Cadastro"),
         leading: BackButton(color: kTextColor),
       ),
-      body: BodySignUp(),
+      body: Builder(
+        builder: (context) => BodySignUp(),
+      ),
     );
   }
 }
